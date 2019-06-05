@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.preferences.GeneralKeys;
 
 import okhttp3.mockwebserver.MockResponse;
@@ -82,7 +82,7 @@ public abstract class MockedServerTest {
     }
 
     private static void configAppFor(MockWebServer server) {
-        Editor prefs = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance().getBaseContext()).edit();
+        Editor prefs = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance().getBaseContext()).edit();
         prefs.putString(GeneralKeys.KEY_SERVER_URL, server.url("/").toString());
         if (!prefs.commit()) {
             throw new RuntimeException("Failed to set up SharedPreferences for MockWebServer");

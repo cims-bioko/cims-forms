@@ -27,7 +27,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.database.ItemsetDbAdapter;
 import org.cimsbioko.forms.database.helpers.FormsDatabaseHelper;
 import org.cimsbioko.forms.provider.FormsProviderAPI.FormsColumns;
@@ -58,7 +58,7 @@ public class FormsProvider extends ContentProvider {
     private synchronized FormsDatabaseHelper getDbHelper() {
         // wrapper to test and reset/set the dbHelper based upon the attachment state of the device.
         try {
-            Collect.createODKDirs();
+            FormsApp.createODKDirs();
         } catch (RuntimeException e) {
             return null;
         }
@@ -196,7 +196,7 @@ public class FormsProvider extends ContentProvider {
             values.put(FormsColumns.MD5_HASH, md5);
 
             if (!values.containsKey(FormsColumns.JRCACHE_FILE_PATH)) {
-                String cachePath = Collect.CACHE_PATH + File.separator + md5
+                String cachePath = FormsApp.CACHE_PATH + File.separator + md5
                         + ".formdef";
                 values.put(FormsColumns.JRCACHE_FILE_PATH, cachePath);
             }
@@ -478,7 +478,7 @@ public class FormsProvider extends ContentProvider {
                                         .getMd5Hash(new File(formFile));
                                 values.put(FormsColumns.MD5_HASH, newMd5);
                                 values.put(FormsColumns.JRCACHE_FILE_PATH,
-                                        Collect.CACHE_PATH + File.separator + newMd5
+                                        FormsApp.CACHE_PATH + File.separator + newMd5
                                                 + ".formdef");
                             }
 

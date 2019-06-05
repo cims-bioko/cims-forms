@@ -10,7 +10,7 @@ import com.google.zxing.WriterException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.preferences.AdminSharedPreferences;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.robolectric.RobolectricTestRunner;
@@ -78,7 +78,7 @@ public class QRCodeUtilsTest {
         String expectedData = "{\"general\":{},\"admin\":{}}";
 
         // stubbing cache and bitmap files
-        new File(Collect.SETTINGS).mkdirs();
+        new File(FormsApp.SETTINGS).mkdirs();
         FileUtils.saveBitmapToFile(QRCodeUtils.generateQRBitMap(expectedData, 100), QR_CODE_FILEPATH);
         FileUtils.write(md5File, getDigest(expectedData.getBytes()));
 

@@ -20,6 +20,7 @@ package org.cimsbioko.forms.external;
 
 import android.widget.Toast;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.condition.EvaluationContext;
 import org.javarosa.core.model.instance.FormInstance;
@@ -30,7 +31,6 @@ import org.javarosa.xpath.expr.XPathExpression;
 import org.javarosa.xpath.expr.XPathFuncExpr;
 import org.javarosa.xpath.parser.XPathSyntaxException;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.exception.ExternalDataException;
 import org.cimsbioko.forms.external.handler.ExternalDataHandlerSearch;
 
@@ -121,33 +121,33 @@ public final class ExternalDataUtil {
                                 || xpathFuncExpr.args.length == 6) {
                             return xpathFuncExpr;
                         } else {
-                            Toast.makeText(Collect.getInstance(),
-                                    Collect.getInstance().getString(R.string.ext_search_wrong_arguments_error),
+                            Toast.makeText(FormsApp.getInstance(),
+                                    FormsApp.getInstance().getString(R.string.ext_search_wrong_arguments_error),
                                     Toast.LENGTH_SHORT).show();
-                            Timber.i(Collect.getInstance().getString(R.string.ext_search_wrong_arguments_error));
+                            Timber.i(FormsApp.getInstance().getString(R.string.ext_search_wrong_arguments_error));
                             return null;
                         }
                     } else {
                         // this might mean a problem in the regex above. Unit tests required.
-                        Toast.makeText(Collect.getInstance(),
-                                Collect.getInstance().getString(R.string.ext_search_wrong_function_error, xpathFuncExpr.id.name),
+                        Toast.makeText(FormsApp.getInstance(),
+                                FormsApp.getInstance().getString(R.string.ext_search_wrong_function_error, xpathFuncExpr.id.name),
                                 Toast.LENGTH_SHORT).show();
-                        Timber.i(Collect.getInstance().getString(R.string.ext_search_wrong_function_error, xpathFuncExpr.id.name));
+                        Timber.i(FormsApp.getInstance().getString(R.string.ext_search_wrong_function_error, xpathFuncExpr.id.name));
                         return null;
                     }
                 } else {
                     // this might mean a problem in the regex above. Unit tests required.
-                    Toast.makeText(Collect.getInstance(),
-                            Collect.getInstance().getString(R.string.ext_search_bad_function_error, function),
+                    Toast.makeText(FormsApp.getInstance(),
+                            FormsApp.getInstance().getString(R.string.ext_search_bad_function_error, function),
                             Toast.LENGTH_SHORT).show();
-                    Timber.i(Collect.getInstance().getString(R.string.ext_search_bad_function_error, function));
+                    Timber.i(FormsApp.getInstance().getString(R.string.ext_search_bad_function_error, function));
                     return null;
                 }
             } catch (XPathSyntaxException e) {
-                Toast.makeText(Collect.getInstance(),
-                        Collect.getInstance().getString(R.string.ext_search_generic_error, appearance),
+                Toast.makeText(FormsApp.getInstance(),
+                        FormsApp.getInstance().getString(R.string.ext_search_generic_error, appearance),
                         Toast.LENGTH_SHORT).show();
-                Timber.i(Collect.getInstance().getString(R.string.ext_search_generic_error, appearance));
+                Timber.i(FormsApp.getInstance().getString(R.string.ext_search_generic_error, appearance));
                 return null;
             }
         } else {
@@ -178,9 +178,9 @@ public final class ExternalDataUtil {
                     //                    }
 
                     ExternalDataManager externalDataManager =
-                            Collect.getInstance().getExternalDataManager();
+                            FormsApp.getInstance().getExternalDataManager();
                     FormInstance formInstance =
-                            Collect.getInstance().getFormController().getFormDef().getInstance();
+                            FormsApp.getInstance().getFormController().getFormDef().getInstance();
                     EvaluationContext baseEvaluationContext = new EvaluationContext(formInstance);
                     EvaluationContext evaluationContext = new EvaluationContext(
                             baseEvaluationContext, formEntryPrompt.getIndex().getReference());
@@ -198,7 +198,7 @@ public final class ExternalDataUtil {
                         }
                     } else {
                         throw new ExternalDataException(
-                                Collect.getInstance().getString(R.string.ext_search_return_error,
+                                FormsApp.getInstance().getString(R.string.ext_search_return_error,
                                         eval.getClass().getName()));
                     }
                 }

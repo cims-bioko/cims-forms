@@ -38,7 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.http.CollectServerClient;
 import org.cimsbioko.forms.injection.DaggerUtils;
 import org.cimsbioko.forms.listeners.OnBackPressedListener;
@@ -442,7 +442,7 @@ public class ServerPreferencesFragment extends BasePreferenceFragment implements
         String urlHash = FileUtils.getMd5Hash(
                 new ByteArrayInputStream(url.getBytes()));
 
-        Collect.getInstance().logRemoteAnalytics("SetServer", scheme + " " + host, urlHash);
+        FormsApp.getInstance().logRemoteAnalytics("SetServer", scheme + " " + host, urlHash);
     }
 
     private void maskPasswordSummary(String password) {

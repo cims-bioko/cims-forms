@@ -26,7 +26,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.apache.commons.io.IOUtils;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.provider.FormsProviderAPI;
 import org.cimsbioko.forms.tasks.FormLoaderTask;
@@ -55,7 +55,7 @@ public class FormLoadingUtils {
      * folder to the SD Card where it will be loaded by {@link FormLoaderTask}.
      */
     public static void copyFormToSdCard(String formFilename, List<String> mediaFilenames) throws IOException {
-        Collect.createODKDirs();
+        FormsApp.createODKDirs();
         copyForm(formFilename);
 
         if (mediaFilenames != null) {
@@ -91,7 +91,7 @@ public class FormLoadingUtils {
             @Override
             protected Intent getActivityIntent() {
                 Intent intent = new Intent(ApplicationProvider.getApplicationContext(), FormEntryActivity.class);
-                intent.putExtra(EXTRA_TESTING_PATH, Collect.FORMS_PATH + "/" + formFilename);
+                intent.putExtra(EXTRA_TESTING_PATH, FormsApp.FORMS_PATH + "/" + formFilename);
 
                 return intent;
             }
@@ -105,7 +105,7 @@ public class FormLoadingUtils {
     }
 
     private static void copyForm(String formFilename) throws IOException {
-        String pathname = Collect.FORMS_PATH + "/" + formFilename;
+        String pathname = FormsApp.FORMS_PATH + "/" + formFilename;
 
         AssetManager assetManager = InstrumentationRegistry.getInstrumentation().getContext().getAssets();
         InputStream inputStream = assetManager.open("forms/" + formFilename);
@@ -119,7 +119,7 @@ public class FormLoadingUtils {
     }
 
     private static void copyFormMediaFiles(String formFilename, List<String> mediaFilenames) throws IOException {
-        String mediaPathName = Collect.FORMS_PATH + "/" + formFilename.replace(".xml", "") + FileUtils.MEDIA_SUFFIX + "/";
+        String mediaPathName = FormsApp.FORMS_PATH + "/" + formFilename.replace(".xml", "") + FileUtils.MEDIA_SUFFIX + "/";
         FileUtils.checkMediaPath(new File(mediaPathName));
 
         AssetManager assetManager = InstrumentationRegistry.getInstrumentation().getContext().getAssets();

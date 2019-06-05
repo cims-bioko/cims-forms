@@ -18,7 +18,7 @@ package org.cimsbioko.forms.utilities;
 
 import android.content.Context;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.database.ItemsetDbAdapter;
@@ -51,12 +51,12 @@ public class ResetUtility {
                     resetForms();
                     break;
                 case ResetAction.RESET_LAYERS:
-                    if (deleteFolderContents(Collect.OFFLINE_LAYERS)) {
+                    if (deleteFolderContents(FormsApp.OFFLINE_LAYERS)) {
                         failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_LAYERS));
                     }
                     break;
                 case ResetAction.RESET_CACHE:
-                    if (deleteFolderContents(Collect.CACHE_PATH)) {
+                    if (deleteFolderContents(FormsApp.CACHE_PATH)) {
                         failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_CACHE));
                     }
                     break;
@@ -75,11 +75,11 @@ public class ResetUtility {
         GeneralSharedPreferences.getInstance().loadDefaultPreferences();
         AdminSharedPreferences.getInstance().loadDefaultPreferences();
 
-        boolean deletedSettingsFolderContest = !new File(Collect.SETTINGS).exists()
-                || deleteFolderContents(Collect.SETTINGS);
+        boolean deletedSettingsFolderContest = !new File(FormsApp.SETTINGS).exists()
+                || deleteFolderContents(FormsApp.SETTINGS);
 
-        boolean deletedSettingsFile = !new File(Collect.ODK_ROOT + "/collect.settings").exists()
-                || (new File(Collect.ODK_ROOT + "/collect.settings").delete());
+        boolean deletedSettingsFile = !new File(FormsApp.ODK_ROOT + "/collect.settings").exists()
+                || (new File(FormsApp.ODK_ROOT + "/collect.settings").delete());
         
         new LocaleHelper().updateLocale(context);
 
@@ -87,13 +87,13 @@ public class ResetUtility {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_PREFERENCES));
         }
 
-        Collect.getInstance().initializeJavaRosa();
+        FormsApp.getInstance().initializeJavaRosa();
     }
 
     private void resetInstances() {
         new InstancesDao().deleteInstancesDatabase();
 
-        if (deleteFolderContents(Collect.INSTANCES_PATH)) {
+        if (deleteFolderContents(FormsApp.INSTANCES_PATH)) {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_INSTANCES));
         }
     }
@@ -101,9 +101,9 @@ public class ResetUtility {
     private void resetForms() {
         new FormsDao().deleteFormsDatabase();
 
-        File itemsetDbFile = new File(Collect.METADATA_PATH + File.separator + ItemsetDbAdapter.DATABASE_NAME);
+        File itemsetDbFile = new File(FormsApp.METADATA_PATH + File.separator + ItemsetDbAdapter.DATABASE_NAME);
 
-        if (deleteFolderContents(Collect.FORMS_PATH) && (!itemsetDbFile.exists() || itemsetDbFile.delete())) {
+        if (deleteFolderContents(FormsApp.FORMS_PATH) && (!itemsetDbFile.exists() || itemsetDbFile.delete())) {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_FORMS));
         }
     }

@@ -42,7 +42,7 @@ public class SheetsHelper {
     SheetsHelper(GoogleAccountCredential credential, HttpTransport transport, JsonFactory jsonFactory) {
         // Initialize sheets service
         Sheets sheets = new Sheets.Builder(transport, jsonFactory, credential)
-                .setApplicationName("ODK-Collect")
+                .setApplicationName("ODK-FormsApp")
                 .build();
 
         sheetsService = new SheetsService(sheets);

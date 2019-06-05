@@ -16,7 +16,7 @@ package org.cimsbioko.forms.injection;
 
 import android.app.Activity;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.injection.config.AppDependencyComponent;
 
 public class DaggerUtils {
@@ -24,6 +24,6 @@ public class DaggerUtils {
     private DaggerUtils() {}
 
     public static AppDependencyComponent getComponent(Activity activity) {
-        return ((Collect) activity.getApplication()).getComponent();
+        return ((FormsApp) activity.getApplication()).getComponent();
     }
 }

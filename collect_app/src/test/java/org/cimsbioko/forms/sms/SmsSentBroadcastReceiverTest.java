@@ -37,7 +37,7 @@ public class SmsSentBroadcastReceiverTest {
     @Test
     public void testIntentHandling() {
         /**
-         * Testing to see if the broadcast receiver will receive SMS events from Collect.
+         * Testing to see if the broadcast receiver will receive SMS events from FormsApp.
          */
         Intent intent = new Intent(SMS_SEND_ACTION);
 

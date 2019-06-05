@@ -19,7 +19,7 @@ package org.cimsbioko.forms.utilities;
 import android.database.Cursor;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
 
 import java.util.Map;
@@ -70,7 +70,7 @@ public class InstanceUploaderUtils {
 
     private static String localizeDefaultAggregateSuccessfulText(String text) {
         if (text != null && text.equals(DEFAULT_SUCCESSFUL_TEXT)) {
-            text = Collect.getInstance().getString(R.string.success);
+            text = FormsApp.getInstance().getString(R.string.success);
         }
         return text;
     }

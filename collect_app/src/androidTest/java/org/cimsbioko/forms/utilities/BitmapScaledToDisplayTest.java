@@ -5,7 +5,7 @@ import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import java.io.File;
 
@@ -56,7 +56,7 @@ public class BitmapScaledToDisplayTest {
     }
 
     private static class ScaleImageTest {
-        private final File cache = Collect.getInstance().getApplicationContext().getExternalCacheDir();
+        private final File cache = FormsApp.getInstance().getApplicationContext().getExternalCacheDir();
         private final File imageFile = new File(cache, "testImage.jpeg");
         private Bitmap scaledBitmap;
 

@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.webkit.MimeTypeMap;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.FormInfo;
 import org.cimsbioko.forms.provider.FormsProviderAPI;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
@@ -33,7 +33,7 @@ public final class ContentResolverHelper {
     }
 
     private static ContentResolver getContentResolver() {
-        return Collect.getInstance().getContentResolver();
+        return FormsApp.getInstance().getContentResolver();
     }
 
     public static FormInfo getFormDetails(Uri uri) {

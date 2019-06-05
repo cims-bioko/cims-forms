@@ -24,7 +24,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import javax.inject.Inject;
 
@@ -42,7 +42,7 @@ public class AuthDialogUtility {
     @Inject WebCredentialsUtils webCredentialsUtils;
 
     public AuthDialogUtility() {
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
     }
 
     public AlertDialog createDialog(final Context context,

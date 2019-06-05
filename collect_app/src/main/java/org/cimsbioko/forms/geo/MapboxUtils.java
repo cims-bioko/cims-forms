@@ -3,7 +3,7 @@ package org.cimsbioko.forms.geo;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import org.cimsbioko.forms.BuildConfig;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 public class MapboxUtils {
     private static boolean initAttempted;
@@ -22,7 +22,7 @@ public class MapboxUtils {
         try {
             // To use the Mapbox base maps, we have to initialize the Mapbox SDK with
             // an access token. Configure this token in collect_app/secrets.properties.
-            mapbox = Mapbox.getInstance(Collect.getInstance(), BuildConfig.MAPBOX_ACCESS_TOKEN);
+            mapbox = Mapbox.getInstance(FormsApp.getInstance(), BuildConfig.MAPBOX_ACCESS_TOKEN);
         } catch (Exception | Error e) {
             // To keep our APK from getting too big, we decided to include the
             // Mapbox native library only for the most common binary architectures.

@@ -2,7 +2,7 @@ package org.cimsbioko.forms.formentry.backgroundlocation;
 
 import android.location.Location;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.location.client.LocationClients;
 import org.cimsbioko.forms.logic.AuditConfig;
 import org.cimsbioko.forms.logic.AuditEvent;
@@ -23,7 +23,7 @@ import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_BACKGROUND_LOCATIO
  */
 public class BackgroundLocationHelper {
     boolean isAndroidLocationPermissionGranted() {
-        return PermissionUtils.areLocationPermissionsGranted(Collect.getInstance().getApplicationContext());
+        return PermissionUtils.areLocationPermissionsGranted(FormsApp.getInstance().getApplicationContext());
     }
 
     boolean isBackgroundLocationPreferenceEnabled() {
@@ -31,14 +31,14 @@ public class BackgroundLocationHelper {
     }
 
     boolean arePlayServicesAvailable() {
-        return LocationClients.areGooglePlayServicesAvailable(Collect.getInstance().getApplicationContext());
+        return LocationClients.areGooglePlayServicesAvailable(FormsApp.getInstance().getApplicationContext());
     }
 
     /**
      * @return true if the global form controller has been initialized.
      */
     boolean isCurrentFormSet() {
-        return Collect.getInstance().getFormController() != null;
+        return FormsApp.getInstance().getFormController() != null;
     }
 
     /**
@@ -47,7 +47,7 @@ public class BackgroundLocationHelper {
      * Precondition: the global form controller has been initialized.
      */
     boolean currentFormCollectsBackgroundLocation() {
-        return Collect.getInstance().getFormController().currentFormCollectsBackgroundLocation();
+        return FormsApp.getInstance().getFormController().currentFormCollectsBackgroundLocation();
     }
 
     /**
@@ -57,7 +57,7 @@ public class BackgroundLocationHelper {
      * Precondition: the global form controller has been initialized.
      */
     boolean currentFormAuditsLocation() {
-        return Collect.getInstance().getFormController().currentFormAuditsLocation();
+        return FormsApp.getInstance().getFormController().currentFormAuditsLocation();
     }
 
     /**
@@ -66,7 +66,7 @@ public class BackgroundLocationHelper {
      * Precondition: the global form controller has been initialized.
      */
     AuditConfig getCurrentFormAuditConfig() {
-        return Collect.getInstance().getFormController().getSubmissionMetadata().auditConfig;
+        return FormsApp.getInstance().getFormController().getSubmissionMetadata().auditConfig;
     }
 
     /**
@@ -75,7 +75,7 @@ public class BackgroundLocationHelper {
      * Precondition: the global form controller has been initialized.
      */
     void logAuditEvent(AuditEvent.AuditEventType eventType) {
-        Collect.getInstance().getFormController().getAuditEventLogger().logEvent(eventType, false);
+        FormsApp.getInstance().getFormController().getAuditEventLogger().logEvent(eventType, false);
     }
 
     /**
@@ -84,6 +84,6 @@ public class BackgroundLocationHelper {
      * Precondition: the global form controller has been initialized.
      */
     void provideLocationToAuditLogger(Location location) {
-        Collect.getInstance().getFormController().getAuditEventLogger().addLocation(location);
+        FormsApp.getInstance().getFormController().getAuditEventLogger().addLocation(location);
     }
 }

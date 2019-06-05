@@ -18,7 +18,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.tasks.ServerPollingJob;
 
 import java.util.Map;
@@ -35,7 +35,7 @@ public class GeneralSharedPreferences {
     private final android.content.SharedPreferences sharedPreferences;
 
     private GeneralSharedPreferences() {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance());
     }
 
     public static synchronized GeneralSharedPreferences getInstance() {

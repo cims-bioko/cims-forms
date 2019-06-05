@@ -10,7 +10,7 @@ import com.squareup.leakcanary.RefWatcher;
  * in the Android manifest as it prefixes that class with `Test`.
  */
 
-public class TestCollect extends Collect {
+public class TestFormsApp extends FormsApp {
 
     @Override
     protected RefWatcher setupLeakCanary() {

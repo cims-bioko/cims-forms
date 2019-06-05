@@ -29,7 +29,7 @@ import android.widget.ListView;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.InstanceListCursorAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.listeners.DeleteInstancesListener;
 import org.cimsbioko.forms.listeners.DiskSyncListener;
@@ -78,7 +78,7 @@ public class DataManagerList extends InstanceListFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
     }
 
     @Override

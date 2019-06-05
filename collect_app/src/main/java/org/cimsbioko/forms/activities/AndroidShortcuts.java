@@ -31,7 +31,7 @@ import org.cimsbioko.forms.provider.FormsProviderAPI.FormsColumns;
 import java.util.ArrayList;
 
 /**
- * Allows the user to create desktop shortcuts to any form currently avaiable to Collect
+ * Allows the user to create desktop shortcuts to any form currently avaiable to FormsApp
  *
  * @author ctsims
  * @author carlhartung (modified for ODK)

@@ -25,7 +25,7 @@ import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.view.Surface;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -112,7 +112,7 @@ public class CameraUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 //https://developer.android.com/reference/android/hardware/camera2/CameraCharacteristics.html
-                CameraManager cameraManager = (CameraManager) Collect.getInstance()
+                CameraManager cameraManager = (CameraManager) FormsApp.getInstance()
                         .getSystemService(Context.CAMERA_SERVICE);
                 if (cameraManager != null) {
                     String[] cameraId = cameraManager.getCameraIdList();

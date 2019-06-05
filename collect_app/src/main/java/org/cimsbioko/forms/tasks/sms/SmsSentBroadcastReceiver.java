@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import javax.inject.Inject;
 
@@ -26,7 +26,7 @@ public class SmsSentBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
 
         if (intent.getExtras() == null) {
             Timber.e("getExtras returned a null value.");

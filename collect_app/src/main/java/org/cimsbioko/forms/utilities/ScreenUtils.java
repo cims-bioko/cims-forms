@@ -17,8 +17,7 @@
 package org.cimsbioko.forms.utilities;
 
 import android.util.DisplayMetrics;
-
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 public class ScreenUtils {
 
@@ -34,6 +33,6 @@ public class ScreenUtils {
     }
 
     private static DisplayMetrics getDisplayMetrics() {
-        return Collect.getInstance().getResources().getDisplayMetrics();
+        return FormsApp.getInstance().getResources().getDisplayMetrics();
     }
 }

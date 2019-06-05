@@ -39,7 +39,7 @@ import androidx.lifecycle.ViewModelProviders;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.viewmodels.FormDownloadListViewModel;
 import org.cimsbioko.forms.adapters.FormDownloadListAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.http.HttpCredentialsInterface;
 import org.cimsbioko.forms.injection.DaggerUtils;
@@ -80,7 +80,7 @@ import static org.cimsbioko.forms.utilities.DownloadFormListUtils.DL_ERROR_MSG;
  * 401
  * and you'll have to hit 'refresh' where it will ask for credentials again. Technically a server
  * could point at other servers requiring authentication to download the forms, but the current
- * implementation in Collect doesn't allow for that. Mostly this is just because it's a pain in the
+ * implementation in FormsApp doesn't allow for that. Mostly this is just because it's a pain in the
  * butt to keep track of which forms we've downloaded and where we're needing to authenticate. I
  * think we do something similar in the instanceuploader task/activity, so should change the
  * implementation eventually.
@@ -142,7 +142,7 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
             public void granted() {
                 // must be at the beginning of any activity that can be called from an external intent
                 try {
-                    Collect.createODKDirs();
+                    FormsApp.createODKDirs();
                 } catch (RuntimeException e) {
                     DialogUtils.showDialog(DialogUtils.createErrorDialog(FormDownloadList.this, e.getMessage(), EXIT), FormDownloadList.this);
                     return;
@@ -153,7 +153,7 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
 
             @Override
             public void denied() {
-                // The activity has to finish because ODK Collect cannot function without these permissions.
+                // The activity has to finish because CIMS Forms cannot function without these permissions.
                 finish();
             }
         });
@@ -760,7 +760,7 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
         if (viewModel.isDownloadOnlyMode()) {
             for (FormDetails formDetails: result.keySet()) {
                 String successKey = result.get(formDetails);
-                if (Collect.getInstance().getString(R.string.success).equals(successKey)) {
+                if (FormsApp.getInstance().getString(R.string.success).equals(successKey)) {
                     if (viewModel.getFormResults().containsKey(formDetails.getFormID())) {
                         viewModel.putFormResult(formDetails.getFormID(), true);
                     }
@@ -777,7 +777,7 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
         for (FormDetails k : keys) {
             b.append(k.getFormName() + " ("
                     + ((k.getFormVersion() != null)
-                    ? (Collect.getInstance().getString(R.string.version) + ": " + k.getFormVersion() + " ")
+                    ? (FormsApp.getInstance().getString(R.string.version) + ": " + k.getFormVersion() + " ")
                     : "") + "ID: " + k.getFormID() + ") - " + result.get(k));
             b.append("\n\n");
         }

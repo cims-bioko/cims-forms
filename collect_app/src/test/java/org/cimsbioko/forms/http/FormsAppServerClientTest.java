@@ -14,7 +14,7 @@ import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
-public class CollectServerClientTest {
+public class FormsAppServerClientTest {
 
     static final String URL_STRING = "http://testurl";
 

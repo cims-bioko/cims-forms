@@ -9,7 +9,7 @@ import androidx.test.espresso.util.TreeIterables;
 import android.view.View;
 
 import org.hamcrest.Matcher;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
 
@@ -89,7 +89,7 @@ public final class TestUtils {
     }
 
     public static void resetInstancesContentProvider() {
-        Collect.getInstance().getContentResolver().delete(InstanceProviderAPI.InstanceColumns.CONTENT_URI, null, null);
+        FormsApp.getInstance().getContentResolver().delete(InstanceProviderAPI.InstanceColumns.CONTENT_URI, null, null);
     }
 
     public static void assertMatches(String expectedPattern, Object actual) {

@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.cimsbioko.forms.test.TestUtils.assertMatches;
 
-public class CollectServerClientTest extends MockedServerTest {
+public class FormsAppServerClientTest extends MockedServerTest {
 
     private CollectServerClient collectServerClient;
 

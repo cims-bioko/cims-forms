@@ -20,9 +20,9 @@ import android.location.Location;
 
 import com.google.android.gms.location.LocationListener;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.actions.setgeopoint.SetGeopointAction;
 import org.javarosa.core.model.instance.TreeReference;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.location.client.GoogleLocationClient;
 import org.cimsbioko.forms.location.client.LocationClients;
 import org.cimsbioko.forms.location.client.MaxAccuracyWithinTimeoutLocationClient;
@@ -67,13 +67,13 @@ public class CollectSetGeopointAction extends SetGeopointAction implements Locat
     public void requestLocationUpdates() {
         // Do initialization on first location request so the client doesn't need to be serialized
         if (maxAccuracyLocationClient == null) {
-            maxAccuracyLocationClient = new MaxAccuracyWithinTimeoutLocationClient(new GoogleLocationClient(Collect.getInstance().getApplicationContext()), this);
+            maxAccuracyLocationClient = new MaxAccuracyWithinTimeoutLocationClient(new GoogleLocationClient(FormsApp.getInstance().getApplicationContext()), this);
         }
 
         // Only start acquiring location if the Collect preference allows it and Google Play
         // Services are available. If it's not allowed, leave the target field blank.
         if (GeneralSharedPreferences.getInstance().getBoolean(KEY_BACKGROUND_LOCATION, true)
-            && LocationClients.areGooglePlayServicesAvailable(Collect.getInstance().getApplicationContext())) {
+            && LocationClients.areGooglePlayServicesAvailable(FormsApp.getInstance().getApplicationContext())) {
             maxAccuracyLocationClient.requestLocationUpdates(SECONDS_TO_CONSIDER_UPDATES);
         }
     }

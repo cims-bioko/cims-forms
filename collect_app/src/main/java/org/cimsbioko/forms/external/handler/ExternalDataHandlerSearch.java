@@ -21,11 +21,12 @@ package org.cimsbioko.forms.external.handler;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.condition.EvaluationContext;
 import org.javarosa.xpath.expr.XPathFuncExpr;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.exception.ExternalDataException;
 import org.cimsbioko.forms.external.ExternalDataManager;
 import org.cimsbioko.forms.external.ExternalDataUtil;
@@ -99,7 +100,7 @@ public class ExternalDataHandlerSearch extends ExternalDataHandlerBase {
             // we should never get here since it is already handled in ExternalDataUtil
             // .getSearchXPathExpression(String appearance)
             throw new ExternalDataException(
-                    Collect.getInstance().getString(R.string.ext_search_wrong_arguments_error));
+                    FormsApp.getInstance().getString(R.string.ext_search_wrong_arguments_error));
         }
 
         String searchType = null;
@@ -181,7 +182,7 @@ public class ExternalDataHandlerSearch extends ExternalDataHandlerBase {
                 c = db.query(ExternalDataUtil.EXTERNAL_DATA_TABLE_NAME, sqlColumns, selection,
                         selectionArgs, null, null, ExternalDataUtil.SORT_COLUMN_NAME);
             } catch (Exception e) {
-                Timber.e(Collect.getInstance().getString(R.string.ext_import_csv_missing_error, dataSetName, dataSetName));
+                Timber.e(FormsApp.getInstance().getString(R.string.ext_import_csv_missing_error, dataSetName, dataSetName));
                 c = db.query(ExternalDataUtil.EXTERNAL_DATA_TABLE_NAME, sqlColumns, selection,
                         selectionArgs, null, null, null);
             }

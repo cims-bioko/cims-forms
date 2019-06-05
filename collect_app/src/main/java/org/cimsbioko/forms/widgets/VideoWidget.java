@@ -33,6 +33,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
 import org.javarosa.form.api.FormEntryPrompt;
@@ -40,7 +41,6 @@ import org.cimsbioko.forms.BuildConfig;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.CaptureSelfieVideoActivity;
 import org.cimsbioko.forms.activities.CaptureSelfieVideoActivityNewApi;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.listeners.PermissionListener;
 import org.cimsbioko.forms.preferences.GeneralKeys;
 import org.cimsbioko.forms.utilities.CameraUtils;
@@ -377,7 +377,7 @@ public class VideoWidget extends QuestionWidget implements FileWidget {
             }
         }
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FormsApp
                 .getInstance());
 
         // request high resolution if configured for that...

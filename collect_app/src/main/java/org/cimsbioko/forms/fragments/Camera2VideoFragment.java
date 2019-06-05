@@ -49,7 +49,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.fragments.dialogs.ErrorDialog;
 import org.cimsbioko.forms.utilities.CameraUtils;
 import org.cimsbioko.forms.utilities.ToastUtils;
@@ -244,7 +244,7 @@ public class Camera2VideoFragment extends Fragment
      * @return The optimal {@code Size}, or an arbitrary one if none were big enough
      */
     private static Size chooseOptimalSize(Size[] choices, int width, int height, Size aspectRatio) {
-        // Collect the supported resolutions that are at least as big as the preview Surface
+        // FormsApp the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
         int w = aspectRatio.getWidth();
         int h = aspectRatio.getHeight();
@@ -297,7 +297,7 @@ public class Camera2VideoFragment extends Fragment
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.texture) {
-            if (Collect.allowClick(getClass().getName())) { // avoid multiple quick taps that may cause various problems
+            if (FormsApp.allowClick(getClass().getName())) { // avoid multiple quick taps that may cause various problems
                 if (isRecordingVideo) {
                     textureView.setClickable(false);
                     stopRecordingVideo();

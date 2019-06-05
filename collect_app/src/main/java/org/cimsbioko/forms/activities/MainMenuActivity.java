@@ -43,7 +43,7 @@ import android.widget.TextView;
 import com.google.android.gms.analytics.GoogleAnalytics;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.preferences.AdminKeys;
 import org.cimsbioko.forms.preferences.AdminPreferencesActivity;
@@ -122,7 +122,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         enterDataButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     Intent i = new Intent(getApplicationContext(),
                             FormChooserList.class);
                     startActivity(i);
@@ -136,7 +136,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         reviewDataButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     Intent i = new Intent(getApplicationContext(), InstanceChooserList.class);
                     i.putExtra(ApplicationConstants.BundleKeys.FORM_MODE,
                             ApplicationConstants.FormModes.EDIT_SAVED);
@@ -151,7 +151,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         sendDataButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     Intent i = new Intent(getApplicationContext(),
                             InstanceUploaderListActivity.class);
                     startActivity(i);
@@ -164,7 +164,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         viewSentFormsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     Intent i = new Intent(getApplicationContext(), InstanceChooserList.class);
                     i.putExtra(ApplicationConstants.BundleKeys.FORM_MODE,
                             ApplicationConstants.FormModes.VIEW_SENT);
@@ -179,7 +179,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         getFormsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     SharedPreferences sharedPreferences = PreferenceManager
                             .getDefaultSharedPreferences(MainMenuActivity.this);
                     String protocol = sharedPreferences.getString(
@@ -208,7 +208,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
         manageFilesButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     Intent i = new Intent(getApplicationContext(),
                             FileManagerTabs.class);
                     startActivity(i);
@@ -220,21 +220,21 @@ public class MainMenuActivity extends CollectAbstractActivity {
         // external intent
         Timber.i("Starting up, creating directories");
         try {
-            Collect.createODKDirs();
+            FormsApp.createODKDirs();
         } catch (RuntimeException e) {
             createErrorDialog(e.getMessage(), EXIT);
             return;
         }
 
         {
-            // dynamically construct the "ODK Collect vA.B" string
+            // dynamically construct the "CIMS Forms vA.B" string
             TextView mainMenuMessageLabel = findViewById(R.id.main_menu_header);
-            mainMenuMessageLabel.setText(Collect.getInstance()
+            mainMenuMessageLabel.setText(FormsApp.getInstance()
                     .getVersionedAppName());
         }
 
-        File f = new File(Collect.ODK_ROOT + "/collect.settings");
-        File j = new File(Collect.ODK_ROOT + "/collect.settings.json");
+        File f = new File(FormsApp.ODK_ROOT + "/collect.settings");
+        File j = new File(FormsApp.ODK_ROOT + "/collect.settings.json");
         // Give JSON file preference
         if (j.exists()) {
             boolean success = SharedPreferencesUtils.loadSharedPreferencesFromJSONFile(j);
@@ -383,7 +383,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
             }
         }
 
-        ((Collect) getApplication())
+        ((FormsApp) getApplication())
                 .getDefaultTracker()
                 .enableAutoActivityTracking(true);
     }
@@ -507,7 +507,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
 
     // This flag must be set each time the app starts up
     private void setupGoogleAnalytics() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FormsApp
                 .getInstance());
         boolean isAnalyticsEnabled = settings.getBoolean(GeneralKeys.KEY_ANALYTICS, true);
         GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(getApplicationContext());
@@ -585,7 +585,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
             for (Entry<String, ?> entry : adminEntries.entrySet()) {
                 AdminSharedPreferences.getInstance().save(entry.getKey(), entry.getValue());
             }
-            Collect.getInstance().initializeJavaRosa();
+            FormsApp.getInstance().initializeJavaRosa();
             res = true;
         } catch (IOException | ClassNotFoundException e) {
             Timber.e(e, "Exception while loading preferences from file due to : %s ", e.getMessage());

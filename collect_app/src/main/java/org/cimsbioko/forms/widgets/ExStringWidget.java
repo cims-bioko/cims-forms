@@ -33,13 +33,13 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.javarosa.xpath.parser.XPathSyntaxException;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.exception.ExternalParamsException;
 import org.cimsbioko.forms.external.ExternalAppsUtils;
 import org.cimsbioko.forms.utilities.ActivityAvailability;
@@ -155,7 +155,7 @@ public class ExStringWidget extends QuestionWidget implements BinaryWidget {
         answerLayout.addView(answer);
         addAnswerView(answerLayout);
 
-        Collect.getInstance().logRemoteAnalytics("WidgetType", "ExternalApp", Collect.getCurrentFormIdentifierHash());
+        FormsApp.getInstance().logRemoteAnalytics("WidgetType", "ExternalApp", FormsApp.getCurrentFormIdentifierHash());
     }
 
     protected void fireActivity(Intent i) throws ActivityNotFoundException {

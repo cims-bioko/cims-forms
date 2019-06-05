@@ -30,7 +30,7 @@ import org.kxml2.kdom.Document;
 import org.kxml2.kdom.Element;
 import org.kxml2.kdom.Node;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -440,7 +440,7 @@ public class FileUtils {
             boolean deleted = mediaDir.delete();
             if (!deleted) {
                 throw new RuntimeException(
-                        Collect.getInstance().getString(R.string.fs_delete_media_path_if_file_error,
+                        FormsApp.getInstance().getString(R.string.fs_delete_media_path_if_file_error,
                                 mediaDir.getAbsolutePath()));
             }
         }
@@ -449,7 +449,7 @@ public class FileUtils {
         boolean createdOrExisted = createFolder(mediaDir.getAbsolutePath());
         if (!createdOrExisted) {
             throw new RuntimeException(
-                    Collect.getInstance().getString(R.string.fs_create_media_folder_error,
+                    FormsApp.getInstance().getString(R.string.fs_create_media_folder_error,
                             mediaDir.getAbsolutePath()));
         }
     }

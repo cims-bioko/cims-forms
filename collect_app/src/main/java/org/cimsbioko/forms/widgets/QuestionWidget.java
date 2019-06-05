@@ -42,7 +42,7 @@ import org.javarosa.core.model.FormIndex;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.AudioPlayListener;
 import org.cimsbioko.forms.listeners.WidgetValueChangedListener;
 import org.cimsbioko.forms.logic.FormController;
@@ -127,7 +127,7 @@ public abstract class QuestionWidget
             }
         });
 
-        questionFontSize = Collect.getQuestionFontsize();
+        questionFontSize = FormsApp.getQuestionFontsize();
 
         formEntryPrompt = prompt;
 
@@ -546,7 +546,7 @@ public abstract class QuestionWidget
             button.setLayoutParams(params);
 
             button.setOnClickListener(v -> {
-                if (Collect.allowClick(QuestionWidget.class.getName())) {
+                if (FormsApp.allowClick(QuestionWidget.class.getName())) {
                     ((ButtonWidget) this).onButtonClick(withId);
                 }
             });
@@ -599,12 +599,12 @@ public abstract class QuestionWidget
 
     @Override
     public final void waitForData() {
-        Collect collect = Collect.getInstance();
-        if (collect == null) {
-            throw new IllegalStateException("Collect application instance is null.");
+        FormsApp formsApp = FormsApp.getInstance();
+        if (formsApp == null) {
+            throw new IllegalStateException("FormsApp application instance is null.");
         }
 
-        FormController formController = collect.getFormController();
+        FormController formController = formsApp.getFormController();
         if (formController == null) {
             return;
         }
@@ -614,12 +614,12 @@ public abstract class QuestionWidget
 
     @Override
     public final void cancelWaitingForData() {
-        Collect collect = Collect.getInstance();
-        if (collect == null) {
-            throw new IllegalStateException("Collect application instance is null.");
+        FormsApp formsApp = FormsApp.getInstance();
+        if (formsApp == null) {
+            throw new IllegalStateException("FormsApp application instance is null.");
         }
 
-        FormController formController = collect.getFormController();
+        FormController formController = formsApp.getFormController();
         if (formController == null) {
             return;
         }
@@ -629,12 +629,12 @@ public abstract class QuestionWidget
 
     @Override
     public final boolean isWaitingForData() {
-        Collect collect = Collect.getInstance();
-        if (collect == null) {
-            throw new IllegalStateException("Collect application instance is null.");
+        FormsApp formsApp = FormsApp.getInstance();
+        if (formsApp == null) {
+            throw new IllegalStateException("FormsApp application instance is null.");
         }
 
-        FormController formController = collect.getFormController();
+        FormController formController = formsApp.getFormController();
         if (formController == null) {
             return false;
         }
@@ -647,12 +647,12 @@ public abstract class QuestionWidget
 
     @Nullable
     public final String getInstanceFolder() {
-        Collect collect = Collect.getInstance();
-        if (collect == null) {
-            throw new IllegalStateException("Collect application instance is null.");
+        FormsApp formsApp = FormsApp.getInstance();
+        if (formsApp == null) {
+            throw new IllegalStateException("FormsApp application instance is null.");
         }
 
-        FormController formController = collect.getFormController();
+        FormController formController = formsApp.getFormController();
         if (formController == null) {
             return null;
         }

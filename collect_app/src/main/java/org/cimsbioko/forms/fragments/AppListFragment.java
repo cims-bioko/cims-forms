@@ -38,7 +38,7 @@ import android.widget.SimpleCursorAdapter;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.CollectAbstractActivity;
 import org.cimsbioko.forms.adapters.SortDialogAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.RecyclerViewClickListener;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
 import org.cimsbioko.forms.utilities.ThemeUtils;
@@ -259,7 +259,7 @@ abstract class AppListFragment extends ListFragment {
 
     private void saveSelectedSortingOrder(int selectedStringOrder) {
         selectedSortingOrder = selectedStringOrder;
-        PreferenceManager.getDefaultSharedPreferences(Collect.getInstance())
+        PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance())
                 .edit()
                 .putInt(getSortingOrderKey(), selectedStringOrder)
                 .apply();
@@ -267,7 +267,7 @@ abstract class AppListFragment extends ListFragment {
 
     protected void restoreSelectedSortingOrder() {
         selectedSortingOrder = PreferenceManager
-                .getDefaultSharedPreferences(Collect.getInstance())
+                .getDefaultSharedPreferences(FormsApp.getInstance())
                 .getInt(getSortingOrderKey(), BY_NAME_ASC);
     }
 

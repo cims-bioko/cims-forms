@@ -32,7 +32,7 @@ import org.cimsbioko.forms.widgets.interfaces.BinaryWidget;
 import static org.cimsbioko.forms.utilities.ApplicationConstants.RequestCodes;
 
 /**
- * GeoShapeWidget is the widget that allows the user to get Collect multiple GPS points.
+ * GeoShapeWidget is the widget that allows the user to get FormsApp multiple GPS points.
  *
  * @author Jon Nordling (jonnordling@gmail.com)
  */

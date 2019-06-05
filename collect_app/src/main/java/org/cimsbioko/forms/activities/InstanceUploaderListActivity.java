@@ -158,7 +158,7 @@ public class InstanceUploaderListActivity extends InstanceListActivity implement
 
             @Override
             public void denied() {
-                // The activity has to finish because ODK Collect cannot function without these permissions.
+                // The activity has to finish because CIMS Forms cannot function without these permissions.
                 finishAllActivities(InstanceUploaderListActivity.this);
             }
         });

@@ -84,11 +84,11 @@ import static org.cimsbioko.forms.tasks.sms.SmsNotificationReceiver.SMS_NOTIFICA
 import static org.cimsbioko.forms.tasks.sms.SmsSender.SMS_SEND_ACTION;
 
 /**
- * The Open Data Kit Collect application.
+ * The Open Data Kit FormsApp application.
  *
  * @author carlhartung
  */
-public class Collect extends Application {
+public class FormsApp extends Application {
 
     // Storage paths
     public static final String ODK_ROOT = Environment.getExternalStorageDirectory()
@@ -107,7 +107,7 @@ public class Collect extends Application {
     public static final int CLICK_DEBOUNCE_MS = 1000;
 
     public static String defaultSysLanguage;
-    private static Collect singleton;
+    private static FormsApp singleton;
     private static long lastClickTime;
     private static String lastClickName;
 
@@ -118,15 +118,15 @@ public class Collect extends Application {
     private FirebaseAnalytics firebaseAnalytics;
     private AppDependencyComponent applicationComponent;
 
-    public static Collect getInstance() {
+    public static FormsApp getInstance() {
         return singleton;
     }
 
     public static int getQuestionFontsize() {
         // For testing:
-        Collect instance = Collect.getInstance();
+        FormsApp instance = FormsApp.getInstance();
         if (instance == null) {
-            return Collect.DEFAULT_FONTSIZE_INT;
+            return FormsApp.DEFAULT_FONTSIZE_INT;
         }
 
         return Integer.parseInt(String.valueOf(GeneralSharedPreferences.getInstance().get(KEY_FONT_SIZE)));
@@ -141,7 +141,7 @@ public class Collect extends Application {
         String cardstatus = Environment.getExternalStorageState();
         if (!cardstatus.equals(Environment.MEDIA_MOUNTED)) {
             throw new RuntimeException(
-                    Collect.getInstance().getString(R.string.sdcard_unmounted, cardstatus));
+                    FormsApp.getInstance().getString(R.string.sdcard_unmounted, cardstatus));
         }
 
         String[] dirs = {
@@ -176,8 +176,8 @@ public class Collect extends Application {
          * could be in use by ODK Tables.
          */
         String dirPath = directory.getAbsolutePath();
-        if (dirPath.startsWith(Collect.ODK_ROOT)) {
-            dirPath = dirPath.substring(Collect.ODK_ROOT.length());
+        if (dirPath.startsWith(FormsApp.ODK_ROOT)) {
+            dirPath = dirPath.substring(FormsApp.ODK_ROOT.length());
             String[] parts = dirPath.split(File.separatorChar == '\\' ? "\\\\" : File.separator);
             // [appName, instances, tableId, instanceId ]
             if (parts.length == 4 && parts[1].equals("instances")) {
@@ -351,7 +351,7 @@ public class Collect extends Application {
 
     public void logRemoteAnalytics(String event, String action, String label) {
         // Google Analytics
-        Collect.getInstance()
+        FormsApp.getInstance()
                 .getDefaultTracker()
                 .send(new HitBuilders.EventBuilder()
                         .setCategory(event)

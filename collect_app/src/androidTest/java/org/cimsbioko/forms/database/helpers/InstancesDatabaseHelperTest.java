@@ -5,12 +5,12 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.utilities.FileUtils;
 
 import java.io.File;
@@ -44,7 +44,7 @@ public class InstancesDatabaseHelperTest {
         });
     }
 
-    private static final String DATABASE_PATH = Collect.METADATA_PATH + File.separator + InstancesDatabaseHelper.DATABASE_NAME;
+    private static final String DATABASE_PATH = FormsApp.METADATA_PATH + File.separator + InstancesDatabaseHelper.DATABASE_NAME;
     private static final String TEMPORARY_EXTENSION = ".real";
 
     @Before

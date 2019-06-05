@@ -31,7 +31,7 @@ import androidx.work.WorkerParameters;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.NotificationActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.dto.Form;
@@ -113,22 +113,22 @@ public class AutoSendWorker extends Worker {
 
         if (protocol.equals(getApplicationContext().getString(R.string.protocol_google_sheets))) {
             if (PermissionUtils.isGetAccountsPermissionGranted(getApplicationContext())) {
-                GoogleAccountsManager accountsManager = new GoogleAccountsManager(Collect.getInstance());
+                GoogleAccountsManager accountsManager = new GoogleAccountsManager(FormsApp.getInstance());
                 String googleUsername = accountsManager.getLastSelectedAccountIfValid();
                 if (googleUsername.isEmpty()) {
-                    showUploadStatusNotification(true, Collect.getInstance().getString(R.string.google_set_account));
+                    showUploadStatusNotification(true, FormsApp.getInstance().getString(R.string.google_set_account));
                     return Result.FAILURE;
                 }
                 accountsManager.selectAccount(googleUsername);
                 uploader = new InstanceGoogleSheetsUploader(accountsManager);
             } else {
-                showUploadStatusNotification(true, Collect.getInstance().getString(R.string.odk_permissions_fail));
+                showUploadStatusNotification(true, FormsApp.getInstance().getString(R.string.odk_permissions_fail));
                 return Result.FAILURE;
             }
         } else {
             uploader = new InstanceServerUploader(new OkHttpConnection(null, new CollectThenSystemContentTypeMapper(MimeTypeMap.getSingleton())),
                     new WebCredentialsUtils(), new HashMap<>());
-            deviceId = new PropertyManager(Collect.getInstance().getApplicationContext())
+            deviceId = new PropertyManager(FormsApp.getInstance().getApplicationContext())
                     .getSingularProperty(PropertyManager.withUri(PropertyManager.PROPMGR_DEVICE_ID));
         }
 
@@ -143,7 +143,7 @@ public class AutoSendWorker extends Worker {
                 }
                 String customMessage = uploader.uploadOneSubmission(instance, destinationUrl);
                 resultMessagesByInstanceId.put(instance.getDatabaseId().toString(),
-                        customMessage != null ? customMessage : Collect.getInstance().getString(R.string.success));
+                        customMessage != null ? customMessage : FormsApp.getInstance().getString(R.string.success));
 
                 // If the submission was successful, delete the instance if either the app-level
                 // delete preference is set or the form definition requests auto-deletion.
@@ -153,13 +153,13 @@ public class AutoSendWorker extends Worker {
                 if (InstanceUploader.formShouldBeAutoDeleted(instance.getJrFormId(),
                         (boolean) GeneralSharedPreferences.getInstance().get(GeneralKeys.KEY_DELETE_AFTER_SEND))) {
                     Uri deleteForm = Uri.withAppendedPath(InstanceColumns.CONTENT_URI, instance.getDatabaseId().toString());
-                    Collect.getInstance().getContentResolver().delete(deleteForm, null, null);
+                    FormsApp.getInstance().getContentResolver().delete(deleteForm, null, null);
                 }
 
                 String action = protocol.equals(getApplicationContext().getString(R.string.protocol_google_sheets)) ?
                         "HTTP-Sheets auto" : "HTTP auto";
-                String label = Collect.getFormIdentifierHash(instance.getJrFormId(), instance.getJrVersion());
-                Collect.getInstance().logRemoteAnalytics("Submission", action, label);
+                String label = FormsApp.getFormIdentifierHash(instance.getJrFormId(), instance.getJrVersion());
+                FormsApp.getInstance().logRemoteAnalytics("Submission", action, label);
             } catch (UploadException e) {
                 Timber.d(e);
                 anyFailure = true;
@@ -289,20 +289,20 @@ public class AutoSendWorker extends Worker {
     }
 
     private void showUploadStatusNotification(boolean anyFailure, String message) {
-        Intent notifyIntent = new Intent(Collect.getInstance(), NotificationActivity.class);
+        Intent notifyIntent = new Intent(FormsApp.getInstance(), NotificationActivity.class);
         notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        notifyIntent.putExtra(NotificationActivity.NOTIFICATION_TITLE, Collect.getInstance().getString(R.string.upload_results));
+        notifyIntent.putExtra(NotificationActivity.NOTIFICATION_TITLE, FormsApp.getInstance().getString(R.string.upload_results));
         notifyIntent.putExtra(NotificationActivity.NOTIFICATION_MESSAGE, message.trim());
 
-        PendingIntent pendingNotify = PendingIntent.getActivity(Collect.getInstance(), FORMS_UPLOADED_NOTIFICATION,
+        PendingIntent pendingNotify = PendingIntent.getActivity(FormsApp.getInstance(), FORMS_UPLOADED_NOTIFICATION,
                 notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationUtils.showNotification(
                 pendingNotify,
                 AUTO_SEND_RESULT_NOTIFICATION_ID,
                 R.string.odk_auto_note,
-                anyFailure ? Collect.getInstance().getString(R.string.failures)
-                        : Collect.getInstance().getString(R.string.success));
+                anyFailure ? FormsApp.getInstance().getString(R.string.failures)
+                        : FormsApp.getInstance().getString(R.string.success));
 
     }
 }

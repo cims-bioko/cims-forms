@@ -17,7 +17,7 @@ package org.cimsbioko.forms.preferences;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import static org.cimsbioko.forms.preferences.AdminKeys.ALL_KEYS;
 import static org.cimsbioko.forms.preferences.AdminKeys.KEY_ADMIN_PW;
@@ -29,7 +29,7 @@ public class AdminSharedPreferences {
     private final SharedPreferences sharedPreferences;
 
     private AdminSharedPreferences() {
-        sharedPreferences = Collect.getInstance().getSharedPreferences(ADMIN_PREFERENCES, 0);
+        sharedPreferences = FormsApp.getInstance().getSharedPreferences(ADMIN_PREFERENCES, 0);
     }
 
     public static synchronized AdminSharedPreferences getInstance() {

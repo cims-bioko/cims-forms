@@ -23,7 +23,7 @@ import android.provider.BaseColumns;
 
 import org.apache.commons.io.FileUtils;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.exception.EncryptionException;
@@ -78,12 +78,12 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
 
         try {
             List<String> candidateInstances = new LinkedList<String>();
-            File instancesPath = new File(Collect.INSTANCES_PATH);
+            File instancesPath = new File(FormsApp.INSTANCES_PATH);
             if (instancesPath.exists() && instancesPath.isDirectory()) {
                 File[] instanceFolders = instancesPath.listFiles();
                 if (instanceFolders == null || instanceFolders.length == 0) {
                     Timber.i("[%d] Empty instance folder. Stopping scan process.", instance);
-                    Timber.d(Collect.getInstance().getString(R.string.instance_scan_completed));
+                    Timber.d(FormsApp.getInstance().getString(R.string.instance_scan_completed));
                     return currentStatus;
                 }
 
@@ -141,7 +141,7 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
                 instancesDao.deleteInstancesFromIDs(filesToRemove);
 
                 final boolean instanceSyncFlag = PreferenceManager.getDefaultSharedPreferences(
-                        Collect.getInstance().getApplicationContext()).getBoolean(
+                        FormsApp.getInstance().getApplicationContext()).getBoolean(
                         GeneralKeys.KEY_INSTANCE_SYNC, true);
 
                 int counter = 0;
@@ -195,7 +195,7 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
                 }
                 if (counter > 0) {
                     currentStatus += String.format(
-                            Collect.getInstance().getString(R.string.instance_scan_count),
+                            FormsApp.getInstance().getString(R.string.instance_scan_count),
                             counter);
                 }
             }

@@ -23,7 +23,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.DatePickerDetails;
 
 import java.util.Calendar;
@@ -58,7 +58,7 @@ public class DateTimeUtilsTest {
         myanmarDatePickerDetails = new DatePickerDetails(DatePickerDetails.DatePickerType.MYANMAR, DatePickerDetails.DatePickerMode.SPINNERS);
         persianDatePickerDetails = new DatePickerDetails(DatePickerDetails.DatePickerType.PERSIAN, DatePickerDetails.DatePickerMode.SPINNERS);
 
-        context = Collect.getInstance();
+        context = FormsApp.getInstance();
         defaultLocale = Locale.getDefault();
         defaultTimezone = TimeZone.getDefault();
     }

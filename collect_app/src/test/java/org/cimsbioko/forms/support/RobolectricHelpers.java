@@ -1,6 +1,6 @@
 package org.cimsbioko.forms.support;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.injection.config.AppDependencyComponent;
 import org.cimsbioko.forms.injection.config.AppDependencyModule;
 import org.cimsbioko.forms.injection.config.DaggerAppDependencyComponent;
@@ -15,10 +15,10 @@ public class RobolectricHelpers {
                 .application(RuntimeEnvironment.application)
                 .appDependencyModule(appDependencyModule)
                 .build();
-        ((Collect) RuntimeEnvironment.application).setComponent(testComponent);
+        ((FormsApp) RuntimeEnvironment.application).setComponent(testComponent);
     }
 
     public static AppDependencyComponent getApplicationComponent() {
-        return ((Collect) RuntimeEnvironment.application).getComponent();
+        return ((FormsApp) RuntimeEnvironment.application).getComponent();
     }
 }

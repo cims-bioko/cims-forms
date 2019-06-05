@@ -28,7 +28,7 @@ import org.javarosa.core.model.data.StringData;
 import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.adapters.SelectOneListAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.exception.JavaRosaException;
 import org.cimsbioko.forms.listeners.AdvanceToNextListener;
 import org.cimsbioko.forms.logic.FormController;
@@ -107,7 +107,7 @@ public abstract class AbstractSelectOneWidget extends SelectTextWidget implement
      * out of the box when we use internal choices instead
      */
     public void clearNextLevelsOfCascadingSelect() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController == null) {
             return;
         }

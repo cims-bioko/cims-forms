@@ -37,7 +37,7 @@ import org.javarosa.core.model.FormIndex;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.R.string;
 import org.cimsbioko.forms.adapters.RankingListAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.RankingItemTouchHelperCallback;
 
 import java.io.Serializable;
@@ -130,7 +130,7 @@ public class RankingWidgetDialog extends DialogFragment {
             FrameLayout positionLayout = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.ranking_item, positionsLayout, false);
             TextView textView = positionLayout.findViewById(R.id.rank_item_text);
             textView.setText(String.valueOf(values.indexOf(value) + 1));
-            textView.setTextSize(Collect.getQuestionFontsize());
+            textView.setTextSize(FormsApp.getQuestionFontsize());
 
             positionsLayout.addView(positionLayout);
         }

@@ -81,7 +81,7 @@ the specific language governing permissions and limitations under the License.
         android:xlargeScreens="true" />
 
     <application
-        android:name="org.cimsbioko.forms.application.Collect"
+        android:name="org.cimsbioko.forms.application.FormsApp"
         android:icon="@drawable/notes"
         android:installLocation="auto"
         android:label="@string/app_name"

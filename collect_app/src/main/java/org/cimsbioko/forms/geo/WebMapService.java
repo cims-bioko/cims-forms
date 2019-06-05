@@ -1,6 +1,6 @@
 package org.cimsbioko.forms.geo;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.osmdroid.tileprovider.MapTile;
 import org.osmdroid.tileprovider.tilesource.OnlineTileSourceBase;
 
@@ -32,7 +32,7 @@ class WebMapService implements Serializable {
 
     @Deprecated WebMapService(int cacheNameStringId, int minZoomLevel,
         int maxZoomLevel, int tileSize, String copyright, String... urlTemplates) {
-        this(Collect.getInstance().getString(cacheNameStringId),
+        this(FormsApp.getInstance().getString(cacheNameStringId),
             minZoomLevel, maxZoomLevel, tileSize, copyright, urlTemplates);
     }
 

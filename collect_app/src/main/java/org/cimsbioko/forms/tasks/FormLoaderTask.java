@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 
 import org.apache.commons.io.IOUtils;
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.instance.InstanceInitializationFactory;
@@ -33,7 +34,6 @@ import org.javarosa.xform.parse.XFormParser;
 import org.javarosa.xform.util.XFormUtils;
 import org.javarosa.xpath.XPathTypeMismatchException;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.database.ItemsetDbAdapter;
 import org.cimsbioko.forms.external.ExternalAnswerResolver;
 import org.cimsbioko.forms.external.ExternalDataHandler;
@@ -138,7 +138,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
         // This should get moved to the Application Class
         if (referenceManager.getFactories().length == 0) {
             // this is /sdcard/odk
-            referenceManager.addReferenceFactory(new FileReferenceFactory(Collect.ODK_ROOT));
+            referenceManager.addReferenceFactory(new FileReferenceFactory(FormsApp.ODK_ROOT));
         }
 
         addSessionRootTranslators(formMediaDir.getName(), referenceManager,
@@ -149,7 +149,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
             formDef = createFormDefFromCacheOrXml(formPath, formXml);
         } catch (StackOverflowError e) {
             Timber.e(e);
-            errorMsg = Collect.getInstance().getString(R.string.too_complex_form);
+            errorMsg = FormsApp.getInstance().getString(R.string.too_complex_form);
         }
 
         if (errorMsg != null || formDef == null) {
@@ -232,7 +232,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
 
     private FormDef createFormDefFromCacheOrXml(String formPath, File formXml) {
         publishProgress(
-                Collect.getInstance().getString(R.string.survey_loading_reading_form_message));
+                FormsApp.getInstance().getString(R.string.survey_loading_reading_form_message));
 
         final FormDef formDefFromCache = FormDefCache.readCache(formXml);
         if (formDefFromCache != null) {
@@ -327,7 +327,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
                 // This order is important. Import data, then initialize.
                 try {
                     Timber.i("Importing data");
-                    publishProgress(Collect.getInstance().getString(R.string.survey_loading_reading_data_message));
+                    publishProgress(FormsApp.getInstance().getString(R.string.survey_loading_reading_data_message));
                     importData(instanceXml, fec);
                     formDef.initialize(false, instanceInit);
                 } catch (IOException | RuntimeException e) {
@@ -393,7 +393,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
 
             if (!externalDataMap.isEmpty()) {
 
-                publishProgress(Collect.getInstance()
+                publishProgress(FormsApp.getInstance()
                         .getString(R.string.survey_loading_reading_csv_message));
 
                 ExternalDataReader externalDataReader = new ExternalDataReaderImpl(this);
@@ -435,7 +435,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
         TreeReference tr = TreeReference.rootRef();
         tr.add(templateRoot.getName(), TreeReference.INDEX_UNBOUND);
 
-        // Here we set the Collect's implementation of the IAnswerResolver.
+        // Here we set the FormsApp's implementation of the IAnswerResolver.
         // We set it back to the default after select choices have been populated.
         XFormParser.setAnswerResolver(new ExternalAnswerResolver());
         templateRoot.populate(savedRoot, fec.getModel().getForm());

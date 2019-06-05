@@ -46,7 +46,7 @@ public class DriveHelper {
                 @NonNull HttpTransport transport,
                 @NonNull JsonFactory jsonFactory) {
         Drive drive = new Drive.Builder(transport, jsonFactory, credential)
-                .setApplicationName("ODK-Collect")
+                .setApplicationName("ODK-FormsApp")
                 .build();
 
         driveService = new DriveService(drive);

@@ -20,7 +20,7 @@ import android.content.ContextWrapper;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import java.io.File;
 
@@ -29,7 +29,7 @@ public class DatabaseContext extends ContextWrapper {
     private final String path;
 
     public DatabaseContext(String path) {
-        super(Collect.getInstance());
+        super(FormsApp.getInstance());
         this.path = path;
     }
 

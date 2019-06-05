@@ -10,7 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.InstanceUploaderListActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.tasks.sms.contracts.SmsSubmissionManagerContract;
 import org.cimsbioko.forms.tasks.sms.models.SmsProgress;
 import org.cimsbioko.forms.tasks.sms.models.SmsSubmission;
@@ -40,7 +40,7 @@ public class SmsNotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
 
         this.context = context;
 

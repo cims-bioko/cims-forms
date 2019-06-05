@@ -21,12 +21,12 @@ import android.database.Cursor;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.dto.Instance;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
 
@@ -109,7 +109,7 @@ public class InstancesDaoTest {
 
     @Test
     public void getInstancesCursorForFilePathTest() {
-        Cursor cursor = instancesDao.getInstancesCursorForFilePath(Collect.INSTANCES_PATH + "/Hypertension Screening_2017-02-20_14-03-53/Hypertension Screening_2017-02-20_14-03-53.xml");
+        Cursor cursor = instancesDao.getInstancesCursorForFilePath(FormsApp.INSTANCES_PATH + "/Hypertension Screening_2017-02-20_14-03-53/Hypertension Screening_2017-02-20_14-03-53.xml");
         List<Instance> instances = instancesDao.getInstancesFromCursor(cursor);
 
         assertEquals(1, instances.size());
@@ -137,7 +137,7 @@ public class InstancesDaoTest {
 
     @Test
     public void updateInstanceTest() {
-        Cursor cursor = instancesDao.getInstancesCursorForFilePath(Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml");
+        Cursor cursor = instancesDao.getInstancesCursorForFilePath(FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml");
         List<Instance> instances = instancesDao.getInstancesFromCursor(cursor);
 
         assertEquals(1, instances.size());
@@ -145,18 +145,18 @@ public class InstancesDaoTest {
 
         biggestNOfSetInstance = new Instance.Builder()
                 .displayName("Biggest N of Set")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml")
                 .jrFormId("N_Biggest")
                 .status(InstanceProviderAPI.STATUS_SUBMITTED)
                 .lastStatusChangeDate(1487597090653L)
                 .build();
 
         String where = InstanceProviderAPI.InstanceColumns.INSTANCE_FILE_PATH + "=?";
-        String[] whereArgs = {Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml"};
+        String[] whereArgs = {FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml"};
 
         assertEquals(instancesDao.updateInstance(instancesDao.getValuesFromInstanceObject(biggestNOfSet2Instance), where, whereArgs), 1);
 
-        cursor = instancesDao.getInstancesCursorForFilePath(Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml");
+        cursor = instancesDao.getInstancesCursorForFilePath(FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml");
 
         instances = instancesDao.getInstancesFromCursor(cursor);
 
@@ -167,7 +167,7 @@ public class InstancesDaoTest {
     private void fillDatabase() {
         hypertensionScreeningInstance = new Instance.Builder()
                 .displayName("Hypertension Screening")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Hypertension Screening_2017-02-20_14-03-53/Hypertension Screening_2017-02-20_14-03-53.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Hypertension Screening_2017-02-20_14-03-53/Hypertension Screening_2017-02-20_14-03-53.xml")
                 .jrFormId("hypertension")
                 .status(InstanceProviderAPI.STATUS_INCOMPLETE)
                 .lastStatusChangeDate(1487595836793L)
@@ -176,7 +176,7 @@ public class InstancesDaoTest {
 
         cascadingSelectInstance = new Instance.Builder()
                 .displayName("Cascading Select Form")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Cascading Select Form_2017-02-20_14-06-44/Cascading Select Form_2017-02-20_14-06-44.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Cascading Select Form_2017-02-20_14-06-44/Cascading Select Form_2017-02-20_14-06-44.xml")
                 .jrFormId("CascadingSelect")
                 .status(InstanceProviderAPI.STATUS_INCOMPLETE)
                 .lastStatusChangeDate(1487596015000L)
@@ -185,7 +185,7 @@ public class InstancesDaoTest {
 
         biggestNOfSetInstance = new Instance.Builder()
                 .displayName("Biggest N of Set")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-06-51/Biggest N of Set_2017-02-20_14-06-51.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-06-51/Biggest N of Set_2017-02-20_14-06-51.xml")
                 .jrFormId("N_Biggest")
                 .status(InstanceProviderAPI.STATUS_SUBMITTED)
                 .lastStatusChangeDate(1487596015100L)
@@ -194,7 +194,7 @@ public class InstancesDaoTest {
 
         widgetsInstance = new Instance.Builder()
                 .displayName("Widgets")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Widgets_2017-02-20_14-06-58/Widgets_2017-02-20_14-06-58.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Widgets_2017-02-20_14-06-58/Widgets_2017-02-20_14-06-58.xml")
                 .jrFormId("widgets")
                 .status(InstanceProviderAPI.STATUS_SUBMITTED)
                 .lastStatusChangeDate(1487596020803L)
@@ -204,7 +204,7 @@ public class InstancesDaoTest {
 
         sampleInstance = new Instance.Builder()
                 .displayName("sample")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/sample_2017-02-20_14-07-03/sample_2017-02-20_14-07-03.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/sample_2017-02-20_14-07-03/sample_2017-02-20_14-07-03.xml")
                 .jrFormId("sample")
                 .status(InstanceProviderAPI.STATUS_INCOMPLETE)
                 .lastStatusChangeDate(1487596026373L)
@@ -213,7 +213,7 @@ public class InstancesDaoTest {
 
         biggestNOfSet2Instance = new Instance.Builder()
                 .displayName("Biggest N of Set")
-                .instanceFilePath(Collect.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml")
+                .instanceFilePath(FormsApp.INSTANCES_PATH + "/Biggest N of Set_2017-02-20_14-24-46/Biggest N of Set_2017-02-20_14-24-46.xml")
                 .jrFormId("N_Biggest")
                 .status(InstanceProviderAPI.STATUS_COMPLETE)
                 .lastStatusChangeDate(1487597090653L)

@@ -22,7 +22,8 @@ import android.view.View;
 import com.google.android.gms.analytics.GoogleAnalytics;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
+
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_ANALYTICS;
 import static org.cimsbioko.forms.preferences.PreferencesActivity.INTENT_KEY_ADMIN_MODE;
 
@@ -76,7 +77,7 @@ public class IdentityPreferences extends BasePreferenceFragment {
                 GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(getActivity().getApplicationContext());
                 googleAnalytics.setAppOptOut(!analyticsPreference.isChecked());
 
-                Collect.getInstance().setAnalyticsCollectionEnabled(analyticsPreference.isChecked());
+                FormsApp.getInstance().setAnalyticsCollectionEnabled(analyticsPreference.isChecked());
                 return true;
             });
         }

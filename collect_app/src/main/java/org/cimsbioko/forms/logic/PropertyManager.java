@@ -24,7 +24,7 @@ import android.telephony.TelephonyManager;
 
 import org.javarosa.core.services.IPropertyManager;
 import org.javarosa.core.services.properties.IPropertyRules;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.events.ReadPhoneStatePermissionRxEvent;
 import org.cimsbioko.forms.events.RxEventBus;
 
@@ -88,7 +88,7 @@ public class PropertyManager implements IPropertyManager {
     public PropertyManager(Context context) {
         Timber.i("calling constructor");
 
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
         try {
             // Device-defined properties
             TelephonyManager telMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -171,7 +171,7 @@ public class PropertyManager implements IPropertyManager {
 
     @Override
     public String getSingularProperty(String propertyName) {
-        if (!isReadPhoneStatePermissionGranted(Collect.getInstance()) && isPropertyDangerous(propertyName)) {
+        if (!isReadPhoneStatePermissionGranted(FormsApp.getInstance()) && isPropertyDangerous(propertyName)) {
             eventBus.post(new ReadPhoneStatePermissionRxEvent());
         }
 

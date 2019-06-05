@@ -17,7 +17,7 @@ package org.cimsbioko.forms.tasks;
 import android.database.Cursor;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dto.Form;
 import org.cimsbioko.forms.dto.Instance;
@@ -52,7 +52,7 @@ public class InstanceGoogleSheetsUploaderTask extends InstanceUploaderTask {
 
             if (isCancelled()) {
                 outcome.messagesByInstanceId.put(instance.getDatabaseId().toString(),
-                        Collect.getInstance().getString(R.string.instance_upload_cancelled));
+                        FormsApp.getInstance().getString(R.string.instance_upload_cancelled));
                 return outcome;
             }
 
@@ -65,7 +65,7 @@ public class InstanceGoogleSheetsUploaderTask extends InstanceUploaderTask {
 
             if (forms.size() != 1) {
                 outcome.messagesByInstanceId.put(instance.getDatabaseId().toString(),
-                        Collect.getInstance().getString(R.string.not_exactly_one_blank_form_for_this_form_id));
+                        FormsApp.getInstance().getString(R.string.not_exactly_one_blank_form_for_this_form_id));
             } else {
                 try {
                     String destinationUrl = uploader.getUrlToSubmitTo(instance, null, null);
@@ -73,7 +73,7 @@ public class InstanceGoogleSheetsUploaderTask extends InstanceUploaderTask {
                         uploader.uploadOneSubmission(instance, destinationUrl);
                         outcome.messagesByInstanceId.put(instance.getDatabaseId().toString(), DEFAULT_SUCCESSFUL_TEXT);
 
-                        Collect.getInstance().logRemoteAnalytics("Submission", "HTTP-Sheets", Collect.getFormIdentifierHash(instance.getJrFormId(), instance.getJrVersion()));
+                        FormsApp.getInstance().logRemoteAnalytics("Submission", "HTTP-Sheets", FormsApp.getFormIdentifierHash(instance.getJrFormId(), instance.getJrVersion()));
                     } else {
                         outcome.messagesByInstanceId.put(instance.getDatabaseId().toString(), SPREADSHEET_UPLOADED_TO_GOOGLE_DRIVE);
                     }

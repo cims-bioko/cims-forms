@@ -43,7 +43,7 @@ import com.google.api.services.drive.Drive;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.FileArrayAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.exception.MultipleFoldersFoundException;
 import org.cimsbioko.forms.injection.DaggerUtils;
 import org.cimsbioko.forms.listeners.GoogleDriveFormDownloadListener;
@@ -800,7 +800,7 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
 
                 try {
                     downloadFile(fileItem.getDriveId(), fileItem.getName());
-                    results.put(fileItem.getName(), Collect.getInstance().getString(R.string.success));
+                    results.put(fileItem.getName(), FormsApp.getInstance().getString(R.string.success));
 
                     String mediaDirName = FileUtils.constructMediaPath(fileItem.getName());
 
@@ -816,12 +816,12 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
                         List<com.google.api.services.drive.model.File> mediaFileList;
                         mediaFileList = driveHelper.getFilesFromDrive(null, folderId);
 
-                        FileUtils.createFolder(Collect.FORMS_PATH + File.separator + mediaDirName);
+                        FileUtils.createFolder(FormsApp.FORMS_PATH + File.separator + mediaDirName);
 
                         for (com.google.api.services.drive.model.File mediaFile : mediaFileList) {
                             String filePath = mediaDirName + File.separator + mediaFile.getName();
                             downloadFile(mediaFile.getId(), filePath);
-                            results.put(filePath, Collect.getInstance().getString(R.string.success));
+                            results.put(filePath, FormsApp.getInstance().getString(R.string.success));
                         }
                     }
                 } catch (Exception e) {
@@ -834,7 +834,7 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
         }
 
         private void downloadFile(@NonNull String fileId, String fileName) throws IOException {
-            File file = new File(Collect.FORMS_PATH + File.separator + fileName);
+            File file = new File(FormsApp.FORMS_PATH + File.separator + fileName);
             driveHelper.downloadFile(fileId, file);
         }
 

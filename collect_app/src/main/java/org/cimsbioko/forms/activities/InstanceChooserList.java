@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.InstanceListCursorAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.listeners.DiskSyncListener;
 import org.cimsbioko.forms.listeners.PermissionListener;
@@ -94,7 +94,7 @@ public class InstanceChooserList extends InstanceListActivity implements
             public void granted() {
                 // must be at the beginning of any activity that can be called from an external intent
                 try {
-                    Collect.createODKDirs();
+                    FormsApp.createODKDirs();
                 } catch (RuntimeException e) {
                     createErrorDialog(e.getMessage(), EXIT);
                     return;
@@ -104,7 +104,7 @@ public class InstanceChooserList extends InstanceListActivity implements
 
             @Override
             public void denied() {
-                // The activity has to finish because ODK Collect cannot function without these permissions.
+                // The activity has to finish because CIMS Forms cannot function without these permissions.
                 finishAllActivities(InstanceChooserList.this);
             }
         });
@@ -123,7 +123,7 @@ public class InstanceChooserList extends InstanceListActivity implements
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (Collect.allowClick(getClass().getName())) {
+        if (FormsApp.allowClick(getClass().getName())) {
             if (view.isEnabled()) {
                 Cursor c = (Cursor) listView.getAdapter().getItem(position);
                 Uri instanceUri =

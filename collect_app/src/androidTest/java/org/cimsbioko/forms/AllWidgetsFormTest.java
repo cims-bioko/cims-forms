@@ -221,7 +221,7 @@ public class AllWidgetsFormTest {
 
     public void skipInitialLabel() {
 
-        onView(withText(startsWith("Welcome to ODK Collect!"))).perform(swipeLeft());
+        onView(withText(startsWith("Welcome to CIMS Forms!"))).perform(swipeLeft());
 
     }
 

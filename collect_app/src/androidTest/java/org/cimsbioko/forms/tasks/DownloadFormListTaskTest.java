@@ -1,7 +1,7 @@
 package org.cimsbioko.forms.tasks;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.Test;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.logic.FormDetails;
 import org.cimsbioko.forms.test.MockedServerTest;
 
@@ -22,7 +22,7 @@ public class DownloadFormListTaskTest extends MockedServerTest {
         willRespondWith(RESPONSE);
 
         // when
-        Collect application = Collect.getInstance();
+        FormsApp application = FormsApp.getInstance();
         DownloadFormListTask task = new DownloadFormListTask(application.getComponent().downloadFormListUtils());
         final Map<String, FormDetails> fetched = task.doInBackground();
 

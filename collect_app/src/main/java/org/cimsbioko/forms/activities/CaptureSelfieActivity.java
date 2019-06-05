@@ -24,7 +24,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.CameraUtils;
 import org.cimsbioko.forms.utilities.ToastUtils;
 import org.cimsbioko.forms.views.CameraPreview;
@@ -70,7 +70,7 @@ public class CaptureSelfieActivity extends CollectAbstractActivity {
     private final Camera.PictureCallback picture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            CameraUtils.savePhoto(Collect.TMPFILE_PATH, data);
+            CameraUtils.savePhoto(FormsApp.TMPFILE_PATH, data);
             setResult(RESULT_OK);
             finish();
         }

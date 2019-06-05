@@ -21,7 +21,7 @@ package org.cimsbioko.forms.tasks;
 import android.os.AsyncTask;
 
 import org.javarosa.core.services.transport.payload.ByteArrayPayload;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.SavePointListener;
 import org.cimsbioko.forms.logic.FormController;
 
@@ -58,7 +58,7 @@ public class SavePointTask extends AsyncTask<Void, Void, String> {
             long start = System.currentTimeMillis();
 
             try {
-                FormController formController = Collect.getInstance().getFormController();
+                FormController formController = FormsApp.getInstance().getFormController();
                 File temp = SaveToDiskTask.getSavepointFile(formController.getInstanceFile().getName());
                 ByteArrayPayload payload = formController.getFilledInFormXml();
 

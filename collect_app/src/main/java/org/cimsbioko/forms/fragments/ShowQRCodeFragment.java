@@ -44,7 +44,7 @@ import org.cimsbioko.forms.BuildConfig;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.MainMenuActivity;
 import org.cimsbioko.forms.activities.ScannerWithFlashlightActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.ActionListener;
 import org.cimsbioko.forms.listeners.PermissionListener;
 import org.cimsbioko.forms.preferences.AdminPreferencesActivity;
@@ -270,8 +270,8 @@ public class ShowQRCodeFragment extends Fragment {
         new PreferenceSaver(GeneralSharedPreferences.getInstance(), AdminSharedPreferences.getInstance()).fromJSON(content, new ActionListener() {
             @Override
             public void onSuccess() {
-                Collect.getInstance().initializeJavaRosa();
-                ToastUtils.showLongToast(Collect.getInstance().getString(R.string.successfully_imported_settings));
+                FormsApp.getInstance().initializeJavaRosa();
+                ToastUtils.showLongToast(FormsApp.getInstance().getString(R.string.successfully_imported_settings));
                 getActivity().finish();
                 final LocaleHelper localeHelper = new LocaleHelper();
                 localeHelper.updateLocale(getActivity());
@@ -281,7 +281,7 @@ public class ShowQRCodeFragment extends Fragment {
             @Override
             public void onFailure(Exception exception) {
                 if (exception instanceof GeneralSharedPreferences.ValidationException) {
-                    ToastUtils.showLongToast(Collect.getInstance().getString(R.string.invalid_qrcode));
+                    ToastUtils.showLongToast(FormsApp.getInstance().getString(R.string.invalid_qrcode));
                 } else {
                     Timber.e(exception);
                 }
@@ -304,7 +304,7 @@ public class ShowQRCodeFragment extends Fragment {
                 }
                 return true;
             case R.id.menu_save_preferences:
-                File writeDir = new File(Collect.SETTINGS);
+                File writeDir = new File(FormsApp.SETTINGS);
                 if (!writeDir.exists()) {
                     if (!writeDir.mkdirs()) {
                         ToastUtils.showShortToast("Error creating directory "

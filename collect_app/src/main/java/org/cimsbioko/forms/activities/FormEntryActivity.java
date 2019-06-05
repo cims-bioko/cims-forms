@@ -74,6 +74,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.apache.commons.io.IOUtils;
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.data.IAnswerData;
@@ -85,7 +86,6 @@ import org.joda.time.LocalDateTime;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.IconMenuListAdapter;
 import org.cimsbioko.forms.adapters.model.IconMenuItem;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.helpers.ContentResolverHelper;
 import org.cimsbioko.forms.dao.helpers.FormsDaoHelper;
@@ -324,7 +324,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
 
         setContentView(R.layout.form_entry);
 
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
 
         compositeDisposable
                 .add(eventBus
@@ -368,7 +368,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
             public void granted() {
                 // must be at the beginning of any activity that can be called from an external intent
                 try {
-                    Collect.createODKDirs();
+                    FormsApp.createODKDirs();
                     setupFields(savedInstanceState);
                     loadForm();
 
@@ -389,7 +389,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
 
             @Override
             public void denied() {
-                // The activity has to finish because ODK Collect cannot function without these permissions.
+                // The activity has to finish because CIMS Forms cannot function without these permissions.
                 finishAllActivities(FormEntryActivity.this);
             }
         });
@@ -462,7 +462,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
             }
 
             // Not a restart from a screen orientation change (or other).
-            Collect.getInstance().setFormController(null);
+            FormsApp.getInstance().setFormController(null);
             supportInvalidateOptionsMenu();
             Intent intent = getIntent();
             if (intent != null) {
@@ -551,7 +551,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                         formPath.lastIndexOf('.'))
                         + "_";
                 final String fileSuffix = ".xml.save";
-                File cacheDir = new File(Collect.CACHE_PATH);
+                File cacheDir = new File(FormsApp.CACHE_PATH);
                 File[] files = cacheDir.listFiles(pathname -> {
                     String name = pathname.getName();
                     return name.startsWith(filePrefix)
@@ -569,7 +569,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                                     candidate.getName().length()
                                             - fileSuffix.length());
                     File instanceDir = new File(
-                            Collect.INSTANCES_PATH + File.separator
+                            FormsApp.INSTANCES_PATH + File.separator
                                     + instanceDirName);
                     File instanceFile = new File(instanceDir,
                             instanceDirName + ".xml");
@@ -633,9 +633,9 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
 
     @Nullable
     private FormController getFormController(boolean formReloading) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController == null) {
-            Collect.getInstance().logNullFormControllerEvent(formReloading ? "FormReloading" : "OtherInFormEntryActivity");
+            FormsApp.getInstance().logNullFormControllerEvent(formReloading ? "FormReloading" : "OtherInFormEntryActivity");
         }
 
         return formController;
@@ -776,8 +776,8 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                  */
                 // The intent is empty, but we know we saved the image to the temp
                 // file
-                ImageConverter.execute(Collect.TMPFILE_PATH, getWidgetWaitingForBinaryData(), this);
-                File fi = new File(Collect.TMPFILE_PATH);
+                ImageConverter.execute(FormsApp.TMPFILE_PATH, getWidgetWaitingForBinaryData(), this);
+                File fi = new File(FormsApp.TMPFILE_PATH);
 
                 String instanceFolder = formController.getInstanceFile()
                         .getParent();
@@ -1591,7 +1591,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                 List<TreeElement> attrs = p.getBindAttributes();
                 for (int i = 0; i < attrs.size(); i++) {
                     if (!autoSaved && "saveIncomplete".equals(attrs.get(i).getName())) {
-                        Collect.getInstance().logRemoteAnalytics("WidgetAttribute", "saveIncomplete", Collect.getCurrentFormIdentifierHash());
+                        FormsApp.getInstance().logRemoteAnalytics("WidgetAttribute", "saveIncomplete", FormsApp.getCurrentFormIdentifierHash());
 
                         saveDataToDisk(false, false, null, false);
                         autoSaved = true;
@@ -1861,7 +1861,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                     saveDataToDisk(EXIT, InstancesDaoHelper.isInstanceComplete(false), null);
                 } else {
                     // close all open databases of external data.
-                    ExternalDataManager manager = Collect.getInstance().getExternalDataManager();
+                    ExternalDataManager manager = FormsApp.getInstance().getExternalDataManager();
                     if (manager != null) {
                         manager.close();
                     }
@@ -2328,7 +2328,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                     @Override
                     public void granted() {
                         readPhoneStatePermissionRequestNeeded = false;
-                        Collect.getInstance().initializeJavaRosa();
+                        FormsApp.getInstance().initializeJavaRosa();
                         loadForm();
                     }
 
@@ -2343,12 +2343,12 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                 formLoaderTask = null;
                 t.cancel(true);
                 t.destroy();
-                Collect.getInstance().setFormController(formController);
+                FormsApp.getInstance().setFormController(formController);
                 supportInvalidateOptionsMenu();
 
                 viewModel.formFinishedLoading();
 
-                Collect.getInstance().setExternalDataManager(task.getExternalDataManager());
+                FormsApp.getInstance().setExternalDataManager(task.getExternalDataManager());
 
                 // Set the language if one has already been set in the past
                 String[] languageTest = formController.getLanguages();
@@ -2397,7 +2397,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                             Locale.ENGLISH).format(Calendar.getInstance().getTime());
                     String file = formPath.substring(formPath.lastIndexOf('/') + 1,
                             formPath.lastIndexOf('.'));
-                    String path = Collect.INSTANCES_PATH + File.separator + file + "_"
+                    String path = FormsApp.INSTANCES_PATH + File.separator + file + "_"
                             + time;
                     if (FileUtils.createFolder(path)) {
                         File instanceFile = new File(path + File.separator + file + "_" + time + ".xml");
@@ -2869,7 +2869,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
 
     @Override
     public void widgetValueChanged(QuestionWidget changedWidget) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController == null) {
             // TODO: As usual, no idea if/how this is possible.
             return;
@@ -2901,7 +2901,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
      */
     private void updateFieldListQuestions(FormIndex lastChangedIndex) {
         // Save the user-visible state for all questions in this field-list
-        FormEntryPrompt[] questionsBeforeSave = Collect.getInstance().getFormController().getQuestionPrompts();
+        FormEntryPrompt[] questionsBeforeSave = FormsApp.getInstance().getFormController().getQuestionPrompts();
         List<ImmutableDisplayableQuestion> immutableQuestionsBeforeSave = new ArrayList<>();
         for (FormEntryPrompt questionBeforeSave : questionsBeforeSave) {
             immutableQuestionsBeforeSave.add(new ImmutableDisplayableQuestion(questionBeforeSave));
@@ -2911,7 +2911,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
         // to later quickly match questions that are still relevant with the corresponding question
         // before saving.
         saveAnswersForCurrentScreen(false);
-        FormEntryPrompt[] questionsAfterSave = Collect.getInstance().getFormController().getQuestionPrompts();
+        FormEntryPrompt[] questionsAfterSave = FormsApp.getInstance().getFormController().getQuestionPrompts();
 
         Map<FormIndex, FormEntryPrompt> questionsAfterSaveByIndex = new HashMap<>();
         for (FormEntryPrompt question : questionsAfterSave) {
@@ -2968,7 +2968,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
             if (modelClass.equals(FormEntryViewModel.class)) {
-                GoogleLocationClient googleLocationClient = new GoogleLocationClient(Collect.getInstance().getApplicationContext());
+                GoogleLocationClient googleLocationClient = new GoogleLocationClient(FormsApp.getInstance().getApplicationContext());
 
                 BackgroundLocationManager locationManager =
                         new BackgroundLocationManager(googleLocationClient, new BackgroundLocationHelper());

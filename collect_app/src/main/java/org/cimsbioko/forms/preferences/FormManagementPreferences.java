@@ -21,7 +21,7 @@ import androidx.annotation.Nullable;
 import android.view.View;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.tasks.ServerPollingJob;
 
 import static org.cimsbioko.forms.preferences.AdminKeys.ALLOW_OTHER_WAYS_OF_EDITING_FORM;
@@ -85,7 +85,7 @@ public class FormManagementPreferences extends BasePreferenceFragment {
                 if (key.equals(KEY_PERIODIC_FORM_UPDATES_CHECK)) {
                     ServerPollingJob.schedulePeriodicJob((String) newValue);
 
-                    Collect.getInstance().logRemoteAnalytics("PreferenceChange", "Periodic form updates check", (String) newValue);
+                    FormsApp.getInstance().logRemoteAnalytics("PreferenceChange", "Periodic form updates check", (String) newValue);
 
                     if (newValue.equals(getString(R.string.never_value))) {
                         Preference automaticUpdatePreference = findPreference(KEY_AUTOMATIC_UPDATE);
@@ -115,7 +115,7 @@ public class FormManagementPreferences extends BasePreferenceFragment {
                 pref.setEnabled(!formUpdateCheckPeriod.equals(getString(R.string.never_value)));
 
                 pref.setOnPreferenceChangeListener((preference, newValue) -> {
-                    Collect.getInstance().logRemoteAnalytics("PreferenceChange", "Automatic form updates", newValue + " " + formUpdateCheckPeriod);
+                    FormsApp.getInstance().logRemoteAnalytics("PreferenceChange", "Automatic form updates", newValue + " " + formUpdateCheckPeriod);
 
                     return true;
                 });

@@ -21,7 +21,7 @@ import android.database.SQLException;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.listeners.InstanceUploaderListener;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
@@ -109,7 +109,7 @@ public abstract class InstanceUploaderTask extends AsyncTask<Long, Integer, Inst
                                 }
 
                                 DeleteInstancesTask dit = new DeleteInstancesTask();
-                                dit.setContentResolver(Collect.getInstance().getContentResolver());
+                                dit.setContentResolver(FormsApp.getInstance().getContentResolver());
                                 dit.execute(toDelete.toArray(new Long[toDelete.size()]));
                             }
                         } catch (SQLException e) {

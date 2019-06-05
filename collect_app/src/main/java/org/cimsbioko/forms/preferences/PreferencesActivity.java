@@ -21,7 +21,7 @@ import android.os.Bundle;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.CollectAbstractActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.OnBackPressedListener;
 import org.cimsbioko.forms.utilities.ThemeUtils;
 
@@ -51,7 +51,7 @@ public class PreferencesActivity extends CollectAbstractActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Collect.getInstance().initializeJavaRosa();
+        FormsApp.getInstance().initializeJavaRosa();
     }
 
     // If the onBackPressedListener is set then onBackPressed is delegated to it.

@@ -24,7 +24,7 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 public class NotificationUtils {
 
@@ -34,14 +34,14 @@ public class NotificationUtils {
     private NotificationUtils() {
     }
 
-    public static void createNotificationChannel(Collect collect) {
+    public static void createNotificationChannel(FormsApp formsApp) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = collect.getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = formsApp.getSystemService(NotificationManager.class);
 
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(new NotificationChannel(
                                         CHANNEL_ID,
-                                        collect.getString(R.string.notification_channel_name),
+                                        formsApp.getString(R.string.notification_channel_name),
                                         NotificationManager.IMPORTANCE_DEFAULT)
                 );
             }
@@ -52,7 +52,7 @@ public class NotificationUtils {
                                         int notificationId,
                                         int title,
                                         String contentText) {
-        Context context = Collect.getInstance();
+        Context context = FormsApp.getInstance();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID).setContentIntent(contentIntent);
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="Collect">
+    <declare-styleable name="FormsApp">
         <attr name="primaryTextColor" format="color" />
         <attr name="secondaryTextColor" format="color" />
         <attr name="iconColor" format="color" />

@@ -29,7 +29,7 @@ import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.SelectChoice;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.RankingListAdapter.ItemViewHolder;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.utilities.ThemeUtils;
 
@@ -55,7 +55,7 @@ public class RankingListAdapter extends Adapter<ItemViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, int position) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         String itemName = formController != null
                 ? formController.getQuestionPrompt(formIndex).getSelectChoiceText(getItem(formController, values.get(position)))
                 : values.get(position);
@@ -93,7 +93,7 @@ public class RankingListAdapter extends Adapter<ItemViewHolder> {
         ItemViewHolder(View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.rank_item_text);
-            textView.setTextSize(Collect.getQuestionFontsize());
+            textView.setTextSize(FormsApp.getQuestionFontsize());
             themeUtils = new ThemeUtils(itemView.getContext());
         }
 

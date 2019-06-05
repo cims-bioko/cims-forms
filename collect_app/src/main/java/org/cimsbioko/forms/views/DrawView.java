@@ -26,7 +26,7 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.FileUtils;
 
 import java.io.File;
@@ -60,7 +60,7 @@ public class DrawView extends View {
         bitmapPaint = new Paint(Paint.DITHER_FLAG);
         currentPath = new Path();
         offscreenPath = new Path();
-        backgroundBitmapFile = new File(Collect.TMPDRAWFILE_PATH);
+        backgroundBitmapFile = new File(FormsApp.TMPDRAWFILE_PATH);
 
         paint = new Paint();
         paint.setAntiAlias(true);

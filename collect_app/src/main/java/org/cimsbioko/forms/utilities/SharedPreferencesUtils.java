@@ -14,9 +14,9 @@
 
 package org.cimsbioko.forms.utilities;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.preferences.AdminSharedPreferences;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.cimsbioko.forms.preferences.PreferenceSaver;
@@ -109,7 +109,7 @@ public final class SharedPreferencesUtils {
 
             new PreferenceSaver(GeneralSharedPreferences.getInstance(), AdminSharedPreferences.getInstance()).fromJSON(builder.toString(), null);
 
-            Collect.getInstance().initializeJavaRosa();
+            FormsApp.getInstance().initializeJavaRosa();
             res = true;
         } catch (IOException e) {
             Timber.e(e, "Exception while loading preferences from file due to : %s ", e.getMessage());

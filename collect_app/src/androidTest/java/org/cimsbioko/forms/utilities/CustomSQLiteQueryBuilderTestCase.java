@@ -23,7 +23,7 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -32,7 +32,7 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class CustomSQLiteQueryBuilderTestCase {
 
-    private static final String DATABASE_PATH = Collect.METADATA_PATH + "/test.db";
+    private static final String DATABASE_PATH = FormsApp.METADATA_PATH + "/test.db";
     private static final String TEST_TABLE_NAME = "testTable";
     private static final String TEST_TABLE_NAME_2 = "testTable2";
 

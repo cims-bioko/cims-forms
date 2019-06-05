@@ -12,7 +12,7 @@ import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.events.RxEventBus;
@@ -342,7 +342,7 @@ public class SmsService {
                 }
             }
 
-            Collect.getInstance().logRemoteAnalytics("Submission", "SMS", Collect.getFormIdentifierHash(formId, formVersion));
+            FormsApp.getInstance().logRemoteAnalytics("Submission", "SMS", FormsApp.getFormIdentifierHash(formId, formVersion));
         }
     }
 

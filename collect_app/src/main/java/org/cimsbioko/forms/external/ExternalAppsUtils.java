@@ -21,6 +21,7 @@ package org.cimsbioko.forms.external;
 import android.content.Intent;
 import android.database.Cursor;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.condition.EvaluationContext;
 import org.javarosa.core.model.data.DecimalData;
@@ -35,7 +36,6 @@ import org.javarosa.xpath.expr.XPathExpression;
 import org.javarosa.xpath.expr.XPathFuncExpr;
 import org.javarosa.xpath.expr.XPathPathExpr;
 import org.javarosa.xpath.parser.XPathSyntaxException;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.exception.ExternalParamsException;
 import org.cimsbioko.forms.provider.InstanceProviderAPI.InstanceColumns;
@@ -134,7 +134,7 @@ public class ExternalAppsUtils {
 
     public static Object getValueRepresentedBy(String text, TreeReference reference)
             throws XPathSyntaxException {
-        FormDef formDef = Collect.getInstance().getFormController().getFormDef();
+        FormDef formDef = FormsApp.getInstance().getFormController().getFormDef();
         FormInstance formInstance = formDef.getInstance();
         EvaluationContext evaluationContext = new EvaluationContext(formDef.getEvaluationContext(),
                 reference);
@@ -149,7 +149,7 @@ public class ExternalAppsUtils {
             return XPathFuncExpr.unpack(xpathNodeset);
         } else if (text.equals("instanceProviderID()")) {
             // instanceProviderID returns -1 if the current instance has not been saved to disk already
-            String path = Collect.getInstance().getFormController().getInstanceFile()
+            String path = FormsApp.getInstance().getFormController().getInstanceFile()
                     .getAbsolutePath();
 
             String instanceProviderID = "-1";

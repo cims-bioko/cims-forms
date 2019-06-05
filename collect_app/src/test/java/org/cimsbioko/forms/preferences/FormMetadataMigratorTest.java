@@ -7,7 +7,7 @@ import android.preference.PreferenceManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.PrintStream;
@@ -59,7 +59,7 @@ public class FormMetadataMigratorTest {
 
     @Before
     public void setUp() throws Exception {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance());
     }
 
     @Test

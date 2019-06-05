@@ -30,7 +30,7 @@ import android.widget.Toast;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.AboutListAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.CustomTabHelper;
 
 import java.util.List;
@@ -85,7 +85,7 @@ public class AboutActivity extends CollectAbstractActivity implements
 
     @Override
     public void onClick(int position) {
-        if (Collect.allowClick(getClass().getName())) {
+        if (FormsApp.allowClick(getClass().getName())) {
             switch (position) {
                 case 0:
                     websiteTabHelper.openUri(this, websiteUri);
@@ -121,7 +121,7 @@ public class AboutActivity extends CollectAbstractActivity implements
                             }
                         }
                     } catch (android.content.ActivityNotFoundException anfe) {
-                        Toast.makeText(Collect.getInstance(),
+                        Toast.makeText(FormsApp.getInstance(),
                                 getString(R.string.activity_not_found, "market view"),
                                 Toast.LENGTH_SHORT).show();
                         Timber.d(anfe);

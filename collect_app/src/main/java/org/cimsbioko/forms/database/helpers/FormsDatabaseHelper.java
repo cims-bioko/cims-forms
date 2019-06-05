@@ -19,7 +19,7 @@ package org.cimsbioko.forms.database.helpers;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.database.DatabaseContext;
 import org.cimsbioko.forms.utilities.CustomSQLiteQueryBuilder;
 
@@ -57,7 +57,7 @@ public class FormsDatabaseHelper extends SQLiteOpenHelper {
     private static final String MODEL_VERSION = "modelVersion";
 
     public FormsDatabaseHelper() {
-        super(new DatabaseContext(Collect.METADATA_PATH), DATABASE_NAME, null, DATABASE_VERSION);
+        super(new DatabaseContext(FormsApp.METADATA_PATH), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

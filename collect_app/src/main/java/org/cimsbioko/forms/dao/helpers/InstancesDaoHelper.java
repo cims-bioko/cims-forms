@@ -17,7 +17,7 @@ package org.cimsbioko.forms.dao.helpers;
 import android.database.Cursor;
 import android.net.Uri;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
@@ -43,7 +43,7 @@ public final class InstancesDaoHelper {
         // default to false if we're mid form
         boolean complete = false;
 
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController != null && formController.getInstanceFile() != null) {
             // First check if we're at the end of the form, then check the preferences
             complete = end && (boolean) GeneralSharedPreferences.getInstance()

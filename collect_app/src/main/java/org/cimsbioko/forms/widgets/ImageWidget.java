@@ -28,7 +28,7 @@ import org.cimsbioko.forms.BuildConfig;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.CaptureSelfieActivity;
 import org.cimsbioko.forms.activities.CaptureSelfieActivityNewApi;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.PermissionListener;
 import org.cimsbioko.forms.utilities.CameraUtils;
 import org.cimsbioko.forms.utilities.FileUtils;
@@ -167,7 +167,7 @@ public class ImageWidget extends BaseImageWidget {
             try {
                 Uri uri = FileProvider.getUriForFile(getContext(),
                         BuildConfig.APPLICATION_ID + ".provider",
-                        new File(Collect.TMPFILE_PATH));
+                        new File(FormsApp.TMPFILE_PATH));
                 // if this gets modified, the onActivityResult in
                 // FormEntyActivity will also need to be updated.
                 intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);

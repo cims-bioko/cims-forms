@@ -6,10 +6,10 @@ import android.preference.PreferenceManager;
 import com.google.android.gms.maps.GoogleMap;
 import com.mapbox.mapboxsdk.maps.Style;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.preferences.PrefMigrator.Migration;
 import org.robolectric.RobolectricTestRunner;
 
@@ -74,7 +74,7 @@ public class PrefMigratorTest {
     };
 
     @Before public void setUp() throws Exception {
-        prefs = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        prefs = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance());
     }
 
     private void initPrefs(Object... pairs) {

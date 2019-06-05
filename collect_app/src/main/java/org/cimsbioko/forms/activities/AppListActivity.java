@@ -40,7 +40,7 @@ import android.widget.ProgressBar;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.SortDialogAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.listeners.RecyclerViewClickListener;
 import org.cimsbioko.forms.provider.InstanceProviderAPI;
 import org.cimsbioko.forms.utilities.SnackbarUtils;
@@ -267,7 +267,7 @@ abstract class AppListActivity extends CollectAbstractActivity {
 
     private void saveSelectedSortingOrder(int selectedStringOrder) {
         selectedSortingOrder = selectedStringOrder;
-        PreferenceManager.getDefaultSharedPreferences(Collect.getInstance())
+        PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance())
                 .edit()
                 .putInt(getSortingOrderKey(), selectedStringOrder)
                 .apply();
@@ -275,7 +275,7 @@ abstract class AppListActivity extends CollectAbstractActivity {
 
     protected void restoreSelectedSortingOrder() {
         selectedSortingOrder = PreferenceManager
-                .getDefaultSharedPreferences(Collect.getInstance())
+                .getDefaultSharedPreferences(FormsApp.getInstance())
                 .getInt(getSortingOrderKey(), BY_NAME_ASC);
     }
 

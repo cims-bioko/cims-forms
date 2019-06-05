@@ -14,7 +14,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.preferences.GeneralKeys;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.cimsbioko.forms.preferences.GuidanceHint;
@@ -76,7 +76,7 @@ public class GuidanceHintFormTest {
         onView(withId(R.id.menu_goto)).perform(click());
         onView(withId(R.id.jumpBeginningButton)).perform(click());
 
-        FormEntryPrompt prompt = Collect.getInstance().getFormController().getQuestionPrompt();
+        FormEntryPrompt prompt = FormsApp.getInstance().getFormController().getQuestionPrompt();
         String guidance = prompt.getSpecialFormQuestionText(prompt.getQuestion().getHelpTextID(), "guidance");
         assertFalse(TextUtils.isEmpty(guidance));
 
@@ -92,7 +92,7 @@ public class GuidanceHintFormTest {
         onView(withId(R.id.menu_goto)).perform(click());
         onView(withId(R.id.jumpBeginningButton)).perform(click());
 
-        FormEntryPrompt prompt = Collect.getInstance().getFormController().getQuestionPrompt();
+        FormEntryPrompt prompt = FormsApp.getInstance().getFormController().getQuestionPrompt();
         String guidance = prompt.getSpecialFormQuestionText(prompt.getQuestion().getHelpTextID(), "guidance");
         assertFalse(TextUtils.isEmpty(guidance));
 

@@ -21,7 +21,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.fragments.dialogs.SimpleDialog;
 import org.cimsbioko.forms.listeners.InstanceUploaderListener;
@@ -87,7 +87,7 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
             public void granted() {
                 // must be at the beginning of any activity that can be called from an external intent
                 try {
-                    Collect.createODKDirs();
+                    FormsApp.createODKDirs();
                 } catch (RuntimeException e) {
                     DialogUtils.showDialog(DialogUtils.createErrorDialog(InstanceUploaderActivity.this,
                             e.getMessage(), EXIT), InstanceUploaderActivity.this);
@@ -99,7 +99,7 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
 
             @Override
             public void denied() {
-                // The activity has to finish because ODK Collect cannot function without these permissions.
+                // The activity has to finish because CIMS Forms cannot function without these permissions.
                 finish();
             }
         });
@@ -175,7 +175,7 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
             instanceServerUploaderTask = new InstanceServerUploaderTask();
 
             if (url != null) {
-                instanceServerUploaderTask.setCompleteDestinationUrl(url + Collect.getInstance().getString(R.string.default_odk_submission));
+                instanceServerUploaderTask.setCompleteDestinationUrl(url + FormsApp.getInstance().getString(R.string.default_odk_submission));
 
                 if (deleteInstanceAfterUpload != null) {
                     instanceServerUploaderTask.setDeleteInstanceAfterSubmission(deleteInstanceAfterUpload);
@@ -404,7 +404,7 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
         // TODO: is this really needed here? When would the task not have gotten a server set in
         // init already?
         if (url != null) {
-            instanceServerUploaderTask.setCompleteDestinationUrl(url + Collect.getInstance().getString(R.string.default_odk_submission), false);
+            instanceServerUploaderTask.setCompleteDestinationUrl(url + FormsApp.getInstance().getString(R.string.default_odk_submission), false);
         }
         instanceServerUploaderTask.execute(instancesToSend);
     }

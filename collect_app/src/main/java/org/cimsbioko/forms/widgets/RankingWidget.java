@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.SelectChoice;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.SelectMultiData;
@@ -28,7 +29,6 @@ import org.javarosa.core.model.data.helper.Selection;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.fragments.dialogs.RankingWidgetDialog;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.widgets.interfaces.BinaryWidget;
@@ -90,7 +90,7 @@ public class RankingWidget extends ItemsWidget implements BinaryWidget {
 
     @Override
     public void onButtonClick(int buttonId) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController != null) {
             formController.setIndexWaitingForData(getFormEntryPrompt().getIndex());
         }

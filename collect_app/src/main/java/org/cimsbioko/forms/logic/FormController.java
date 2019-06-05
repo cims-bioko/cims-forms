@@ -120,7 +120,7 @@ public class FormController {
 
     /**
      * Isolate the initialization of JavaRosa into one method, called first
-     * by the Collect Application.  Called subsequently whenever the Preferences
+     * by the FormsApp Application.  Called subsequently whenever the Preferences
      * dialogs are exited (to potentially update username and email fields).
      */
     public static synchronized void initializeJavaRosa(IPropertyManager mgr) {

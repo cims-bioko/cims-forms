@@ -34,12 +34,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.DrawActivity;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.utilities.ApplicationConstants;
 import org.cimsbioko.forms.utilities.FileUtils;
 import org.cimsbioko.forms.utilities.MediaManager;
@@ -247,7 +247,7 @@ public abstract class BaseImageWidget extends QuestionWidget implements FileWidg
 
         @Override
         public void clickImage(String context) {
-            if (Collect.allowClick(getClass().getName())) {
+            if (FormsApp.allowClick(getClass().getName())) {
                 launchDrawActivity();
             }
         }
@@ -261,7 +261,7 @@ public abstract class BaseImageWidget extends QuestionWidget implements FileWidg
                 File f = new File(getInstanceFolder() + File.separator + binaryName);
                 i.putExtra(DrawActivity.REF_IMAGE, Uri.fromFile(f));
             }
-            i.putExtra(DrawActivity.EXTRA_OUTPUT, Uri.fromFile(new File(Collect.TMPFILE_PATH)));
+            i.putExtra(DrawActivity.EXTRA_OUTPUT, Uri.fromFile(new File(FormsApp.TMPFILE_PATH)));
             i = addExtrasToIntent(i);
             launchActivityForResult(i, requestCode, stringResourceId);
         }

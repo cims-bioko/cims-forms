@@ -53,7 +53,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.fragments.dialogs.ErrorDialog;
 import org.cimsbioko.forms.utilities.CameraUtils;
 
@@ -358,9 +358,9 @@ public class Camera2Fragment extends Fragment
     private static Size chooseOptimalSize(Size[] choices, int textureViewWidth,
                                           int textureViewHeight, int maxWidth, int maxHeight, Size aspectRatio) {
 
-        // Collect the supported resolutions that are at least as big as the preview Surface
+        // FormsApp the supported resolutions that are at least as big as the preview Surface
         List<Size> bigEnough = new ArrayList<>();
-        // Collect the supported resolutions that are smaller than the preview Surface
+        // FormsApp the supported resolutions that are smaller than the preview Surface
         List<Size> notBigEnough = new ArrayList<>();
         int w = aspectRatio.getWidth();
         int h = aspectRatio.getHeight();
@@ -858,7 +858,7 @@ public class Camera2Fragment extends Fragment
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
 
-            CameraUtils.savePhoto(Collect.TMPFILE_PATH, bytes);
+            CameraUtils.savePhoto(FormsApp.TMPFILE_PATH, bytes);
         }
     }
 

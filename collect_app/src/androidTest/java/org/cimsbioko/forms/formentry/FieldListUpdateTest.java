@@ -28,12 +28,12 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.GrantPermissionRule;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.preferences.GeneralKeys;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.cimsbioko.forms.preferences.GuidanceHint;
@@ -315,7 +315,7 @@ public class FieldListUpdateTest {
 
         // FormEntryActivity expects an image at a fixed path so copy the app logo there
         Bitmap icon = BitmapFactory.decodeResource(ApplicationProvider.getApplicationContext().getResources(), R.drawable.notes);
-        File tmpJpg = new File(Collect.TMPFILE_PATH);
+        File tmpJpg = new File(FormsApp.TMPFILE_PATH);
         tmpJpg.createNewFile();
         FileOutputStream fos = new FileOutputStream(tmpJpg);
         icon.compress(Bitmap.CompressFormat.JPEG, 90, fos);

@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsManager;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.events.RxEventBus;
 import org.cimsbioko.forms.events.SmsRxEvent;
 import org.cimsbioko.forms.preferences.GeneralKeys;
@@ -44,7 +44,7 @@ public class SmsSender {
         this.context = context;
         this.instanceId = instanceId;
 
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
     }
 
     public boolean send() {

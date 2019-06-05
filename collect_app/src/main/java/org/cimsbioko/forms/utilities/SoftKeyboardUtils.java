@@ -20,7 +20,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 public class SoftKeyboardUtils {
 
@@ -38,6 +38,6 @@ public class SoftKeyboardUtils {
     }
 
     private static InputMethodManager getInputMethodManager() {
-        return (InputMethodManager) Collect.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
+        return (InputMethodManager) FormsApp.getInstance().getSystemService(Context.INPUT_METHOD_SERVICE);
     }
 }

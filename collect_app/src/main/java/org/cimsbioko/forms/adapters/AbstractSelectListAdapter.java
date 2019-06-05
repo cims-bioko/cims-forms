@@ -39,7 +39,7 @@ import org.javarosa.core.reference.InvalidReferenceException;
 import org.javarosa.core.reference.ReferenceManager;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryPrompt;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.external.ExternalSelectChoice;
 import org.cimsbioko.forms.utilities.FileUtils;
 import org.cimsbioko.forms.utilities.FormEntryPromptUtils;
@@ -123,7 +123,7 @@ public abstract class AbstractSelectListAdapter extends RecyclerView.Adapter<Abs
     abstract CompoundButton setUpButton(int index);
 
     void adjustButton(TextView button, int index) {
-        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, Collect.getQuestionFontsize());
+        button.setTextSize(TypedValue.COMPLEX_UNIT_DIP, FormsApp.getQuestionFontsize());
         button.setText(FormEntryPromptUtils.getItemText(widget.getFormEntryPrompt(), filteredItems.get(index)));
         button.setTag(items.indexOf(filteredItems.get(index)));
         button.setGravity(isRTL() ? Gravity.END : Gravity.START);

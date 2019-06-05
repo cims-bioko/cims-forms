@@ -46,7 +46,7 @@ import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.exception.ExternalParamsException;
 import org.cimsbioko.forms.exception.JavaRosaException;
 import org.cimsbioko.forms.external.ExternalAppsUtils;
@@ -277,7 +277,7 @@ public class ODKView extends FrameLayout implements OnLongClickListener, WidgetV
         if (!path.isEmpty()) {
             TextView tv = new TextView(getContext());
             tv.setText(path);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, Collect.getQuestionFontsize() - 4);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, FormsApp.getQuestionFontsize() - 4);
             tv.setPadding(0, 0, 0, 5);
             view.addView(tv, layout);
         }
@@ -346,7 +346,7 @@ public class ODKView extends FrameLayout implements OnLongClickListener, WidgetV
         launchIntentButton.setId(ViewIds.generateViewId());
         launchIntentButton.setText(buttonText);
         launchIntentButton.setTextSize(TypedValue.COMPLEX_UNIT_DIP,
-                Collect.getQuestionFontsize() + 2);
+                FormsApp.getQuestionFontsize() + 2);
         launchIntentButton.setPadding(20, 20, 20, 20);
         launchIntentButton.setLayoutParams(params);
 
@@ -455,7 +455,7 @@ public class ODKView extends FrameLayout implements OnLongClickListener, WidgetV
         if (bundle == null) {
             return;
         }
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         Set<String> keys = bundle.keySet();
         for (String key : keys) {
             for (QuestionWidget questionWidget : widgets) {

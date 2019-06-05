@@ -18,8 +18,8 @@ package org.cimsbioko.forms.tasks;
 
 import android.os.AsyncTask;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormIndex;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.logic.FormController;
 
 import java.io.File;
@@ -48,7 +48,7 @@ public class SaveFormIndexTask extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... params) {
         long start = System.currentTimeMillis();
 
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
 
         try {
             File tempFormIndexFile = SaveToDiskTask.getFormIndexFile(formController.getInstanceFile().getName());
@@ -88,7 +88,7 @@ public class SaveFormIndexTask extends AsyncTask<Void, Void, String> {
     public static FormIndex loadFormIndexFromFile() {
         FormIndex formIndex = null;
         try {
-            String instanceName = Collect.getInstance()
+            String instanceName = FormsApp.getInstance()
                     .getFormController()
                     .getInstanceFile()
                     .getName();

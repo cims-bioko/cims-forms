@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.events.RxEventBus;
 import org.cimsbioko.forms.events.SmsRxEvent;
 import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
@@ -57,7 +57,7 @@ public class InstanceUploaderAdapter extends CursorAdapter {
     public InstanceUploaderAdapter(Context context, Cursor cursor) {
         super(context, cursor);
         this.context = context;
-        Collect.getInstance().getComponent().inject(this);
+        FormsApp.getInstance().getComponent().inject(this);
         compositeDisposable = new CompositeDisposable();
     }
 

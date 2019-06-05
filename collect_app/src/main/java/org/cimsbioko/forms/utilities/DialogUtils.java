@@ -28,7 +28,7 @@ import android.widget.ListView;
 
 import org.cimsbioko.forms.R;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.AuditEvent;
 import org.cimsbioko.forms.logic.FormController;
 import timber.log.Timber;
@@ -88,7 +88,7 @@ public final class DialogUtils {
      * Shows a confirm/cancel dialog for deleting the current repeat group.
      */
     public static void showDeleteRepeatConfirmDialog(Context context, Runnable onDeleted, Runnable onCanceled) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         String name = formController.getLastRepeatedGroupName();
         int repeatcount = formController.getLastRepeatedGroupRepeatCount();
         if (repeatcount != -1) {

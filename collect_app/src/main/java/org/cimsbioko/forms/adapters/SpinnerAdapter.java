@@ -11,7 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.ThemeUtils;
 
 public class SpinnerAdapter extends ArrayAdapter<CharSequence> {
@@ -41,7 +41,7 @@ public class SpinnerAdapter extends ArrayAdapter<CharSequence> {
         }
 
         TextView tv = convertView.findViewById(android.R.id.text1);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, Collect.getQuestionFontsize());
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, FormsApp.getQuestionFontsize());
         tv.setPadding(20, 10, 10, 10);
         tv.setText(position == items.length - 1
                 ? parent.getContext().getString(R.string.clear_answer)
@@ -70,7 +70,7 @@ public class SpinnerAdapter extends ArrayAdapter<CharSequence> {
         }
 
         TextView tv = convertView.findViewById(android.R.id.text1);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, Collect.getQuestionFontsize());
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, FormsApp.getQuestionFontsize());
         tv.setPadding(10, 10, 10, 10);
         tv.setText(items[position]);
 

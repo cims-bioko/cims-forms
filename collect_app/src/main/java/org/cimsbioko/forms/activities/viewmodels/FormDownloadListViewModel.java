@@ -19,7 +19,7 @@ package org.cimsbioko.forms.activities.viewmodels;
 import androidx.lifecycle.ViewModel;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.FormDetails;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class FormDownloadListViewModel extends ViewModel {
     }
 
     public String getProgressDialogMsg() {
-        return progressDialogMsg == null ? Collect.getInstance().getString(R.string.please_wait) : progressDialogMsg;
+        return progressDialogMsg == null ? FormsApp.getInstance().getString(R.string.please_wait) : progressDialogMsg;
     }
 
     public void setProgressDialogMsg(String progressDialogMsg) {

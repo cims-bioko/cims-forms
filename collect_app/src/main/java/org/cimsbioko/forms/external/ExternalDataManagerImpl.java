@@ -19,7 +19,7 @@
 package org.cimsbioko.forms.external;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.exception.ExternalDataException;
 
 import java.io.File;
@@ -48,7 +48,7 @@ public class ExternalDataManagerImpl implements ExternalDataManager {
         ExternalSQLiteOpenHelper sqLiteOpenHelper = dbMap.get(dataSetName);
         if (sqLiteOpenHelper == null) {
             if (mediaFolder == null) {
-                String msg = Collect.getInstance().getString(R.string.ext_not_initialized_error);
+                String msg = FormsApp.getInstance().getString(R.string.ext_not_initialized_error);
                 Timber.e(msg);
                 if (required) {
                     throw new ExternalDataException(msg);

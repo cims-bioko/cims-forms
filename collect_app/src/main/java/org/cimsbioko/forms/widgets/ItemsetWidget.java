@@ -30,7 +30,7 @@ import org.javarosa.xpath.XPathNodeset;
 import org.javarosa.xpath.expr.XPathExpression;
 import org.javarosa.xpath.parser.XPathSyntaxException;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.database.ItemsetDbAdapter;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.utilities.FileUtil;
@@ -90,7 +90,7 @@ public class ItemsetWidget extends AbstractSelectOneWidget {
         List<String> arguments = new ArrayList<>();
         String selectionString = getSelectionStringAndPopulateArguments(getQueryString(nodesetString), arguments);
 
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         String[] selectionArgs = getSelectionArgs(arguments, nodesetString, formController);
 
         return selectionArgs == null ? null : getItemsFromDatabase(selectionString, selectionArgs, formController);

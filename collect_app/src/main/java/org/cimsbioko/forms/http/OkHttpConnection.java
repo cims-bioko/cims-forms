@@ -13,7 +13,7 @@ import com.burgstaller.okhttp.digest.DigestAuthenticator;
 
 import org.apache.commons.io.IOUtils;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.FileUtils;
 
 import java.io.ByteArrayInputStream;
@@ -108,7 +108,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
 
         if (statusCode != HttpURLConnection.HTTP_OK) {
             discardEntityBytes(response);
-            String errMsg = Collect
+            String errMsg = FormsApp
                     .getInstance()
                     .getString(R.string.file_fetch_failed, uri.toString(), response.message(), String.valueOf(statusCode));
 
@@ -299,7 +299,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     private Request buildGetRequest(@NonNull URI uri) throws MalformedURLException {
         return new Request.Builder()
                 .url(uri.toURL())
-                .addHeader(USER_AGENT_HEADER, Collect.getInstance().getUserAgentString())
+                .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
                 .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
                 .addHeader(DATE_HEADER, getHeaderDate())
                 .get()
@@ -309,7 +309,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     private Request buildHeadRequest(@NonNull URI uri) throws MalformedURLException {
         return new Request.Builder()
                 .url(uri.toURL())
-                .addHeader(USER_AGENT_HEADER, Collect.getInstance().getUserAgentString())
+                .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
                 .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
                 .addHeader(DATE_HEADER, getHeaderDate())
                 .head()
@@ -319,7 +319,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     private Request buildPostRequest(@NonNull URI uri, RequestBody body) throws MalformedURLException {
         return new Request.Builder()
                 .url(uri.toURL())
-                .addHeader(USER_AGENT_HEADER, Collect.getInstance().getUserAgentString())
+                .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
                 .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
                 .addHeader(DATE_HEADER, getHeaderDate())
                 .post(body)

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.helpers.ContentResolverHelper;
 import org.cimsbioko.forms.exception.GDriveConnectionException;
 import org.cimsbioko.forms.fragments.dialogs.ProgressDialogFragment;
@@ -46,7 +46,7 @@ public class MediaLoadingTask extends AsyncTask<Uri, Void, File> {
     protected File doInBackground(Uri... uris) {
 
         File instanceFile;
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
 
         if (formController != null) {
             instanceFile = formController.getInstanceFile();

@@ -6,12 +6,12 @@ import java.io.File;
 
 import timber.log.Timber;
 
-import static org.cimsbioko.forms.application.Collect.CACHE_PATH;
-import static org.cimsbioko.forms.application.Collect.FORMS_PATH;
-import static org.cimsbioko.forms.application.Collect.INSTANCES_PATH;
-import static org.cimsbioko.forms.application.Collect.METADATA_PATH;
-import static org.cimsbioko.forms.application.Collect.ODK_ROOT;
-import static org.cimsbioko.forms.application.Collect.OFFLINE_LAYERS;
+import static org.cimsbioko.forms.application.FormsApp.CACHE_PATH;
+import static org.cimsbioko.forms.application.FormsApp.FORMS_PATH;
+import static org.cimsbioko.forms.application.FormsApp.INSTANCES_PATH;
+import static org.cimsbioko.forms.application.FormsApp.METADATA_PATH;
+import static org.cimsbioko.forms.application.FormsApp.ODK_ROOT;
+import static org.cimsbioko.forms.application.FormsApp.OFFLINE_LAYERS;
 
 class ExportedActivitiesUtils {
 

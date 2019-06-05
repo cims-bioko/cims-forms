@@ -9,7 +9,7 @@ import org.cimsbioko.forms.activities.GoogleDriveActivity;
 import org.cimsbioko.forms.activities.GoogleSheetsUploaderActivity;
 import org.cimsbioko.forms.activities.InstanceUploaderListActivity;
 import org.cimsbioko.forms.adapters.InstanceUploaderAdapter;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.events.RxEventBus;
 import org.cimsbioko.forms.fragments.DataManagerList;
 import org.cimsbioko.forms.http.CollectServerClient;
@@ -68,7 +68,7 @@ public interface AppDependencyComponent {
         AppDependencyComponent build();
     }
 
-    void inject(Collect collect);
+    void inject(FormsApp formsApp);
 
     void inject(SmsService smsService);
 

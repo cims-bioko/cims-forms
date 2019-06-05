@@ -30,7 +30,7 @@ import org.javarosa.core.model.FormIndex;
 import org.joda.time.LocalDateTime;
 import org.joda.time.chrono.GregorianChronology;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.DatePickerDetails;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.utilities.DateTimeUtils;
@@ -93,7 +93,7 @@ public abstract class CustomDatePickerDialog extends DialogFragment {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        FormController formController = Collect.getInstance().getFormController();
+                        FormController formController = FormsApp.getInstance().getFormController();
                         if (formController != null) {
                             formController.setIndexWaitingForData(formIndex);
                         }

@@ -7,7 +7,7 @@ import android.webkit.MimeTypeMap;
 
 import com.google.android.gms.analytics.Tracker;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.events.RxEventBus;
@@ -101,7 +101,7 @@ public class AppDependencyModule {
     @Provides
     @Singleton
     public Tracker providesTracker(Application application) {
-        return ((Collect) application).getDefaultTracker();
+        return ((FormsApp) application).getDefaultTracker();
     }
 
     @Provides

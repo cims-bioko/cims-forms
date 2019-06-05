@@ -20,7 +20,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
 import org.cimsbioko.forms.dao.InstancesDao;
 import org.cimsbioko.forms.dto.Instance;
@@ -91,7 +91,7 @@ public abstract class InstanceUploader {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(InstanceProviderAPI.InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMITTED);
-        Collect.getInstance().getContentResolver().update(instanceDatabaseUri, contentValues, null, null);
+        FormsApp.getInstance().getContentResolver().update(instanceDatabaseUri, contentValues, null, null);
     }
 
     void saveFailedStatusToDatabase(Instance instance) {
@@ -100,7 +100,7 @@ public abstract class InstanceUploader {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(InstanceProviderAPI.InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-        Collect.getInstance().getContentResolver().update(instanceDatabaseUri, contentValues, null, null);
+        FormsApp.getInstance().getContentResolver().update(instanceDatabaseUri, contentValues, null, null);
     }
 
     /**

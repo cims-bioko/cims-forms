@@ -9,7 +9,7 @@ import org.javarosa.core.model.data.StringData;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.widgets.ItemsetWidgetTest;
 import org.cimsbioko.forms.widgets.interfaces.Widget;
@@ -79,7 +79,7 @@ public abstract class QuestionWidgetTest<W extends Widget, A extends IAnswerData
 
         when(formEntryPrompt.getIndex()).thenReturn(formIndex);
 
-        Collect.getInstance().setFormController(formController);
+        FormsApp.getInstance().setFormController(formController);
 
         widget = null;
     }

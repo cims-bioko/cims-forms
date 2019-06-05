@@ -20,7 +20,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dto.Instance;
 import org.cimsbioko.forms.http.HttpHeadResult;
 import org.cimsbioko.forms.http.HttpPostResult;
@@ -88,7 +88,7 @@ public class InstanceServerUploader extends InstanceUploader {
             } catch (IllegalArgumentException e) {
                 saveFailedStatusToDatabase(instance);
                 Timber.d(e.getMessage() != null ? e.getMessage() : e.toString());
-                throw new UploadException(Collect.getInstance().getString(R.string.url_error));
+                throw new UploadException(FormsApp.getInstance().getString(R.string.url_error));
             }
 
             HttpHeadResult headResult;
@@ -114,7 +114,7 @@ public class InstanceServerUploader extends InstanceUploader {
 
             if (headResult.getStatusCode() == HttpsURLConnection.HTTP_UNAUTHORIZED) {
                 saveFailedStatusToDatabase(instance);
-                throw new UploadAuthRequestedException(Collect.getInstance().getString(R.string.server_auth_credentials, submissionUri.getHost()),
+                throw new UploadAuthRequestedException(FormsApp.getInstance().getString(R.string.server_auth_credentials, submissionUri.getHost()),
                         submissionUri);
             } else if (headResult.getStatusCode() == HttpsURLConnection.HTTP_NO_CONTENT) {
                 // Redirect header received
@@ -287,10 +287,10 @@ public class InstanceServerUploader extends InstanceUploader {
 
     private String getServerSubmissionURL() {
 
-        Collect app = Collect.getInstance();
+        FormsApp app = FormsApp.getInstance();
 
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(
-                Collect.getInstance());
+                FormsApp.getInstance());
         String serverBase = settings.getString(GeneralKeys.KEY_SERVER_URL,
                 app.getString(R.string.default_server_url));
 

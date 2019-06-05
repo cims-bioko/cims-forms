@@ -296,7 +296,7 @@
   <string name="username_error_whitespace">Nafasi za wazi kabla au baada ya jina la mtumiaji haziruhusiwi</string>
   <string name="google_play_services_error_occured">Upatikanaji wa ramani za google umeshindikana. Je, huduma ya Google Play imesakinishwa kwenye simu?</string>
   <string name="about_preferences">Kuhusu</string>
-  <string name="tell_your_friends">Shirikisha wengine programu ya ODK collect</string>
+  <string name="tell_your_friends">Shirikisha wengine programu ya CIMS Forms</string>
   <string name="tell_your_friends_msg">Je ndugu na jamaa zako bado wanakusanya taarifa kupitia karatasi? Washirikishe programu ya ODK.</string>
   <string name="leave_a_review">Acha tathmini katika Play Store</string>
   <string name="leave_a_review_msg">Tathmini yako (tunatumaini itakuwa chanya) inaongeza nafasi ya programu hii kuonekana Pay Store</string>

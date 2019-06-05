@@ -73,7 +73,7 @@ public class PermissionUtils {
     }
 
     /**
-     * Returns true only if all of the requested permissions are granted to Collect, otherwise false
+     * Returns true only if all of the requested permissions are granted to FormsApp, otherwise false
      */
     private static boolean isPermissionGranted(Context context, String... permissions) {
         for (String permission : permissions) {
@@ -120,7 +120,7 @@ public class PermissionUtils {
     }
 
     /**
-     * Checks to see if the user granted Collect the permissions necessary for reading
+     * Checks to see if the user granted FormsApp the permissions necessary for reading
      * and writing to storage and if not utilizes the permissions API to request them.
      *
      * @param activity needed for requesting permissions

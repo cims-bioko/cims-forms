@@ -16,12 +16,12 @@
 
 package org.cimsbioko.forms.utilities;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormIndex;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.tasks.SaveFormIndexTask;
 import org.cimsbioko.forms.tasks.SaveToDiskTask;
@@ -44,9 +44,9 @@ public class FormIndexSavepointTest {
         String instanceName = "test.xml";
 
         // for loadFormIndexFromFile
-        File instancePath = new File(Collect.INSTANCES_PATH + File.separator + instanceName);
+        File instancePath = new File(FormsApp.INSTANCES_PATH + File.separator + instanceName);
         when(formController.getInstanceFile()).thenReturn(instancePath);
-        Collect.getInstance().setFormController(formController);
+        FormsApp.getInstance().setFormController(formController);
 
         FormIndex originalFormIndex = FormIndex.createBeginningOfFormIndex();
         File indexFile = SaveToDiskTask.getFormIndexFile(instanceName);

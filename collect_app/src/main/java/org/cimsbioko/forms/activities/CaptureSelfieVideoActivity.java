@@ -29,7 +29,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.CameraUtils;
 import org.cimsbioko.forms.utilities.ToastUtils;
 import org.cimsbioko.forms.views.CameraPreview;
@@ -74,7 +74,7 @@ public class CaptureSelfieVideoActivity extends Activity {
         this.camPreview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Collect.allowClick(getClass().getName())) {
+                if (FormsApp.allowClick(getClass().getName())) {
                     if (!recording) {
                         // initialize video camera
                         if (prepareVideoRecorder()) {

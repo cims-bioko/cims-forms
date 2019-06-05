@@ -15,13 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
 import org.javarosa.core.model.osm.OSMTag;
 import org.javarosa.core.model.osm.OSMTagItem;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.http.CollectServerClient;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.utilities.FileUtils;
@@ -61,7 +61,7 @@ public class OSMWidget extends QuestionWidget implements BinaryWidget {
     public OSMWidget(Context context, FormEntryPrompt prompt) {
         super(context, prompt);
 
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
 
         formFileName = FileUtils.getFormBasenameFromMediaFolder(formController.getMediaFolder());
 

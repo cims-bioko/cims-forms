@@ -25,11 +25,11 @@ import androidx.core.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.BuildConfig;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.activities.DrawActivity;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.listeners.PermissionListener;
 import org.cimsbioko.forms.utilities.FileUtils;
 import org.cimsbioko.forms.utilities.WidgetAppearanceUtils;
@@ -173,7 +173,7 @@ public class AnnotateWidget extends BaseImageWidget {
         try {
             Uri uri = FileProvider.getUriForFile(getContext(),
                     BuildConfig.APPLICATION_ID + ".provider",
-                    new File(Collect.TMPFILE_PATH));
+                    new File(FormsApp.TMPFILE_PATH));
             // if this gets modified, the onActivityResult in
             // FormEntyActivity will also need to be updated.
             intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);

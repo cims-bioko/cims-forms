@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
-
-import org.cimsbioko.forms.application.Collect;
+import org.cimsbioko.forms.application.FormsApp;
 
 import java.util.Arrays;
 
@@ -14,7 +13,7 @@ public class PrefUtils {
 
     public static SharedPreferences getSharedPrefs() {
         return PreferenceManager.getDefaultSharedPreferences(
-            Collect.getInstance().getApplicationContext());
+            FormsApp.getInstance().getApplicationContext());
     }
 
     public static SharedPreferences getAdminSharedPrefs() {

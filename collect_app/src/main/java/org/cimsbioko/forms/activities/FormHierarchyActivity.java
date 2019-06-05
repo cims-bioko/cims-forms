@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.GroupDef;
 import org.javarosa.core.model.IFormElement;
@@ -37,7 +38,6 @@ import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.HierarchyListAdapter;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.exception.JavaRosaException;
 import org.cimsbioko.forms.logic.FormController;
 import org.cimsbioko.forms.logic.HierarchyElement;
@@ -137,12 +137,12 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         // https://github.com/opendatakit/collect/issues/998
         if (formController == null) {
             finish();
             Timber.w("FormController is null");
-            Collect.getInstance().logNullFormControllerEvent("FormHierarchyActivity");
+            FormsApp.getInstance().logNullFormControllerEvent("FormHierarchyActivity");
             return;
         }
 
@@ -210,7 +210,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
     }
 
     private void updateOptionsMenu() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
 
         // Not ready yet. Menu will be updated automatically once it's been prepared.
         if (optionsMenu == null || formController == null) {
@@ -238,7 +238,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * (e.g. if `jr:count` is explicitly set).
      */
     private boolean isGroupSizeLocked(FormIndex index) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         IFormElement element = formController.getCaptionPrompt(index).getFormElement();
         return element instanceof GroupDef && ((GroupDef) element).noAddRemove;
     }
@@ -317,7 +317,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * returns true if the current index was the only item in the repeat group.
      */
     private boolean didDeleteLastRepeatItem() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         FormIndex index = formController.getFormIndex();
         int event = formController.getEvent(index);
 
@@ -333,7 +333,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * e.g. after deleting the final remaining item in a repeat group.
      */
     private void goToPreviousEvent() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         try {
             formController.stepToPreviousScreenEvent();
         } catch (JavaRosaException e) {
@@ -349,7 +349,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * Navigates "up" in the form hierarchy.
      */
     protected void goUpLevel() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
 
         // If `repeatGroupPickerIndex` is set it means we're currently displaying
         // a list of repeat instances. If we unset `repeatGroupPickerIndex`,
@@ -375,7 +375,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * Each level is separated by `>`.
      */
     private String getCurrentPath() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         FormIndex index = formController.getFormIndex();
 
         // Step out to the enclosing group if the current index is something
@@ -408,7 +408,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * without changing the current index.
      */
     private FormIndex getRepeatPromptIndex(FormIndex repeatIndex) {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         FormIndex originalIndex = formController.getFormIndex();
 
         // Temporarily jump to the specified repeat group.
@@ -441,7 +441,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * Backs out until the index is at the beginning of a repeat group or the beginning of the form.
      */
     private void jumpToHierarchyStartIndex() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         FormIndex startIndex = formController.getFormIndex();
 
         // If we're not at the first level, we're inside a repeated group so we want to only
@@ -523,7 +523,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      */
     private void refreshView(boolean isGoingUp) {
         try {
-            FormController formController = Collect.getInstance().getFormController();
+            FormController formController = FormsApp.getInstance().getFormController();
 
             // Save the current index so we can return to the problematic question
             // in the event of an error.
@@ -739,7 +739,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
             case REPEAT_INSTANCE:
                 // Hide the picker.
                 repeatGroupPickerIndex = null;
-                Collect.getInstance().getFormController().jumpToIndex(index);
+                FormsApp.getInstance().getFormController().jumpToIndex(index);
                 setResult(RESULT_OK);
                 refreshView();
                 break;
@@ -751,10 +751,10 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * If the selected question is in a field list, show the entire field list.
      */
     void onQuestionClicked(FormIndex index) {
-        Collect.getInstance().getFormController().jumpToIndex(index);
-        if (Collect.getInstance().getFormController().indexIsInFieldList()) {
+        FormsApp.getInstance().getFormController().jumpToIndex(index);
+        if (FormsApp.getInstance().getFormController().indexIsInFieldList()) {
             try {
-                Collect.getInstance().getFormController().stepToPreviousScreenEvent();
+                FormsApp.getInstance().getFormController().stepToPreviousScreenEvent();
             } catch (JavaRosaException e) {
                 Timber.d(e);
                 createErrorDialog(e.getCause().getMessage());
@@ -769,7 +769,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      * Jumps to the form filling view with the given index shown.
      */
     void exitToIndex(FormIndex index) {
-        Collect.getInstance().getFormController().jumpToIndex(index);
+        FormsApp.getInstance().getFormController().jumpToIndex(index);
         setResult(RESULT_OK);
         finish();
     }
@@ -780,7 +780,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
      */
     @Override
     public void onBackPressed() {
-        FormController formController = Collect.getInstance().getFormController();
+        FormController formController = FormsApp.getInstance().getFormController();
         if (formController != null) {
             formController.getAuditEventLogger().exitView();
             formController.jumpToIndex(startIndex);
@@ -807,7 +807,7 @@ public class FormHierarchyActivity extends CollectAbstractActivity {
             public void onClick(DialogInterface dialog, int i) {
                 switch (i) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        FormController formController = Collect.getInstance().getFormController();
+                        FormController formController = FormsApp.getInstance().getFormController();
                         formController.jumpToIndex(currentIndex);
                         break;
                 }

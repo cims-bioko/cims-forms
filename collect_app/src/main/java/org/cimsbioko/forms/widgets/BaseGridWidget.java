@@ -32,12 +32,12 @@ import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.reference.InvalidReferenceException;
 import org.javarosa.core.reference.ReferenceManager;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryPrompt;
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.external.ExternalSelectChoice;
 import org.cimsbioko.forms.utilities.FileUtils;
 import org.cimsbioko.forms.utilities.FormEntryPromptUtils;
@@ -154,7 +154,7 @@ public abstract class BaseGridWidget extends ItemsWidget implements MultiChoiceW
                 ? new AppCompatRadioButton(getContext())
                 : new AppCompatCheckBox(getContext());
 
-        item.setTextSize(TypedValue.COMPLEX_UNIT_DIP, Collect.getQuestionFontsize());
+        item.setTextSize(TypedValue.COMPLEX_UNIT_DIP, FormsApp.getQuestionFontsize());
         item.setText(FormEntryPromptUtils.getItemText(getFormEntryPrompt(), items.get(index)));
         item.setTag(items.indexOf(items.get(index)));
         item.setGravity(isRTL() ? Gravity.END : Gravity.START);

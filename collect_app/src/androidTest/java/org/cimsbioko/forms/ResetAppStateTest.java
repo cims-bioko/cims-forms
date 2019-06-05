@@ -25,12 +25,12 @@ import androidx.test.InstrumentationRegistry;
 import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.cimsbioko.forms.application.Collect;
 import org.cimsbioko.forms.preferences.AdminKeys;
 import org.cimsbioko.forms.preferences.GeneralKeys;
 import org.cimsbioko.forms.provider.FormsProviderAPI;
@@ -80,7 +80,7 @@ public class ResetAppStateTest {
         setupTestSettings();
         resetAppState(Collections.singletonList(ResetUtility.ResetAction.RESET_PREFERENCES));
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance());
         assertEquals(settings.getString(GeneralKeys.KEY_USERNAME, ""), "");
         assertEquals(settings.getString(GeneralKeys.KEY_PASSWORD, ""), "");
         assertTrue(settings.getBoolean(AdminKeys.KEY_VIEW_SENT, true));
@@ -95,8 +95,8 @@ public class ResetAppStateTest {
         setupTestFormsDatabase();
         createTestItemsetsDatabaseFile();
         resetAppState(Collections.singletonList(ResetUtility.ResetAction.RESET_FORMS));
-        assertFolderEmpty(Collect.FORMS_PATH);
-        assertFalse(new File(Collect.METADATA_PATH + "/itemsets.db").exists());
+        assertFolderEmpty(FormsApp.FORMS_PATH);
+        assertFalse(new File(FormsApp.METADATA_PATH + "/itemsets.db").exists());
     }
 
     @Test
@@ -104,21 +104,21 @@ public class ResetAppStateTest {
         saveTestInstanceFiles();
         setupTestInstancesDatabase();
         resetAppState(Collections.singletonList(ResetUtility.ResetAction.RESET_INSTANCES));
-        assertFolderEmpty(Collect.INSTANCES_PATH);
+        assertFolderEmpty(FormsApp.INSTANCES_PATH);
     }
 
     @Test
     public void resetLayersTest() throws IOException {
         saveTestLayerFiles();
         resetAppState(Collections.singletonList(ResetUtility.ResetAction.RESET_LAYERS));
-        assertFolderEmpty(Collect.OFFLINE_LAYERS);
+        assertFolderEmpty(FormsApp.OFFLINE_LAYERS);
     }
 
     @Test
     public void resetCacheTest() throws IOException {
         saveTestCacheFiles();
         resetAppState(Collections.singletonList(ResetUtility.ResetAction.RESET_CACHE));
-        assertFolderEmpty(Collect.CACHE_PATH);
+        assertFolderEmpty(FormsApp.CACHE_PATH);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class ResetAppStateTest {
     private void setupTestSettings() throws IOException {
         String username = "usernameTest";
         String password = "passwordTest";
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect.getInstance());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance());
         settings
                 .edit()
                 .putString(GeneralKeys.KEY_USERNAME, username)
@@ -153,20 +153,20 @@ public class ResetAppStateTest {
 
         assertFalse(settings.getBoolean(AdminKeys.KEY_VIEW_SENT, false));
 
-        assertTrue(new File(Collect.SETTINGS).exists() || new File(Collect.SETTINGS).mkdir());
-        assertTrue(new File(Collect.SETTINGS + "/collect.settings").createNewFile());
-        assertTrue(new File(Collect.ODK_ROOT + "/collect.settings").createNewFile());
+        assertTrue(new File(FormsApp.SETTINGS).exists() || new File(FormsApp.SETTINGS).mkdir());
+        assertTrue(new File(FormsApp.SETTINGS + "/collect.settings").createNewFile());
+        assertTrue(new File(FormsApp.ODK_ROOT + "/collect.settings").createNewFile());
     }
 
     private void setupTestFormsDatabase() {
         ContentValues values = new ContentValues();
-        values.put(FormsProviderAPI.FormsColumns.JRCACHE_FILE_PATH, Collect.ODK_ROOT + "/.cache/3a76a386464925b6f3e53422673dfe3c.formdef");
+        values.put(FormsProviderAPI.FormsColumns.JRCACHE_FILE_PATH, FormsApp.ODK_ROOT + "/.cache/3a76a386464925b6f3e53422673dfe3c.formdef");
         values.put(FormsProviderAPI.FormsColumns.JR_FORM_ID, "jrFormId");
-        values.put(FormsProviderAPI.FormsColumns.FORM_MEDIA_PATH, Collect.FORMS_PATH + "/testFile1-media");
+        values.put(FormsProviderAPI.FormsColumns.FORM_MEDIA_PATH, FormsApp.FORMS_PATH + "/testFile1-media");
         values.put(FormsProviderAPI.FormsColumns.DATE, "1487077903756");
         values.put(FormsProviderAPI.FormsColumns.DISPLAY_NAME, "displayName");
-        values.put(FormsProviderAPI.FormsColumns.FORM_FILE_PATH, Collect.FORMS_PATH + "/testFile1.xml");
-        Collect.getInstance().getContentResolver()
+        values.put(FormsProviderAPI.FormsColumns.FORM_FILE_PATH, FormsApp.FORMS_PATH + "/testFile1.xml");
+        FormsApp.getInstance().getContentResolver()
                 .insert(FormsProviderAPI.FormsColumns.CONTENT_URI, values);
 
         assertEquals(1, getFormsCount());
@@ -174,49 +174,49 @@ public class ResetAppStateTest {
 
     private void setupTestInstancesDatabase() {
         ContentValues values = new ContentValues();
-        values.put(InstanceProviderAPI.InstanceColumns.INSTANCE_FILE_PATH, Collect.INSTANCES_PATH + "/testDir1/testFile1");
+        values.put(InstanceProviderAPI.InstanceColumns.INSTANCE_FILE_PATH, FormsApp.INSTANCES_PATH + "/testDir1/testFile1");
         values.put(InstanceProviderAPI.InstanceColumns.SUBMISSION_URI, "submissionUri");
         values.put(InstanceProviderAPI.InstanceColumns.DISPLAY_NAME, "displayName");
         values.put(InstanceProviderAPI.InstanceColumns.DISPLAY_NAME, "formName");
         values.put(InstanceProviderAPI.InstanceColumns.JR_FORM_ID, "jrformid");
         values.put(InstanceProviderAPI.InstanceColumns.JR_VERSION, "jrversion");
-        Collect.getInstance().getContentResolver()
+        FormsApp.getInstance().getContentResolver()
                 .insert(InstanceProviderAPI.InstanceColumns.CONTENT_URI, values);
 
         assertEquals(1, getInstancesCount());
     }
 
     private void createTestItemsetsDatabaseFile() throws IOException {
-        assertTrue(new File(Collect.METADATA_PATH + "/itemsets.db").createNewFile());
+        assertTrue(new File(FormsApp.METADATA_PATH + "/itemsets.db").createNewFile());
     }
 
     private void saveTestFormFiles() throws IOException {
-        assertTrue(new File(Collect.FORMS_PATH + "/testFile1.xml").createNewFile());
-        assertTrue(new File(Collect.FORMS_PATH + "/testFile2.xml").createNewFile());
-        assertTrue(new File(Collect.FORMS_PATH + "/testFile3.xml").createNewFile());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testFile1.xml").createNewFile());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testFile2.xml").createNewFile());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testFile3.xml").createNewFile());
 
-        assertTrue(new File(Collect.FORMS_PATH + "/testDir1/testFile1-media").mkdirs());
-        assertTrue(new File(Collect.FORMS_PATH + "/testDir2/testFile2-media").mkdirs());
-        assertTrue(new File(Collect.FORMS_PATH + "/testDir3/testFile3-media/testFile.csv").mkdirs());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testDir1/testFile1-media").mkdirs());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testDir2/testFile2-media").mkdirs());
+        assertTrue(new File(FormsApp.FORMS_PATH + "/testDir3/testFile3-media/testFile.csv").mkdirs());
     }
 
     private void saveTestInstanceFiles() {
-        assertTrue(new File(Collect.INSTANCES_PATH + "/testDir1/testFile1.xml").mkdirs());
-        assertTrue(new File(Collect.INSTANCES_PATH + "/testDir2/testFile2.xml").mkdirs());
-        assertTrue(new File(Collect.INSTANCES_PATH + "/testDir3").mkdirs());
+        assertTrue(new File(FormsApp.INSTANCES_PATH + "/testDir1/testFile1.xml").mkdirs());
+        assertTrue(new File(FormsApp.INSTANCES_PATH + "/testDir2/testFile2.xml").mkdirs());
+        assertTrue(new File(FormsApp.INSTANCES_PATH + "/testDir3").mkdirs());
     }
 
     private void saveTestLayerFiles() throws IOException {
-        assertTrue(new File(Collect.OFFLINE_LAYERS + "/testFile1").createNewFile());
-        assertTrue(new File(Collect.OFFLINE_LAYERS + "/testFile2").createNewFile());
-        assertTrue(new File(Collect.OFFLINE_LAYERS + "/testFile3").createNewFile());
-        assertTrue(new File(Collect.OFFLINE_LAYERS + "/testFile4").createNewFile());
+        assertTrue(new File(FormsApp.OFFLINE_LAYERS + "/testFile1").createNewFile());
+        assertTrue(new File(FormsApp.OFFLINE_LAYERS + "/testFile2").createNewFile());
+        assertTrue(new File(FormsApp.OFFLINE_LAYERS + "/testFile3").createNewFile());
+        assertTrue(new File(FormsApp.OFFLINE_LAYERS + "/testFile4").createNewFile());
     }
 
     private void saveTestCacheFiles() throws IOException {
-        assertTrue(new File(Collect.CACHE_PATH + "/testFile1").createNewFile());
-        assertTrue(new File(Collect.CACHE_PATH + "/testFile2").createNewFile());
-        assertTrue(new File(Collect.CACHE_PATH + "/testFile3").createNewFile());
+        assertTrue(new File(FormsApp.CACHE_PATH + "/testFile1").createNewFile());
+        assertTrue(new File(FormsApp.CACHE_PATH + "/testFile2").createNewFile());
+        assertTrue(new File(FormsApp.CACHE_PATH + "/testFile3").createNewFile());
     }
 
     private void saveTestOSMDroidFiles() throws IOException {
@@ -227,7 +227,7 @@ public class ResetAppStateTest {
 
     private int getFormsCount() {
         int forms = 0;
-        Cursor cursor = Collect.getInstance().getContentResolver().query(
+        Cursor cursor = FormsApp.getInstance().getContentResolver().query(
                 FormsProviderAPI.FormsColumns.CONTENT_URI, null, null, null,
                 FormsProviderAPI.FormsColumns.DISPLAY_NAME + " ASC");
         if (cursor != null) {
@@ -248,7 +248,7 @@ public class ResetAppStateTest {
 
     private int getInstancesCount() {
         int instances = 0;
-        Cursor cursor = Collect.getInstance().getContentResolver().query(
+        Cursor cursor = FormsApp.getInstance().getContentResolver().query(
                 InstanceProviderAPI.InstanceColumns.CONTENT_URI, null, null, null,
                 InstanceProviderAPI.InstanceColumns.DISPLAY_NAME + " ASC");
         if (cursor != null) {
