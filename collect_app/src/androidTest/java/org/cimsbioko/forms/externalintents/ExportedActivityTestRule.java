@@ -1,0 +1,21 @@
+package org.cimsbioko.forms.externalintents;
+
+import android.app.Activity;
+import androidx.test.rule.ActivityTestRule;
+
+import static org.cimsbioko.forms.externalintents.ExportedActivitiesUtils.clearDirectories;
+
+class ExportedActivityTestRule<A extends Activity> extends ActivityTestRule<A> {
+
+    ExportedActivityTestRule(Class<A> activityClass) {
+        super(activityClass);
+    }
+
+    @Override
+    protected void beforeActivityLaunched() {
+        super.beforeActivityLaunched();
+
+        clearDirectories();
+    }
+
+}
