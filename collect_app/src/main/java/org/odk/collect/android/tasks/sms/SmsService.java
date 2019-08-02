@@ -10,7 +10,6 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 import com.evernote.android.job.util.support.PersistableBundleCompat;
-import com.google.android.gms.analytics.HitBuilders;
 
 import org.odk.collect.android.R;
 import org.odk.collect.android.application.Collect;
@@ -285,7 +284,7 @@ public class SmsService {
          * so that error message is persisted along with SUBMISSION_STATUS_FAILED
          * */
         if (model.isSubmissionComplete()) {
-            markInstanceAsSubmittedOrDelete(instanceId, model.getCompletion(), model.getLastUpdated(), context);
+            markInstanceAsSubmittedOrDelete(instanceId);
         } else if (resultCode != RESULT_OK && resultCode != RESULT_OK_OTHERS_PENDING) {
             updateInstanceStatusFailedText(instanceId, event);
         }
@@ -316,28 +315,22 @@ public class SmsService {
         rxEventBus.post(new SmsRxEvent(instanceId, RESULT_QUEUED));
     }
 
-    private void markInstanceAsSubmittedOrDelete(String instanceId, SmsProgress progress, Date date, Context context) {
+    private void markInstanceAsSubmittedOrDelete(String instanceId) {
         String where = InstanceProviderAPI.InstanceColumns._ID + "=?";
         String[] whereArgs = {instanceId};
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(InstanceProviderAPI.InstanceColumns.DISPLAY_SUBTEXT, getDisplaySubtext(RESULT_OK, date, progress, context));
         contentValues.put(InstanceProviderAPI.InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMITTED);
-
-        Collect.getInstance()
-                .getDefaultTracker()
-                .send(new HitBuilders.EventBuilder()
-                        .setCategory("Submission")
-                        .setAction("SMS")
-                        .build());
 
         try (Cursor cursor = instancesDao.getInstancesCursorForId(instanceId)) {
             cursor.moveToPosition(-1);
 
             boolean isFormAutoDeleteOptionEnabled = (boolean) GeneralSharedPreferences.getInstance().get(GeneralKeys.KEY_DELETE_AFTER_SEND);
-            String formId;
+            String formId = null;
+            String formVersion = null;
             while (cursor.moveToNext()) {
                 formId = cursor.getString(cursor.getColumnIndex(InstanceProviderAPI.InstanceColumns.JR_FORM_ID));
+                formVersion = cursor.getString(cursor.getColumnIndex(InstanceProviderAPI.InstanceColumns.JR_VERSION));
                 if (InstanceServerUploader.formShouldBeAutoDeleted(formId, isFormAutoDeleteOptionEnabled)) {
 
                     List<String> instancesToDelete = new ArrayList<>();
@@ -348,6 +341,8 @@ public class SmsService {
                     instancesDao.updateInstance(contentValues, where, whereArgs);
                 }
             }
+
+            Collect.getInstance().logRemoteAnalytics("Submission", "SMS", Collect.getFormIdentifierHash(formId, formVersion));
         }
     }
 
@@ -361,7 +356,6 @@ public class SmsService {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(InstanceProviderAPI.InstanceColumns.STATUS, InstanceProviderAPI.STATUS_SUBMISSION_FAILED);
-        contentValues.put(InstanceProviderAPI.InstanceColumns.DISPLAY_SUBTEXT, getDisplaySubtext(event.getResultCode(), event.getLastUpdated(), event.getProgress(), context));
 
         instancesDao.updateInstance(contentValues, where, whereArgs);
     }

@@ -15,11 +15,8 @@
 package org.odk.collect.android.upload;
 
 import android.database.Cursor;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.sheets.v4.model.Sheet;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
@@ -40,8 +37,8 @@ import org.odk.collect.android.dto.Form;
 import org.odk.collect.android.dto.Instance;
 import org.odk.collect.android.exception.BadUrlException;
 import org.odk.collect.android.exception.MultipleFoldersFoundException;
-import org.odk.collect.android.preferences.GeneralSharedPreferences;
 import org.odk.collect.android.preferences.GeneralKeys;
+import org.odk.collect.android.preferences.GeneralSharedPreferences;
 import org.odk.collect.android.tasks.FormLoaderTask;
 import org.odk.collect.android.utilities.FileUtils;
 import org.odk.collect.android.utilities.TextUtils;
@@ -75,46 +72,14 @@ public class InstanceGoogleSheetsUploader extends InstanceUploader {
     private static final String ALTITUDE_TITLE_POSTFIX = "-altitude";
     private static final String ACCURACY_TITLE_POSTFIX = "-accuracy";
 
-    private final GoogleAccountsManager accountsManager;
     private final DriveHelper driveHelper;
     private final SheetsHelper sheetsHelper;
 
     private Spreadsheet spreadsheet;
 
     public InstanceGoogleSheetsUploader(GoogleAccountsManager accountsManager) {
-        this.accountsManager = accountsManager;
         driveHelper = accountsManager.getDriveHelper();
         sheetsHelper = accountsManager.getSheetsHelper();
-    }
-
-    public String getAuthToken() throws IOException, GoogleAuthException {
-        String token;
-        try {
-            token = accountsManager.getCredential().getToken();
-            // Immediately invalidate so we get a different one if we have to try again
-            GoogleAuthUtil.invalidateToken(accountsManager.getContext(), token);
-            return token;
-        } catch (UserRecoverableAuthException e) {
-            if (accountsManager.getActivity() != null) {
-                accountsManager.getActivity().startActivityForResult(e.getIntent(),
-                        GoogleAccountsManager.REQUEST_AUTHORIZATION);
-            }
-            return null;
-        }
-    }
-
-    /**
-     * Returns whether the submissions folder previously existed or was successfully created. False
-     * if multiple folders match or there was another exception.
-     */
-    public boolean submissionsFolderExistsAndIsUnique() {
-        try {
-            driveHelper.createOrGetIDOfSubmissionsFolder();
-            return true;
-        } catch (IOException | MultipleFoldersFoundException e) {
-            Timber.d(e, "Exception getting or creating root folder for submissions");
-            return false;
-        }
     }
 
     @Override
@@ -154,11 +119,29 @@ public class InstanceGoogleSheetsUploader extends InstanceUploader {
         } catch (UploadException e) {
             saveFailedStatusToDatabase(instance);
             throw e;
+        } catch (GoogleJsonResponseException e) {
+            saveFailedStatusToDatabase(instance);
+            throw new UploadException(getErrorMessageFromGoogleJsonResponseException(e));
         }
 
         saveSuccessStatusToDatabase(instance);
         // Google Sheets can't provide a custom success message
         return null;
+    }
+
+    private String getErrorMessageFromGoogleJsonResponseException(GoogleJsonResponseException e) {
+        String message = e.getMessage();
+        if (e.getDetails() != null) {
+            switch (e.getDetails().getCode()) {
+                case 403 :
+                    message = Collect.getInstance().getString(R.string.google_sheets_access_denied);
+                    break;
+                case 429 :
+                    message = FAIL + "Too many requests per 100 seconds";
+                    break;
+            }
+        }
+        return message;
     }
 
     @Override
@@ -229,6 +212,8 @@ public class InstanceGoogleSheetsUploader extends InstanceUploader {
                 sheetsHelper.insertRow(spreadsheet.getSpreadsheetId(), sheetTitle,
                         new ValueRange().setValues(Collections.singletonList(prepareListOfValues(sheetCells.get(0), columnTitles, answers))));
             }
+        } catch (GoogleJsonResponseException e) {
+            throw new UploadException(getErrorMessageFromGoogleJsonResponseException(e));
         } catch (IOException e) {
             throw new UploadException(e);
         }
@@ -277,7 +262,7 @@ public class InstanceGoogleSheetsUploader extends InstanceUploader {
 
         String folderId;
         try {
-            folderId = driveHelper.createOrGetIDOfFolderWithName(instance.getJrFormId());
+            folderId = driveHelper.createOrGetIDOfSubmissionsFolder();
         } catch (IOException | MultipleFoldersFoundException e) {
             Timber.e(e);
             throw new UploadException(e);
@@ -551,17 +536,14 @@ public class InstanceGoogleSheetsUploader extends InstanceUploader {
         return false;
     }
 
-    private void setUpSpreadsheet(String urlString) throws UploadException {
+    private void setUpSpreadsheet(String urlString) throws UploadException, GoogleJsonResponseException {
         if (spreadsheet == null || spreadsheet.getSpreadsheetUrl() == null || !urlString.equals(spreadsheet.getSpreadsheetUrl())) {
             try {
                 spreadsheet = sheetsHelper.getSpreadsheet(UrlUtils.getSpreadsheetID(urlString));
                 spreadsheet.setSpreadsheetUrl(urlString);
             } catch (GoogleJsonResponseException e) {
-                String message = e.getMessage();
-                if (e.getDetails() != null && e.getDetails().getCode() == 403) {
-                    message = Collect.getInstance().getString(R.string.google_sheets_access_denied);
-                }
-                throw new UploadException(message);
+                Timber.i(e);
+                throw e;
             } catch (IOException | BadUrlException e) {
                 Timber.i(e);
                 throw new UploadException(e);

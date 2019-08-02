@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.TextKeyListener;
 import android.text.method.TextKeyListener.Capitalize;
 import android.util.TypedValue;
@@ -30,8 +32,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.Toast;
-
-import com.google.android.gms.analytics.HitBuilders;
 
 import org.javarosa.core.model.data.IAnswerData;
 import org.javarosa.core.model.data.StringData;
@@ -46,6 +46,7 @@ import org.odk.collect.android.utilities.ActivityAvailability;
 import org.odk.collect.android.utilities.DependencyProvider;
 import org.odk.collect.android.utilities.ObjectUtils;
 import org.odk.collect.android.utilities.SoftKeyboardUtils;
+import org.odk.collect.android.utilities.ToastUtils;
 import org.odk.collect.android.utilities.ViewIds;
 import org.odk.collect.android.widgets.interfaces.BinaryWidget;
 
@@ -154,23 +155,23 @@ public class ExStringWidget extends QuestionWidget implements BinaryWidget {
         answerLayout.addView(answer);
         addAnswerView(answerLayout);
 
-        Collect.getInstance().getDefaultTracker()
-                .send(new HitBuilders.EventBuilder()
-                        .setCategory("WidgetType")
-                        .setAction("ExternalApp")
-                        .setLabel(Collect.getCurrentFormIdentifierHash())
-                        .build());
-
+        Collect.getInstance().logRemoteAnalytics("WidgetType", "ExternalApp", Collect.getCurrentFormIdentifierHash());
     }
 
     protected void fireActivity(Intent i) throws ActivityNotFoundException {
         i.putExtra("value", getFormEntryPrompt().getAnswerText());
-        ((Activity) getContext()).startActivityForResult(i, RequestCodes.EX_STRING_CAPTURE);
+        try {
+            ((Activity) getContext()).startActivityForResult(i, RequestCodes.EX_STRING_CAPTURE);
+        } catch (SecurityException e) {
+            Timber.i(e);
+            ToastUtils.showLongToast(R.string.not_granted_permission);
+        }
     }
 
     @Override
     public void clearAnswer() {
         answer.setText(null);
+        widgetValueChanged();
     }
 
     @Override
@@ -186,6 +187,7 @@ public class ExStringWidget extends QuestionWidget implements BinaryWidget {
     public void setBinaryData(Object answer) {
         StringData stringData = ExternalAppsUtils.asStringData(answer);
         this.answer.setText(stringData == null ? null : stringData.getValue().toString());
+        widgetValueChanged();
     }
 
     @Override
@@ -301,6 +303,23 @@ public class ExStringWidget extends QuestionWidget implements BinaryWidget {
             answer.setFocusable(true);
             answer.setFocusableInTouchMode(true);
             answer.setEnabled(true);
+
+            answer.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    widgetValueChanged();
+                }
+            });
         }
         launchIntentButton.setEnabled(false);
         launchIntentButton.setFocusable(false);

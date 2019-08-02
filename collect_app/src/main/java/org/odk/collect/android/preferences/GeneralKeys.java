@@ -59,8 +59,23 @@ public final class GeneralKeys {
     public static final String KEY_NAVIGATION               = "navigation";
     public static final String KEY_SHOW_SPLASH              = "showSplash";
     public static final String KEY_SPLASH_PATH              = "splashPath";
-    public static final String KEY_MAP_SDK                  = "map_sdk_behavior";
-    public static final String KEY_MAP_BASEMAP              = "map_basemap_behavior";
+
+    // map_preferences.xml
+    public static final String CATEGORY_BASEMAP             = "category_basemap";
+    public static final String KEY_BASEMAP_SOURCE           = "basemap_source";
+    public static final String BASEMAP_SOURCE_GOOGLE        = "google";
+    public static final String BASEMAP_SOURCE_MAPBOX        = "mapbox";
+    public static final String BASEMAP_SOURCE_OSM           = "osm";
+    public static final String BASEMAP_SOURCE_USGS          = "usgs";
+    public static final String BASEMAP_SOURCE_STAMEN        = "stamen";
+    public static final String BASEMAP_SOURCE_CARTO         = "carto";
+
+    public static final String KEY_REFERENCE_LAYER          = "reference_layer";
+
+    public static final String KEY_GOOGLE_MAP_STYLE         = "google_map_style";
+    public static final String KEY_MAPBOX_MAP_STYLE         = "mapbox_map_style";
+    public static final String KEY_USGS_MAP_STYLE           = "usgs_map_style";
+    public static final String KEY_CARTO_MAP_STYLE          = "carto_map_style";
 
     // other keys
     public static final String KEY_LAST_VERSION             = "lastVersion";
@@ -74,12 +89,8 @@ public final class GeneralKeys {
     public static final String NAVIGATION_SWIPE             = "swipe";
     public static final String CONSTRAINT_BEHAVIOR_ON_SWIPE = "on_swipe";
     public static final String NAVIGATION_BUTTONS           = "buttons";
-    private static final String GOOGLE_MAPS                 = "google_maps";
     private static final String AUTOSEND_OFF                = "off";
     private static final String GUIDANCE_HINT_OFF           = "no";
-    static final String GOOGLE_MAPS_BASEMAP_DEFAULT         = "streets";
-    static final String OSM_BASEMAP_KEY                     = "osmdroid";
-    static final String OSM_MAPS_BASEMAP_DEFAULT            = "openmap_streets";
 
     private static HashMap<String, Object> getHashMap() {
         HashMap<String, Object> hashMap = new HashMap<>();
@@ -123,8 +134,8 @@ public final class GeneralKeys {
         hashMap.put(KEY_NAVIGATION,                 NAVIGATION_SWIPE);
         hashMap.put(KEY_SHOW_SPLASH,                false);
         hashMap.put(KEY_SPLASH_PATH,                Collect.getInstance().getString(R.string.default_splash_path));
-        hashMap.put(KEY_MAP_SDK,                    GOOGLE_MAPS);
-        hashMap.put(KEY_MAP_BASEMAP,                GOOGLE_MAPS_BASEMAP_DEFAULT);
+        // map_preferences.xml
+        hashMap.put(KEY_BASEMAP_SOURCE,             BASEMAP_SOURCE_GOOGLE);
         return hashMap;
     }
 

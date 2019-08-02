@@ -197,6 +197,7 @@
     <string name="sent_on_date_at_time">\'Sent on\' EEE, MMM dd, yyyy \'at\' HH:mm</string> <!-- http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html -->
     <string name="sending_failed_on_date_at_time">\'Sending failed on\' EEE, MMM dd, yyyy \'at\' HH:mm</string> <!-- http://docs.oracle.com/javase/6/docs/api/java/text/SimpleDateFormat.html -->
     <string name="deleted_on_date_at_time">\'Deleted on\' EEE, MMM dd, yyyy \'at\' HH:mm</string>
+    <string name="submission_deleted">Submission deleted</string>
     <string name="version">Version:</string>
     <string name="parent_form_not_present">Unable to edit this saved form because the corresponding blank form is not present or was deleted.\n\nForm ID: %1$s</string>
     <string name="launch_app">Launch</string>
@@ -224,7 +225,7 @@
     <string name="found_in_settings">Uncheck to hide from General Settings</string>
     <string name="save_preferences">Save Settings to Disk</string>
     <string name="form_forward">Next</string>
-    <string name="form_backward">Prev</string>
+    <string name="form_backward">Back</string>
     <string name="navigation">Navigation</string>
     <string name="swipe_navigation">Use horizontal swipes</string>
     <string name="buttons_navigation">Use forward/backward buttons</string>
@@ -311,25 +312,41 @@
     <string name="leave_a_review">Leave a Play Store review</string>
     <string name="leave_a_review_msg">Your (hopefully positive) review increases the visibility of the App in the Play Store.</string>
     <!-- Geo string added in feature-geofeatures branch-->
-    <string name="map_preferences">Mapping</string>
-    <string name="map_sdk_selector_title">Mapping SDK</string>
-    <string name="map_sdk_behavior">Mapping SDK</string>
-    <string name="google_maps_sdk">Google Maps SDK</string>
-    <string name="openstreetmap_sdk">OpenStreetMap SDK</string>
-    <string name="show_map_sdk">Show Map SDK Options</string>
-    <string name="openmap_streets">OSM Streets</string>
+
+    <string name="maps">Maps</string>
+
+    <!--
+      TODO(ping): Delete these openmap_* strings when we're ready to move on from OSMDroid.
+      These strings are only being used to preserve compatibility with pre-existing
+       tile caches, and are not shown in the UI.
+    -->
     <string name="openmap_usgs_topo">USGS National Map Topo</string>
     <string name="openmap_usgs_sat">USGS National Map Hybrid</string>
     <string name="openmap_usgs_img">USGS National Map Imagery</string>
     <string name="openmap_stamen_terrain">Stamen Terrain</string>
     <string name="openmap_cartodb_positron">CartoDB Positron</string>
     <string name="openmap_cartodb_darkmatter">CartoDB Dark Matter</string>
+
+    <string name="basemap">Basemap</string>
+    <string name="basemap_source">Source</string>
+    <string name="map_style_label">%s map style</string>
+
     <string name="streets">Streets</string>
     <string name="terrain">Terrain</string>
     <string name="hybrid">Hybrid</string>
     <string name="satellite">Satellite</string>
-    <string name="map_basemap_selector_title">Basemaps</string>
-    <string name="show_map_basemap">Show Basemap Options</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="outdoors">Outdoors</string>
+    <string name="topographic">Topographic</string>
+
+    <string name="carto_map_style_positron">Positron</string>
+    <string name="carto_map_style_dark_matter">Dark Matter</string>
+
+    <string name="reference_layer">Reference layer</string>
+    <string name="layer_data_caption_none">There are no layer files in %1$s that are supported by the %2$s basemap.</string>
+    <string name="layer_data_caption">Above are all the layer files in %1$s that are supported by the %2$s basemap.</string>
+    <string name="layer_data_file">Layer data file</string>
 
     <string name="save_point">Save GeoPoint</string>
     <string name="get_point">Start GeoPoint</string>
@@ -342,12 +359,7 @@
     <string name="start">Start</string>
     <string name="enable_gps">Enable GPS</string>
     <string name="geotrace_title">GeoTrace</string>
-    <string name="polygon_save">Save as Polygon</string>
-    <string name="polygon_save_deprecation_warning">(If you use GeoTrace to collect polygons, update your form to use GeoShape before the next update. See https://bit.ly/odk18277.)</string>
-    <string name="polyline_save">Save as Polyline</string>
-    <string name="gps_enable_message">GPS is disabled in your device. Would you like to enable it?</string>
-    <string name="select_offline_layer">Select Offline Layer</string>
-    <string name="polygon_or_polyline">"Save GeoTrace As"</string>
+    <string name="gps_enable_message">GPS is disabled on your device. Would you like to enable it?</string>
     <string name="geo_clear_warning">Feature already created. Would you like to clear the feature?</string>
     <string name="geo_exit_warning">Discard changes and return to ODK?</string>
     <string name="polygon_validator">Must have at least 3 points to create Polygon</string>
@@ -526,7 +538,6 @@
     <string name="wifi_autosend">Wifi only</string>
     <string name="cellular_autosend">Cellular only</string>
     <string name="wifi_cellular_autosend">Wifi or cellular</string>
-    <string name="map_basemap_behavior_title">Basemap</string>
     <string name="form_management_preferences">Form management</string>
     <string name="form_submission_category">Form submission</string>
     <string name="form_filling_category">Form filling</string>
@@ -540,7 +551,6 @@
     <string name="type">Type</string>
     <string name="form_entry">Uncheck to hide from Form Entry</string>
     <string name="use_device_language">Use device language</string>
-    <string name="not_supported_offline_layer_format">Selected offline layer file uses the PBF format which is not supported!</string>
     <string name="invalid_email_address">Invalid email address!</string>
     <string name="sort_by">Sort by</string>
     <string name="server">Server</string>
@@ -600,9 +610,20 @@
     <string name="islamic_month_8">Sha\'ban</string>
     <string name="islamic_month_9">Ramadan</string>
     <string name="islamic_month_10">Shawwal</string>
-
     <string name="islamic_month_11">Dhu al-Qidah</string>
     <string name="islamic_month_12">Dhu al-Hijjah</string>
+    <string name="persian_month_1">Farvardin</string>
+    <string name="persian_month_2">Ordibehesht</string>
+    <string name="persian_month_3">Khordad</string>
+    <string name="persian_month_4">Tir</string>
+    <string name="persian_month_5">Mordad</string>
+    <string name="persian_month_6">Shahrivar</string>
+    <string name="persian_month_7">Mehr</string>
+    <string name="persian_month_8">Aban</string>
+    <string name="persian_month_9">Azar</string>
+    <string name="persian_month_10">Dey</string>
+    <string name="persian_month_11">Bahman</string>
+    <string name="persian_month_12">Esfand</string>
     <string name="moving_backwards_title">Moving backwards</string>
     <string name="moving_backwards_disabled_title">Moving backwards disabled</string>
     <string name="moving_backwards_disabled_message">Configure the device to prevent users from bypassing this setting?\n\nThe changes are:\n\u2022 Disable Edit Saved Form\n\u2022 Disable Save Form\n\u2022 Disable Go To Prompt\n\u2022 Set Constraint processing to Validate upon forward swipe</string>
@@ -693,4 +714,8 @@
     <string name="number_picker_title">Number Picker</string>
     <string name="too_complex_form">This form is too complex for this device. Try simplifying expressions or ask for help on the forum.</string>
     <string name="reading_files">Reading files</string>
+    <string name="copying_media_files_failed">Copying media files failed</string>
+    <string name="qr_code_not_found">QR Code not found in the selected image</string>
+    <string name="not_granted_permission">The activity you are trying to start requires a permission which is not granted.</string>
+    <string name="basemap_source_unavailable">Sorry, %s basemaps are not available on this device.  Please choose another basemap in General Settings &gt; Maps.</string>
 </resources>

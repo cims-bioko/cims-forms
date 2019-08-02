@@ -20,7 +20,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.support.v4.content.CursorLoader;
+import androidx.loader.content.CursorLoader;
 
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.dto.Form;
@@ -112,6 +112,23 @@ public class FormsDao {
         return getFormsCursor(null, selection, selectionArgs, null);
     }
 
+    public String getFormTitleForFormIdAndFormVersion(String formId, String formVersion) {
+        String formTitle = "";
+
+        Cursor cursor = getFormsCursor(formId, formVersion);
+        if (cursor != null) {
+            try {
+                if (cursor.moveToFirst()) {
+                    formTitle = cursor.getString(cursor.getColumnIndex(FormsProviderAPI.FormsColumns.DISPLAY_NAME));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        return formTitle;
+    }
+
     public boolean isFormEncrypted(String formId, String formVersion) {
         boolean encrypted = false;
 
@@ -182,13 +199,12 @@ public class FormsDao {
         try {
             for (String hash : hashes) {
                 c = getFormsCursorForMd5Hash(hash);
-                if (c.getCount() > 0) {
-                    c.moveToFirst();
+                if (c != null && c.moveToFirst()) {
                     String id = c.getString(c.getColumnIndex(FormsProviderAPI.FormsColumns._ID));
                     idsToDelete.add(id);
+                    c.close();
+                    c = null;
                 }
-                c.close();
-                c = null;
             }
         } finally {
             if (c != null) {
@@ -227,7 +243,6 @@ public class FormsDao {
                     int formFilePathColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.FORM_FILE_PATH);
                     int submissionUriColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.SUBMISSION_URI);
                     int base64RSAPublicKeyColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.BASE64_RSA_PUBLIC_KEY);
-                    int displaySubtextColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.DISPLAY_SUBTEXT);
                     int md5HashColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.MD5_HASH);
                     int dateColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.DATE);
                     int jrCacheFilePathColumnIndex = cursor.getColumnIndex(FormsProviderAPI.FormsColumns.JRCACHE_FILE_PATH);
@@ -246,7 +261,6 @@ public class FormsDao {
                             .formFilePath(cursor.getString(formFilePathColumnIndex))
                             .submissionUri(cursor.getString(submissionUriColumnIndex))
                             .base64RSAPublicKey(cursor.getString(base64RSAPublicKeyColumnIndex))
-                            .displaySubtext(cursor.getString(displaySubtextColumnIndex))
                             .md5Hash(cursor.getString(md5HashColumnIndex))
                             .date(cursor.getLong(dateColumnIndex))
                             .jrCacheFilePath(cursor.getString(jrCacheFilePathColumnIndex))
@@ -275,7 +289,6 @@ public class FormsDao {
         values.put(FormsProviderAPI.FormsColumns.FORM_FILE_PATH, form.getFormFilePath());
         values.put(FormsProviderAPI.FormsColumns.SUBMISSION_URI, form.getSubmissionUri());
         values.put(FormsProviderAPI.FormsColumns.BASE64_RSA_PUBLIC_KEY, form.getBASE64RSAPublicKey());
-        values.put(FormsProviderAPI.FormsColumns.DISPLAY_SUBTEXT, form.getDisplaySubtext());
         values.put(FormsProviderAPI.FormsColumns.MD5_HASH, form.getMD5Hash());
         values.put(FormsProviderAPI.FormsColumns.DATE, form.getDate());
         values.put(FormsProviderAPI.FormsColumns.JRCACHE_FILE_PATH, form.getJrCacheFilePath());

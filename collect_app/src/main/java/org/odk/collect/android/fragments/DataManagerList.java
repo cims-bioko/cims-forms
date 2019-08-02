@@ -19,9 +19,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.CursorLoader;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.content.CursorLoader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,8 +134,8 @@ public class DataManagerList extends InstanceListFragment
     }
 
     private void setupAdapter() {
-        String[] data = new String[]{InstanceColumns.DISPLAY_NAME, InstanceColumns.DISPLAY_SUBTEXT};
-        int[] view = new int[]{R.id.form_title, R.id.form_subtitle};
+        String[] data = new String[]{InstanceColumns.DISPLAY_NAME};
+        int[] view = new int[]{R.id.form_title};
 
         listAdapter = new InstanceListCursorAdapter(getActivity(),
                 R.layout.form_chooser_list_item_multiple_choice, null, data, view, false);

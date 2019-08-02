@@ -22,9 +22,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import androidx.annotation.NonNull;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -74,17 +74,17 @@ public class InstanceChooserList extends InstanceListActivity implements
 
             setTitle(getString(R.string.review_data));
             editMode = true;
-            sortingOptions = new String[]{
-                    getString(R.string.sort_by_name_asc), getString(R.string.sort_by_name_desc),
-                    getString(R.string.sort_by_date_asc), getString(R.string.sort_by_date_desc),
-                    getString(R.string.sort_by_status_asc), getString(R.string.sort_by_status_desc)
+            sortingOptions = new int[] {
+                    R.string.sort_by_name_asc, R.string.sort_by_name_desc,
+                    R.string.sort_by_date_asc, R.string.sort_by_date_desc,
+                    R.string.sort_by_status_asc, R.string.sort_by_status_desc
             };
         } else {
             setTitle(getString(R.string.view_sent_forms));
 
-            sortingOptions = new String[]{
-                    getString(R.string.sort_by_name_asc), getString(R.string.sort_by_name_desc),
-                    getString(R.string.sort_by_date_asc), getString(R.string.sort_by_date_desc)
+            sortingOptions = new int[] {
+                    R.string.sort_by_name_asc, R.string.sort_by_name_desc,
+                    R.string.sort_by_date_asc, R.string.sort_by_date_desc
             };
             ((TextView) findViewById(android.R.id.empty)).setText(R.string.no_items_display_sent_forms);
         }
@@ -196,10 +196,10 @@ public class InstanceChooserList extends InstanceListActivity implements
 
     private void setupAdapter() {
         String[] data = new String[]{
-                InstanceColumns.DISPLAY_NAME, InstanceColumns.DISPLAY_SUBTEXT, InstanceColumns.DELETED_DATE
+                InstanceColumns.DISPLAY_NAME, InstanceColumns.DELETED_DATE
         };
         int[] view = new int[]{
-                R.id.form_title, R.id.form_subtitle, R.id.form_subtitle2
+                R.id.form_title, R.id.form_subtitle2
         };
 
         boolean shouldCheckDisabled = !editMode;

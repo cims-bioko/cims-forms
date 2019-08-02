@@ -23,8 +23,8 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -44,6 +44,7 @@ import org.odk.collect.android.R;
 import org.odk.collect.android.activities.FormEntryActivity;
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.listeners.AudioPlayListener;
+import org.odk.collect.android.listeners.WidgetValueChangedListener;
 import org.odk.collect.android.logic.FormController;
 import org.odk.collect.android.preferences.GeneralSharedPreferences;
 import org.odk.collect.android.preferences.GuidanceHint;
@@ -89,6 +90,8 @@ public abstract class QuestionWidget
     private Bundle state;
     protected ThemeUtils themeUtils;
     private int playColor;
+
+    private WidgetValueChangedListener valueChangedListener;
 
     public QuestionWidget(Context context, FormEntryPrompt prompt) {
         super(context);
@@ -142,6 +145,10 @@ public abstract class QuestionWidget
 
         addQuestionMediaLayout(getQuestionMediaLayout());
         addHelpTextLayout(getHelpTextLayout());
+
+        if (context instanceof FormEntryActivity && !getFormEntryPrompt().isReadOnly()) {
+            registerToClearAnswerOnLongPress((FormEntryActivity) context);
+        }
     }
 
     private TextView setupGuidanceTextAndLayout(TextView guidanceTextView, FormEntryPrompt prompt) {
@@ -465,6 +472,15 @@ public abstract class QuestionWidget
     }
 
     /**
+     * Register this widget's child views to pop up a context menu to clear the widget when the
+     * user long presses on it. Widget subclasses may override this if some or all of their
+     * components need to intercept long presses.
+     */
+    protected void registerToClearAnswerOnLongPress(FormEntryActivity activity) {
+        activity.registerForContextMenu(this);
+    }
+
+    /**
      * Every subclassed widget should override this, adding any views they may contain, and calling
      * super.cancelLongPress()
      */
@@ -530,7 +546,7 @@ public abstract class QuestionWidget
             button.setLayoutParams(params);
 
             button.setOnClickListener(v -> {
-                if (Collect.allowClick(getClass().getName())) {
+                if (Collect.allowClick(QuestionWidget.class.getName())) {
                     ((ButtonWidget) this).onButtonClick(withId);
                 }
             });
@@ -674,5 +690,19 @@ public abstract class QuestionWidget
 
     public PermissionUtils getPermissionUtils() {
         return permissionUtils;
+    }
+
+    public void setPermissionUtils(PermissionUtils permissionUtils) {
+        this.permissionUtils = permissionUtils;
+    }
+
+    public void setValueChangedListener(WidgetValueChangedListener valueChangedListener) {
+        this.valueChangedListener = valueChangedListener;
+    }
+
+    public void widgetValueChanged() {
+        if (valueChangedListener != null) {
+            valueChangedListener.widgetValueChanged(this);
+        }
     }
 }

@@ -192,7 +192,6 @@
   <string name="found_in_settings">Deselekteer om van Algemene Verstellings af te haal</string>
   <string name="save_preferences">Stoor Verstellings op Skyf</string>
   <string name="form_forward">Volgende</string>
-  <string name="form_backward">Vorige</string>
   <string name="navigation">Navigasie</string>
   <string name="swipe_navigation">Gebruik horisontale swipes</string>
   <string name="buttons_navigation">Gebruik vorentoe/agtertoe knoppies</string>
@@ -251,6 +250,9 @@
   <string name="delete_after_send_summary">Verwyder gefinaliseerde vorms en media nadat dit server toe gestuur is</string>
   <string name="change_server_url">Server URL</string>
   <!--Geo string added in feature-geofeatures branch-->
+  <!--TODO(ping): Delete these openmap_* strings when we're ready to move on from OSMDroid.
+      These strings are only being used to preserve compatibility with pre-existing
+       tile caches, and are not shown in the UI.-->
   <!--&lt; and &gt; surrounds the text so it will appear as <no form loaded>-->
   <!--%1$s represents degrees, %2$s represents minutes and %3$s represents seconds as in W 18°48'8"-->
   <!--%1$s represents degrees, %2$s represents minutes and %3$s represents seconds as in E 18°48'8"-->

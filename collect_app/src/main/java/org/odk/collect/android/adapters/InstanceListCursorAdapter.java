@@ -27,11 +27,14 @@ import android.widget.TextView;
 import org.odk.collect.android.R;
 import org.odk.collect.android.dao.FormsDao;
 import org.odk.collect.android.provider.FormsProviderAPI;
+import org.odk.collect.android.provider.InstanceProvider;
 import org.odk.collect.android.provider.InstanceProviderAPI;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 public class InstanceListCursorAdapter extends SimpleCursorAdapter {
     private final Context context;
@@ -49,6 +52,8 @@ public class InstanceListCursorAdapter extends SimpleCursorAdapter {
 
         ImageView imageView = view.findViewById(R.id.image);
         setImageFromStatus(imageView);
+
+        setUpSubtext(view);
 
         // Some form lists never contain disabled items; if so, we're done.
         if (!shouldCheckDisabled) {
@@ -73,14 +78,19 @@ public class InstanceListCursorAdapter extends SimpleCursorAdapter {
             }
         }
 
-        Long date = getCursor().getLong(getCursor().getColumnIndex(InstanceProviderAPI.InstanceColumns.DELETED_DATE));
+        long date = getCursor().getLong(getCursor().getColumnIndex(InstanceProviderAPI.InstanceColumns.DELETED_DATE));
 
         if (date != 0 || !formExists || isFormEncrypted) {
             String disabledMessage;
 
             if (date != 0) {
-                String deletedTime = context.getString(R.string.deleted_on_date_at_time);
-                disabledMessage = new SimpleDateFormat(deletedTime, Locale.getDefault()).format(new Date(date));
+                try {
+                    String deletedTime = context.getString(R.string.deleted_on_date_at_time);
+                    disabledMessage = new SimpleDateFormat(deletedTime, Locale.getDefault()).format(new Date(date));
+                } catch (IllegalArgumentException e) {
+                    Timber.e(e);
+                    disabledMessage = context.getString(R.string.submission_deleted);
+                }
             } else if (!formExists) {
                 disabledMessage = context.getString(R.string.deleted_form);
             } else {
@@ -125,6 +135,15 @@ public class InstanceListCursorAdapter extends SimpleCursorAdapter {
         formSubtitle.setAlpha(0.38f);
         disabledCause.setAlpha(0.38f);
         imageView.setAlpha(0.38f);
+    }
+
+    private void setUpSubtext(View view) {
+        long lastStatusChangeDate = getCursor().getLong(getCursor().getColumnIndex(InstanceProviderAPI.InstanceColumns.LAST_STATUS_CHANGE_DATE));
+        String status = getCursor().getString(getCursor().getColumnIndex(InstanceProviderAPI.InstanceColumns.STATUS));
+        String subtext = InstanceProvider.getDisplaySubtext(context, status, new Date(lastStatusChangeDate));
+
+        final TextView formSubtitle = view.findViewById(R.id.form_subtitle);
+        formSubtitle.setText(subtext);
     }
 
     private void setImageFromStatus(ImageView imageView) {

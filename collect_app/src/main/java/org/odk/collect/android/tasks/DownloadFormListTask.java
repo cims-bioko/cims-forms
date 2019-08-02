@@ -15,7 +15,7 @@
 package org.odk.collect.android.tasks;
 
 import android.os.AsyncTask;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import org.odk.collect.android.listeners.FormListDownloaderListener;
 import org.odk.collect.android.logic.FormDetails;
@@ -33,14 +33,20 @@ import java.util.HashMap;
  */
 public class DownloadFormListTask extends AsyncTask<Void, String, HashMap<String, FormDetails>> {
 
+    private final DownloadFormListUtils downloadFormListUtils;
+
     private FormListDownloaderListener stateListener;
     private String url;
     private String username;
     private String password;
 
+    public DownloadFormListTask(DownloadFormListUtils downloadFormListUtils) {
+        this.downloadFormListUtils = downloadFormListUtils;
+    }
+
     @Override
     protected HashMap<String, FormDetails> doInBackground(Void... values) {
-        return new DownloadFormListUtils().downloadFormList(url, username, password, false);
+        return downloadFormListUtils.downloadFormList(url, username, password, false);
     }
 
     @Override

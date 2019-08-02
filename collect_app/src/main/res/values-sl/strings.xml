@@ -214,7 +214,6 @@
   <string name="found_in_settings">Ne izberi da ne prikaže v Splošne nastavitve</string>
   <string name="save_preferences">Shrani nastavitve</string>
   <string name="form_forward">Naprej</string>
-  <string name="form_backward">Nazaj</string>
   <string name="navigation">Navigacija</string>
   <string name="swipe_navigation">Uporabi horizontalne potege</string>
   <string name="buttons_navigation">Uporabi naprej/nazaj tipke</string>
@@ -266,7 +265,7 @@
   <string name="google_drive">Google Drive</string>
   <string name="go_drive">My Drive</string>
   <string name="go_shared">Deljeno z menoj</string>
-  <string name="modified_on_date_at_time">Spremenjeno \'EEE,MMM dd, yyyy\' ob HH:mm</string>
+  <string name="modified_on_date_at_time">\'Spremenjeno\' EEE, MMM dd,  yyyy \'ob\' HH:mm</string>
   <string name="aggregate_preferences">ODK Aggregate nastavitve</string>
   <string name="sms_submission_preferences">Nastavitve za predložitev preko SMS sporočil</string>
   <string name="submission_transport_types_title">Predloži preko</string>
@@ -288,10 +287,12 @@
   <string name="username_error_whitespace">Presledki na začetku ali na koncu uporabniškega imena niso dovoljeni</string>
   <string name="tell_your_friends_msg">Ali vaši kolegi še vedno zbirajo podatke na papirju? Delite ODK Collect z njimi.</string>
   <!--Geo string added in feature-geofeatures branch-->
+  <!--TODO(ping): Delete these openmap_* strings when we're ready to move on from OSMDroid.
+      These strings are only being used to preserve compatibility with pre-existing
+       tile caches, and are not shown in the UI.-->
   <string name="satellite">Satelit</string>
   <string name="start">Začni</string>
   <string name="enable_gps">Omogoči GPS</string>
-  <string name="gps_enable_message">GPS v napravi je onemogočen. Želite omogočiti?</string>
   <string name="geo_clear_warning">Funkcija je že narejena. Želite izbrisati funkcijo?</string>
   <string name="geo_exit_warning">Želite zavreči spremembe in se vrniti v ODK?</string>
   <string name="clear">Počisti</string>

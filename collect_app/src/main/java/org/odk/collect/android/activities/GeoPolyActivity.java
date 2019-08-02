@@ -14,11 +14,10 @@
 
 package org.odk.collect.android.activities;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -30,14 +29,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.odk.collect.android.R;
-import org.odk.collect.android.map.GoogleMapFragment;
-import org.odk.collect.android.map.MapFragment;
-import org.odk.collect.android.map.MapPoint;
-import org.odk.collect.android.map.OsmMapFragment;
-import org.odk.collect.android.preferences.GeneralKeys;
-import org.odk.collect.android.spatial.MapHelper;
+import org.odk.collect.android.geo.MapProvider;
+import org.odk.collect.android.geo.MapFragment;
+import org.odk.collect.android.geo.MapPoint;
+import org.odk.collect.android.preferences.MapsPreferences;
 import org.odk.collect.android.utilities.ToastUtils;
-import org.osmdroid.tileprovider.IRegisterReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +43,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.VisibleForTesting;
+
 import static org.odk.collect.android.utilities.PermissionUtils.areLocationPermissionsGranted;
 
-public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterReceiver {
-    public static final String PREF_VALUE_GOOGLE_MAPS = "google_maps";
+public class GeoPolyActivity extends BaseGeoMapActivity {
     public static final String ANSWER_KEY = "answer";
     public static final String OUTPUT_MODE_KEY = "output_mode";
     public static final String MAP_CENTER_KEY = "map_center";
@@ -84,8 +81,6 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
 
     private AlertDialog settingsDialog;
     private View settingsView;
-    private AlertDialog polygonOrPolylineDialog;
-    private View polygonOrPolylineView;
 
     private static final int[] INTERVAL_OPTIONS = {
         1, 5, 10, 20, 30, 60, 300, 600, 1200, 1800
@@ -137,35 +132,10 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
         setTitle(getString(outputMode == OutputMode.GEOTRACE ?
             R.string.geotrace_title : R.string.geoshape_title));
         setContentView(R.layout.geopoly_layout);
-        createMapFragment().addTo(this, R.id.map_container, this::initMap);
-    }
 
-    public MapFragment createMapFragment() {
-        String mapSdk = getIntent().getStringExtra(GeneralKeys.KEY_MAP_SDK);
-        return (mapSdk == null || mapSdk.equals(PREF_VALUE_GOOGLE_MAPS)) ?
-            new GoogleMapFragment() : new OsmMapFragment();
-    }
-
-    @Override protected void onStart() {
-        super.onStart();
-        // initMap() is called asynchronously, so map might not be initialized yet.
-        if (map != null) {
-            map.setGpsLocationEnabled(true);
-        }
-    }
-
-    @Override protected void onStop() {
-        // To avoid a memory leak, we have to shut down GPS when the activity
-        // quits for good. But if it's only a screen rotation, we don't want to
-        // stop/start GPS and make the user wait to get a GPS lock again.
-        if (!isChangingConfigurations()) {
-            // initMap() is called asynchronously, so map can be null if the activity
-            // is stopped (e.g. by screen rotation) before initMap() gets to run.
-            if (map != null) {
-                map.setGpsLocationEnabled(false);
-            }
-        }
-        super.onStop();
+        Context context = getApplicationContext();
+        MapProvider.createMapFragment(context)
+            .addTo(this, R.id.map_container, this::initMap, this::finish);
     }
 
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -196,32 +166,8 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
         super.onDestroy();
     }
 
-    @Override public void destroy() { }
-
-    // This is just for the polygonOrPolylineDialog deprecation warning,
-    // which will go away in the next release.
-    @SuppressLint("SetTextI18n")
     public void initMap(MapFragment newMapFragment) {
-        if (newMapFragment == null) {  // could not create the map
-            finish();
-            return;
-        }
-        if (newMapFragment.getFragment().getActivity() == null) {
-            // If the screen is rotated just after the activity starts but
-            // before initMap() is called, then when the activity is re-created
-            // in the new orientation, initMap() can sometimes be called on the
-            // old, dead Fragment that used to be attached to the old activity.
-            // Touching the dead Fragment will cause a crash; discard it.
-            return;
-        }
-
         map = newMapFragment;
-        if (map instanceof GoogleMapFragment) {
-            helper = new MapHelper(this, ((GoogleMapFragment) map).getGoogleMap(), selectedLayer);
-        } else if (map instanceof OsmMapFragment) {
-            helper = new MapHelper(this, ((OsmMapFragment) map).getMapView(), this, selectedLayer);
-        }
-        helper.setBasemap();
 
         locationStatus = findViewById(R.id.location_status);
         collectionStatus = findViewById(R.id.collection_status);
@@ -280,11 +226,7 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
         saveButton.setOnClickListener(v -> {
             if (!map.getPolyPoints(featureId).isEmpty()) {
                 if (outputMode == OutputMode.GEOTRACE) {
-                    // This release shows a deprecation warning for the "Save
-                    // as Polygon" button.  After the deprecation period,
-                    // we plan to remove the dialog entirely; outputMode
-                    // determines whether a polyline or a polygon will be saved.
-                    polygonOrPolylineDialog.show();
+                    saveAsPolyline();
                 } else {
                     saveAsPolygon();
                 }
@@ -305,20 +247,11 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
         recordButton = findViewById(R.id.record_button);
         recordButton.setOnClickListener(v -> recordPoint());
 
-        // The polygonOrPolylineDialog will go away in the next release.
-        polygonOrPolylineView = getLayoutInflater().inflate(R.layout.polygon_polyline_dialog, null);
-
-        Button polygonSave = polygonOrPolylineView.findViewById(R.id.polygon_save);
-        polygonSave.setOnClickListener(v -> saveAsPolygon());
-        polygonSave.setText(polygonSave.getText() + "\n\n" +
-            getString(R.string.polygon_save_deprecation_warning));
-
-        Button polylineSave = polygonOrPolylineView.findViewById(R.id.polyline_save);
-        polylineSave.setOnClickListener(v -> saveAsPolyline());
-
         buildDialogs();
 
-        findViewById(R.id.layers).setOnClickListener(v -> helper.showLayersDialog());
+        findViewById(R.id.layers).setOnClickListener(v -> {
+            MapsPreferences.showReferenceLayerDialog(this);
+        });
 
         zoomButton = findViewById(R.id.zoom);
         zoomButton.setOnClickListener(v -> map.zoomToPoint(map.getGpsLocation(), true));
@@ -354,7 +287,6 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
     }
 
     private void saveAsPolyline() {
-        polygonOrPolylineDialog.dismiss();
         if (map.getPolyPoints(featureId).size() > 1) {
             finishWithResult();
         } else {
@@ -363,7 +295,6 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
     }
 
     private void saveAsPolygon() {
-        polygonOrPolylineDialog.dismiss();
         if (map.getPolyPoints(featureId).size() > 2) {
             // Close the polygon.
             List<MapPoint> points = map.getPolyPoints(featureId);
@@ -484,16 +415,6 @@ public class GeoPolyActivity extends BaseGeoMapActivity implements IRegisterRece
                 settingsDialog.dismiss();
             })
             .setNegativeButton(R.string.cancel, (dialog, id) -> {
-                dialog.cancel();
-                settingsDialog.dismiss();
-            })
-            .create();
-
-        polygonOrPolylineDialog = new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.polygon_or_polyline))
-            .setView(polygonOrPolylineView)
-            .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel())
-            .setOnCancelListener(dialog -> {
                 dialog.cancel();
                 settingsDialog.dismiss();
             })

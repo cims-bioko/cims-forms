@@ -173,7 +173,6 @@
   <string name="found_in_settings">ከጠቅላላ ቅንብሮች ለመደበቅ አትምረጥ</string>
   <string name="save_preferences">ቅንብሮችን ዲስክ ላይ አስቀምጥ</string>
   <string name="form_forward">ቀጣይ</string>
-  <string name="form_backward">ቅድመ</string>
   <string name="navigation">ዳሰሳ</string>
   <string name="swipe_navigation">አግድም ማጠፊያዎችን ይጠቀሙ</string>
   <string name="buttons_navigation">ወደፊት/ወደኋላ አዝራሮችን ይጠቀሙ</string>
@@ -209,7 +208,9 @@
   <string name="google_search_browse">ቅጾችን ይፈልጉ፡፡ ወይም ለማሰስ ከታች \"የእኔ Drive\" ን ይምረጡ.</string>
   <string name="about_preferences">ስለ</string>
   <!--Geo string added in feature-geofeatures branch-->
-  <string name="map_preferences">ካርታ</string>
+  <!--TODO(ping): Delete these openmap_* strings when we're ready to move on from OSMDroid.
+      These strings are only being used to preserve compatibility with pre-existing
+       tile caches, and are not shown in the UI.-->
   <string name="streets">መንገዶች</string>
   <string name="terrain">መልከአ ምድር</string>
   <string name="satellite">ሳተላይት</string>
@@ -287,6 +288,7 @@
   <string name="ethiopian_month_12">ነሐሴ</string>
   <string name="ethiopian_month_13">ጳጉሜን</string>
   <!--Displays dates in specialized calendars with the Gregorian dates in parentheses. This is translated so right-to-left languages can specify the correct order-->
+  <string name="persian_month_4">ጥር</string>
   <string name="moving_backwards_title">ወደኋላ መሄድ</string>
   <string name="moving_backwards_disabled_title">ወደኋላ መሄድ አልተመረጠም</string>
   <string name="moving_backwards_enabled_title">ወደኋላ መሄድ ተመርጧል</string>

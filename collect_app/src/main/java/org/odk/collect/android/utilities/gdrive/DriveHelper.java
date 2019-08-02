@@ -14,8 +14,8 @@
 
 package org.odk.collect.android.utilities.gdrive;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.http.FileContent;
@@ -77,12 +77,6 @@ public class DriveHelper {
 
     public void downloadFile(@NonNull String fileId, @NonNull File file) throws IOException {
         driveService.downloadFile(fileId, file);
-    }
-
-    public String createOrGetIDOfFolderWithName(String jrFormId)
-            throws IOException, MultipleFoldersFoundException {
-        String submissionsFolderId = createOrGetIDOfSubmissionsFolder();
-        return getIDOfFolderWithName(jrFormId, submissionsFolderId, true);
     }
 
     public String createOrGetIDOfSubmissionsFolder()

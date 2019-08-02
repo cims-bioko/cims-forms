@@ -16,79 +16,151 @@
 
 package org.odk.collect.android.logic;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
+import org.javarosa.core.model.FormIndex;
+import org.javarosa.core.model.instance.TreeReference;
 import org.javarosa.form.api.FormEntryController;
+import org.odk.collect.android.utilities.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import timber.log.Timber;
 
 public class AuditEvent {
 
     public enum AuditEventType {
-        BEGINNING_OF_FORM("beginning of form"),                                     // Beginning of the form
-        QUESTION("question"),                                                       // Create a question
-        GROUP("group questions"),                                                   // Create a group
-        PROMPT_NEW_REPEAT("add repeat"),                                            // Prompt do add a new group
-        REPEAT("repeat"),                                                           // Repeat group
-        END_OF_FORM("end screen"),                                                  // Show the "end of form" view
-        FORM_START("form start"),                                                   // Start filling in the form
-        FORM_EXIT("form exit"),                                                     // Exit the form
-        FORM_RESUME("form resume"),                                                 // Resume filling in the form after previously exiting
-        FORM_SAVE("form save"),                                                     // Save the form
-        FORM_FINALIZE("form finalize"),                                             // Finalize the form
-        HIERARCHY("jump"),                                                          // Jump to a question
-        SAVE_ERROR("save error"),                                                   // Error in save
-        FINALIZE_ERROR("finalize error"),                                           // Error in finalize
-        CONSTRAINT_ERROR("constraint error"),                                       // Constraint or missing answer error on save
-        DELETE_REPEAT("delete repeat"),                                             // Delete a repeat group
-        GOOGLE_PLAY_SERVICES_NOT_AVAILABLE("google play services not available"),   // Google Play Services are not available
-        LOCATION_PERMISSIONS_GRANTED("location permissions granted"),               // Location permissions are granted
-        LOCATION_PERMISSIONS_NOT_GRANTED("location permissions not granted"),       // Location permissions are not granted
-        LOCATION_TRACKING_ENABLED("location tracking enabled"),                     // Location tracking option is enabled
-        LOCATION_TRACKING_DISABLED("location tracking disabled"),                   // Location tracking option is disabled
-        LOCATION_PROVIDERS_ENABLED("location providers enabled"),                   // Location providers are enabled
-        LOCATION_PROVIDERS_DISABLED("location providers disabled"),                 // Location providers are disabled
-        UNKNOWN_EVENT_TYPE("Unknown AuditEvent Type");                              // Unknown event type
+        // Beginning of the form
+        BEGINNING_OF_FORM("beginning of form", false, false, false),
+        // Create a question
+        QUESTION("question", true),
+        // Create a group
+        GROUP("group questions", true),
+        // Prompt to add a new repeat
+        PROMPT_NEW_REPEAT("add repeat", true),
+        // Repeat group
+        REPEAT("repeat", false, false, false),
+        // Show the "end of form" view
+        END_OF_FORM("end screen", true),
+        // Start filling in the form
+        FORM_START("form start"),
+        // Exit the form
+        FORM_EXIT("form exit"),
+        // Resume filling in the form after previously exiting
+        FORM_RESUME("form resume"),
+        // Save the form
+        FORM_SAVE("form save"),
+        // Finalize the form
+        FORM_FINALIZE("form finalize"),
+        // Jump to a question
+        HIERARCHY("jump", true),
+        // Error in save
+        SAVE_ERROR("save error"),
+        // Error in finalize
+        FINALIZE_ERROR("finalize error"),
+        // Constraint or missing answer error on save
+        CONSTRAINT_ERROR("constraint error"),
+        // Delete a repeat group
+        DELETE_REPEAT("delete repeat"),
+
+        // Google Play Services are not available
+        GOOGLE_PLAY_SERVICES_NOT_AVAILABLE("google play services not available", true, false, true),
+        // Location permissions are granted
+        LOCATION_PERMISSIONS_GRANTED("location permissions granted", true, false, true),
+        // Location permissions are not granted
+        LOCATION_PERMISSIONS_NOT_GRANTED("location permissions not granted", true, false, true),
+        // Location tracking option is enabled
+        LOCATION_TRACKING_ENABLED("location tracking enabled", true, false, true),
+        // Location tracking option is disabled
+        LOCATION_TRACKING_DISABLED("location tracking disabled", true, false, true),
+        // Location providers are enabled
+        LOCATION_PROVIDERS_ENABLED("location providers enabled", true, false, true),
+        // Location providers are disabled
+        LOCATION_PROVIDERS_DISABLED("location providers disabled", true, false, true),
+        // Unknown event type
+        UNKNOWN_EVENT_TYPE("Unknown AuditEvent Type");
 
         private final String value;
+        private final boolean isLogged;
+        private final boolean isInterval;
+        private final boolean isLocationRelated;
+
+        AuditEventType(String value, boolean isLogged, boolean isInterval, boolean isLocationRelated) {
+            this.value = value;
+
+            this.isLogged = isLogged;
+            this.isInterval = isInterval;
+            this.isLocationRelated = isLocationRelated;
+        }
+
+        AuditEventType(String value, boolean isInterval) {
+            this(value, true, isInterval, false);
+        }
 
         AuditEventType(String value) {
-            this.value = value;
+            this(value, true, false, false);
         }
 
         public String getValue() {
             return value;
         }
+
+        public boolean isLogged() {
+            return isLogged;
+        }
+
+        /**
+         * @return true if events of this type have both a start and an end time, false otherwise.
+         */
+        public boolean isInterval() {
+            return isInterval;
+        }
+
+        public boolean isLocationRelated() {
+            return isLocationRelated;
+        }
     }
 
     private final long start;
     private AuditEventType auditEventType;
-    private final String node;
     private String latitude;
     private String longitude;
     private String accuracy;
+    @NonNull private String oldValue;
+    @NonNull private String newValue = "";
     private long end;
     private boolean endTimeSet;
+    private boolean isTrackingLocationsEnabled;
+    private boolean isTrackingChangesEnabled;
+    private FormIndex formIndex;
 
     /*
      * Create a new event
      */
-    public AuditEvent(long start, AuditEventType auditEventType, String node) {
-        this.start = start;
-        this.auditEventType = auditEventType;
-        this.node = node;
+    public AuditEvent(long start, AuditEventType auditEventType) {
+        this(start, auditEventType, false, false, null, null);
     }
 
-    /*
-     * Return true if this is a view type event
-     *  Hierarchy Jump
-     *  Question
-     *  Prompt for repeat
+    public AuditEvent(long start, AuditEventType auditEventType,  boolean isTrackingLocationsEnabled, boolean isTrackingChangesEnabled) {
+        this(start, auditEventType, isTrackingLocationsEnabled, isTrackingChangesEnabled, null, null);
+    }
+
+    public AuditEvent(long start, AuditEventType auditEventType, boolean isTrackingLocationsEnabled,
+                      boolean isTrackingChangesEnabled, FormIndex formIndex, String oldValue) {
+        this.start = start;
+        this.auditEventType = auditEventType;
+        this.isTrackingLocationsEnabled = isTrackingLocationsEnabled;
+        this.isTrackingChangesEnabled = isTrackingChangesEnabled;
+        this.formIndex = formIndex;
+        this.oldValue = oldValue == null ? "" : oldValue;
+    }
+
+    /**
+     * @return true if this event's type is an interval event type.
      */
     public boolean isIntervalAuditEventType() {
-        return auditEventType == AuditEventType.HIERARCHY
-                || auditEventType == AuditEventType.QUESTION
-                || auditEventType == AuditEventType.GROUP
-                || auditEventType == AuditEventType.END_OF_FORM
-                || auditEventType == AuditEventType.PROMPT_NEW_REPEAT;
+        return auditEventType.isInterval();
     }
 
     /*
@@ -107,7 +179,15 @@ public class AuditEvent {
         return auditEventType;
     }
 
-    public boolean hasLocation() {
+    public FormIndex getFormIndex() {
+        return formIndex;
+    }
+
+    public boolean hasNewAnswer() {
+        return !oldValue.equals(newValue);
+    }
+
+    public boolean isLocationAlreadySet() {
         return latitude != null && !latitude.isEmpty()
                 && longitude != null && !longitude.isEmpty()
                 && accuracy != null && !accuracy.isEmpty();
@@ -119,14 +199,44 @@ public class AuditEvent {
         this.accuracy = accuracy;
     }
 
+    public void recordValueChange(String newValue) {
+        this.newValue = newValue != null ? newValue : "";
+
+        // Clear values if they are equal
+        if (this.oldValue.equals(this.newValue)) {
+            this.oldValue = "";
+            this.newValue = "";
+            return;
+        }
+
+        if (oldValue.contains(",") || oldValue.contains("\n")) {
+            oldValue = getEscapedValueForCsv(oldValue);
+        }
+
+        if (this.newValue.contains(",") || this.newValue.contains("\n")) {
+            this.newValue = getEscapedValueForCsv(this.newValue);
+        }
+    }
+
     /*
      * convert the event into a record to write to the CSV file
      */
     @NonNull
     public String toString() {
-        return hasLocation()
-                ? String.format("%s,%s,%s,%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "", latitude, longitude, accuracy)
-                : String.format("%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "");
+        String node = formIndex == null || formIndex.getReference() == null ? "" : getXPathPath(formIndex);
+
+        String event;
+        if (isTrackingLocationsEnabled && isTrackingChangesEnabled) {
+            event = String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "", latitude, longitude, accuracy, oldValue, newValue);
+        } else if (isTrackingLocationsEnabled) {
+            event = String.format("%s,%s,%s,%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "", latitude, longitude, accuracy);
+        } else if (isTrackingChangesEnabled) {
+            event = String.format("%s,%s,%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "", oldValue, newValue);
+        } else {
+            event = String.format("%s,%s,%s,%s", auditEventType.getValue(), node, start, end != 0 ? end : "");
+        }
+
+        return event;
     }
 
     // Get event type based on a Form Controller event
@@ -135,9 +245,6 @@ public class AuditEvent {
         switch (fcEvent) {
             case FormEntryController.EVENT_BEGINNING_OF_FORM:
                 auditEventType = AuditEventType.BEGINNING_OF_FORM;
-                break;
-            case FormEntryController.EVENT_QUESTION:
-                auditEventType = AuditEventType.QUESTION;
                 break;
             case FormEntryController.EVENT_GROUP:
                 auditEventType = AuditEventType.GROUP;
@@ -155,5 +262,51 @@ public class AuditEvent {
                 auditEventType = AuditEventType.UNKNOWN_EVENT_TYPE;
         }
         return auditEventType;
+    }
+
+    /**
+     * Escapes quotes and then wraps in quotes for output to CSV.
+     */
+    private String getEscapedValueForCsv(String value) {
+        if (value.contains("\"")) {
+            value = value.replaceAll("\"", "\"\"");
+        }
+
+        return "\"" + value + "\"";
+    }
+
+    /**
+     * Get the XPath path of the node at a particular {@link FormIndex}.
+     *
+     * Differs from {@link TreeReference#toString()} in that position predicates are only
+     * included for repeats. For example, given a group named {@code my-group} that contains a
+     * repeat named {@code my-repeat} which in turn contains a question named {@code my-question},
+     * {@link TreeReference#toString()} would return paths that look like
+     * {@code /my-group[1]/my-repeat[3]/my-question[1]}. In contrast, this method would return
+     * {@code /my-group/my-repeat[3]/my-question}.
+     *
+     * TODO: consider moving to {@link FormIndex}
+     */
+    private static String getXPathPath(FormIndex formIndex) {
+        List<String> nodeNames = new ArrayList<>();
+        nodeNames.add(formIndex.getReference().getName(0));
+
+        FormIndex walker = formIndex;
+        int i = 1;
+        while (walker != null) {
+            try {
+                String currentNodeName = formIndex.getReference().getName(i);
+                if (walker.getInstanceIndex() != -1) {
+                    currentNodeName = currentNodeName + "[" + (walker.getInstanceIndex() + 1) + "]";
+                }
+                nodeNames.add(currentNodeName);
+            } catch (IndexOutOfBoundsException e) {
+                Timber.i(e);
+            }
+
+            walker = walker.getNextLevel();
+            i++;
+        }
+        return "/" + TextUtils.join("/", nodeNames);
     }
 }
