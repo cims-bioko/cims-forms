@@ -127,7 +127,6 @@ class DisabledPreferencesRemover {
      */
     private boolean hasChildPrefs(String preferenceKey) {
         String[] preferenceScreensWithNoChildren = {
-                GeneralKeys.KEY_SPLASH_PATH,
                 GeneralKeys.KEY_FORM_METADATA
         };
 

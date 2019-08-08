@@ -23,13 +23,4 @@
         android:entryValues="@array/navigation_entry_values"
         android:key="navigation"
         android:title="@string/navigation" />
-    <CheckBoxPreference
-        android:key="showSplash"
-        android:summary="@string/show_splash_summary"
-        android:title="@string/show_splash_title" />
-    <Preference
-        android:dependency="showSplash"
-        android:key="splashPath"
-        android:layout="?android:attr/preferenceLayoutChild"
-        android:title="@string/splash_path" />
 </PreferenceScreen>

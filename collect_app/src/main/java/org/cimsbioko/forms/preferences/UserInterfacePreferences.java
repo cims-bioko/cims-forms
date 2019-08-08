@@ -19,7 +19,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.View;
@@ -40,7 +39,6 @@ import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_APP_LANGUAGE;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_APP_THEME;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_FONT_SIZE;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_NAVIGATION;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_SPLASH_PATH;
 import static org.cimsbioko.forms.preferences.PreferencesActivity.INTENT_KEY_ADMIN_MODE;
 
 public class UserInterfacePreferences extends BasePreferenceFragment {
@@ -66,7 +64,6 @@ public class UserInterfacePreferences extends BasePreferenceFragment {
         initNavigationPrefs();
         initFontSizePref();
         initLanguagePrefs();
-        initSplashPrefs();
     }
 
     @Override
@@ -166,15 +163,6 @@ public class UserInterfacePreferences extends BasePreferenceFragment {
         }
     }
 
-    private void initSplashPrefs() {
-        final Preference pref = findPreference(KEY_SPLASH_PATH);
-
-        if (pref != null) {
-            pref.setOnPreferenceClickListener(new SplashClickListener(this, pref));
-            pref.setSummary((String) GeneralSharedPreferences.getInstance().get(KEY_SPLASH_PATH));
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Timber.d("onActivityResult %d %d", requestCode, resultCode);
@@ -190,17 +178,7 @@ public class UserInterfacePreferences extends BasePreferenceFragment {
                 Uri selectedMedia = intent.getData();
                 String sourceMediaPath = MediaUtils.getPathFromUri(getActivity(), selectedMedia,
                         MediaStore.Images.Media.DATA);
-
-                // setting image path
-                setSplashPath(sourceMediaPath);
-
                 break;
         }
-    }
-
-    void setSplashPath(String path) {
-        GeneralSharedPreferences.getInstance().save(KEY_SPLASH_PATH, path);
-        Preference splashPathPreference = findPreference(KEY_SPLASH_PATH);
-        splashPathPreference.setSummary(path);
     }
 }

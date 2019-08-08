@@ -57,8 +57,6 @@ public final class GeneralKeys {
     public static final String KEY_APP_LANGUAGE             = "app_language";
     public static final String KEY_FONT_SIZE                = "font_size";
     public static final String KEY_NAVIGATION               = "navigation";
-    public static final String KEY_SHOW_SPLASH              = "showSplash";
-    public static final String KEY_SPLASH_PATH              = "splashPath";
 
     // map_preferences.xml
     public static final String CATEGORY_BASEMAP             = "category_basemap";
@@ -132,8 +130,6 @@ public final class GeneralKeys {
         hashMap.put(KEY_APP_LANGUAGE,               "");
         hashMap.put(KEY_FONT_SIZE,                  FormsApp.DEFAULT_FONTSIZE);
         hashMap.put(KEY_NAVIGATION,                 NAVIGATION_SWIPE);
-        hashMap.put(KEY_SHOW_SPLASH,                false);
-        hashMap.put(KEY_SPLASH_PATH,                FormsApp.getInstance().getString(R.string.default_splash_path));
         // map_preferences.xml
         hashMap.put(KEY_BASEMAP_SOURCE,             BASEMAP_SOURCE_GOOGLE);
         return hashMap;
