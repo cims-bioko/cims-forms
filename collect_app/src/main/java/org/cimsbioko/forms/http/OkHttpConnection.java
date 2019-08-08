@@ -5,12 +5,9 @@ import androidx.annotation.Nullable;
 
 import com.burgstaller.okhttp.AuthenticationCacheInterceptor;
 import com.burgstaller.okhttp.CachingAuthenticatorDecorator;
-import com.burgstaller.okhttp.DispatchingAuthenticator;
-import com.burgstaller.okhttp.basic.BasicAuthenticator;
 import com.burgstaller.okhttp.digest.CachingAuthenticator;
-import com.burgstaller.okhttp.digest.Credentials;
-import com.burgstaller.okhttp.digest.DigestAuthenticator;
 
+import okhttp3.*;
 import org.apache.commons.io.IOUtils;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.application.FormsApp;
@@ -22,6 +19,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,14 +30,6 @@ import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Headers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import timber.log.Timber;
 
 public class OkHttpConnection implements OpenRosaHttpInterface {
@@ -70,6 +60,8 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
      */
     private static String lastRequestScheme = "";
 
+    private static Authenticator authenticator = new TokenAuthenticator(new CIMSTokenProvider());
+
     private MultipartBody multipartBody;
 
     @Nullable
@@ -94,13 +86,13 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
                 .writeTimeout(WRITE_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .followRedirects(true)
+                .authenticator(authenticator)
                 .build();
     }
 
     @NonNull
     @Override
-    public HttpGetResult executeGetRequest(@NonNull URI uri, @Nullable String contentType, @Nullable HttpCredentialsInterface credentials) throws Exception {
-        setCredentialsIfNeeded(credentials, uri.getScheme());
+    public HttpGetResult executeGetRequest(@NonNull URI uri, @Nullable String contentType) throws Exception {
         Request request = buildGetRequest(uri);
 
         Response response = httpClient.newCall(request).execute();
@@ -159,8 +151,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
 
     @NonNull
     @Override
-    public HttpHeadResult executeHeadRequest(@NonNull URI uri, @Nullable HttpCredentialsInterface credentials) throws Exception {
-        setCredentialsIfNeeded(credentials, uri.getScheme());
+    public HttpHeadResult executeHeadRequest(@NonNull URI uri) throws Exception {
         Request request = buildHeadRequest(uri);
 
         Timber.i("Issuing HEAD request to: %s", uri.toString());
@@ -183,8 +174,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     }
 
     @NonNull
-    private HttpPostResult executePostRequest(@NonNull URI uri, @Nullable HttpCredentialsInterface credentials) throws Exception {
-        setCredentialsIfNeeded(credentials, uri.getScheme());
+    private HttpPostResult executePostRequest(@NonNull URI uri) throws Exception {
         HttpPostResult postResult;
         Request request = buildPostRequest(uri, multipartBody);
         Response response = httpClient.newCall(request).execute();
@@ -205,7 +195,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
 
     @NonNull
     @Override
-    public HttpPostResult uploadSubmissionFile(@NonNull List<File> fileList, @NonNull File submissionFile, @NonNull URI uri, @Nullable HttpCredentialsInterface credentials, @NonNull long contentLength) throws Exception {
+    public HttpPostResult uploadSubmissionFile(@NonNull List<File> fileList, @NonNull File submissionFile, @NonNull URI uri, @NonNull long contentLength) throws Exception {
         HttpPostResult postResult = null;
 
         boolean first = true;
@@ -250,7 +240,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
             }
 
             multipartBody = multipartBuilder.build();
-            postResult = executePostRequest(uri, credentials);
+            postResult = executePostRequest(uri);
             multipartBody = null;
 
             if (postResult.getResponseCode() != HttpURLConnection.HTTP_CREATED &&
@@ -263,65 +253,28 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
         return postResult;
     }
 
-    /**
-     * If the provided credentials are non-null, sets the {@link #httpClient} to authenticate using
-     * the provided credential and sets the {@link #lastRequestCredentials}
-     *
-     * If authentication is needed, always configure digest auth. If SSL is enabled, also configure
-     * basic auth.
-     *
-     */
-    private void setCredentialsIfNeeded(@Nullable HttpCredentialsInterface credentials, String scheme) {
-        if (credentials == null || (credentials.equals(lastRequestCredentials) && scheme.equals(lastRequestScheme))) {
-            return;
-        }
-
-        Credentials cred = new Credentials(credentials.getUsername(), credentials.getPassword());
-
-        DispatchingAuthenticator.Builder daBuilder = new DispatchingAuthenticator.Builder();
-        daBuilder.with("digest", new DigestAuthenticator(cred));
-        if (scheme.equalsIgnoreCase("https")) {
-            daBuilder.with("basic", new BasicAuthenticator(cred));
-        }
-
-        DispatchingAuthenticator authenticator = daBuilder.build();
-
-        initializeHttpClient(); // Need to initalise the http client again to get rid of the cached credentials
-
-        final Map<String, CachingAuthenticator> authCache = new ConcurrentHashMap<>();
-        httpClient = httpClient.newBuilder().authenticator(new CachingAuthenticatorDecorator(authenticator, authCache))
-                .addInterceptor(new AuthenticationCacheInterceptor(authCache)).build();
-
-        lastRequestCredentials = credentials;
-        lastRequestScheme = scheme;
-    }
-
-    private Request buildGetRequest(@NonNull URI uri) throws MalformedURLException {
+    private Request.Builder newRequest(URL url) {
         return new Request.Builder()
-                .url(uri.toURL())
                 .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
                 .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
                 .addHeader(DATE_HEADER, getHeaderDate())
+                .url(url);
+    }
+
+    private Request buildGetRequest(@NonNull URI uri) throws MalformedURLException {
+        return newRequest(uri.toURL())
                 .get()
                 .build();
     }
 
     private Request buildHeadRequest(@NonNull URI uri) throws MalformedURLException {
-        return new Request.Builder()
-                .url(uri.toURL())
-                .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
-                .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
-                .addHeader(DATE_HEADER, getHeaderDate())
+        return newRequest(uri.toURL())
                 .head()
                 .build();
     }
 
     private Request buildPostRequest(@NonNull URI uri, RequestBody body) throws MalformedURLException {
-        return new Request.Builder()
-                .url(uri.toURL())
-                .addHeader(USER_AGENT_HEADER, FormsApp.getInstance().getUserAgentString())
-                .addHeader(OPEN_ROSA_VERSION_HEADER, OPEN_ROSA_VERSION)
-                .addHeader(DATE_HEADER, getHeaderDate())
+        return newRequest(uri.toURL())
                 .post(body)
                 .build();
     }

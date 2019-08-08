@@ -94,7 +94,7 @@ public class InstanceServerUploader extends InstanceUploader {
             HttpHeadResult headResult;
             Map<String, String> responseHeaders;
             try {
-                headResult = httpInterface.executeHeadRequest(uri, webCredentialsUtils.getCredentials(uri));
+                headResult = httpInterface.executeHeadRequest(uri);
                 responseHeaders = headResult.getHeaders();
 
                 if (responseHeaders.containsKey("X-OpenRosa-Accept-Content-Length")) {
@@ -186,8 +186,7 @@ public class InstanceServerUploader extends InstanceUploader {
         try {
             URI uri = URI.create(submissionUri.toString());
 
-            postResult = httpInterface.uploadSubmissionFile(files, submissionFile, uri,
-                    webCredentialsUtils.getCredentials(uri), contentLength);
+            postResult = httpInterface.uploadSubmissionFile(files, submissionFile, uri, contentLength);
 
             int responseCode = postResult.getResponseCode();
             messageParser.setMessageResponse(postResult.getHttpResponse());
