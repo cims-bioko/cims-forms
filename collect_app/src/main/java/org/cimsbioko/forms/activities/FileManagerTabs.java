@@ -71,6 +71,6 @@ public class FileManagerTabs extends CollectAbstractActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.drawable.notes);
+        toolbar.setNavigationIcon(R.drawable.ic_launcher);
     }
 }
