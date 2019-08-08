@@ -65,13 +65,4 @@
             android:title="@string/guidance_hint_title" />
 
     </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="form_import"
-        android:title="@string/form_import_category">
-        <CheckBoxPreference
-            android:key="instance_sync"
-            android:summary="@string/instance_sync_summary"
-            android:title="@string/instance_sync" />
-    </PreferenceCategory>
 </PreferenceScreen>

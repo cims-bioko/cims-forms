@@ -140,10 +140,6 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
 
                 instancesDao.deleteInstancesFromIDs(filesToRemove);
 
-                final boolean instanceSyncFlag = PreferenceManager.getDefaultSharedPreferences(
-                        FormsApp.getInstance().getApplicationContext()).getBoolean(
-                        GeneralKeys.KEY_INSTANCE_SYNC, true);
-
                 int counter = 0;
                 // Begin parsing and add them to the content provider
                 for (String candidateInstance : candidateInstances) {
@@ -174,8 +170,7 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
                                 values.put(InstanceColumns.DISPLAY_NAME, formName);
                                 values.put(InstanceColumns.JR_FORM_ID, jrFormId);
                                 values.put(InstanceColumns.JR_VERSION, jrVersion);
-                                values.put(InstanceColumns.STATUS, instanceSyncFlag
-                                        ? InstanceProviderAPI.STATUS_COMPLETE : InstanceProviderAPI.STATUS_INCOMPLETE);
+                                values.put(InstanceColumns.STATUS, InstanceProviderAPI.STATUS_INCOMPLETE);
                                 values.put(InstanceColumns.CAN_EDIT_WHEN_COMPLETE, Boolean.toString(true));
                                 // save the new instance object
 

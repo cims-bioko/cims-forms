@@ -53,9 +53,6 @@
             android:key="guidance_hint"
             android:title="@string/guidance_hint_title" />
         <CheckBoxPreference
-            android:key="instance_form_sync"
-            android:title="@string/instance_sync" />
-        <CheckBoxPreference
             android:key="change_form_metadata"
             android:title="@string/form_metadata" />
     </PreferenceCategory>

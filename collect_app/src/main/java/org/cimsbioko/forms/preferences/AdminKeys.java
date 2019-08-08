@@ -86,7 +86,6 @@ public final class AdminKeys {
             ag(KEY_IMAGE_SIZE,                 GeneralKeys.KEY_IMAGE_SIZE),
             ag(KEY_GUIDANCE_HINT,              GeneralKeys.KEY_GUIDANCE_HINT),
             ag(KEY_DELETE_AFTER_SEND,          GeneralKeys.KEY_DELETE_AFTER_SEND),
-            ag(KEY_INSTANCE_FORM_SYNC,         GeneralKeys.KEY_INSTANCE_SYNC),
             ag(KEY_APP_THEME,                  GeneralKeys.KEY_APP_THEME),
 
             ag(KEY_AUTOSEND,                   GeneralKeys.KEY_AUTOSEND),
