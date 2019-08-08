@@ -51,7 +51,7 @@ public abstract class OpenRosaHeadRequestTest {
         mockWebServer.enqueue(new MockResponse());
 
         URI uri = mockWebServer.url("/blah").uri();
-        subject.executeHeadRequest(uri, null);
+        subject.executeHeadRequest(uri);
 
         assertThat(mockWebServer.getRequestCount(), equalTo(1));
 
@@ -64,7 +64,7 @@ public abstract class OpenRosaHeadRequestTest {
     public void sendsCollectHeaders() throws Exception {
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeHeadRequest(mockWebServer.url("").uri(), null);
+        subject.executeHeadRequest(mockWebServer.url("").uri());
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getHeader("User-Agent"), equalTo(String.format(
@@ -77,7 +77,7 @@ public abstract class OpenRosaHeadRequestTest {
     public void sendsOpenRosaHeaders() throws Exception {
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeHeadRequest(mockWebServer.url("").uri(), null);
+        subject.executeHeadRequest(mockWebServer.url("").uri());
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getHeader("X-OpenRosa-Version"), equalTo("1.0"));
@@ -89,8 +89,8 @@ public abstract class OpenRosaHeadRequestTest {
                 .addHeader("Set-Cookie", "blah=blah"));
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeHeadRequest(mockWebServer.url("").uri(), null);
-        subject.executeHeadRequest(mockWebServer.url("").uri(), null);
+        subject.executeHeadRequest(mockWebServer.url("").uri());
+        subject.executeHeadRequest(mockWebServer.url("").uri());
 
         mockWebServer.takeRequest();
         RecordedRequest request = mockWebServer.takeRequest();
@@ -104,7 +104,7 @@ public abstract class OpenRosaHeadRequestTest {
                 .addHeader("X-1", "Blah1")
                 .addHeader("X-2", "Blah2"));
 
-        HttpHeadResult result = subject.executeHeadRequest(mockWebServer.url("").uri(), null);
+        HttpHeadResult result = subject.executeHeadRequest(mockWebServer.url("").uri());
         assertThat(result.getHeaders().get("X-1"), equalTo("Blah1"));
         assertThat(result.getHeaders().get("X-2"), equalTo("Blah2"));
     }
@@ -116,7 +116,7 @@ public abstract class OpenRosaHeadRequestTest {
                 .addHeader("WWW-Authenticate: Basic realm=\"protected area\""));
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeHeadRequest(mockWebServer.url("").uri(), new HttpCredentials("user", "pass"));
+        subject.executeHeadRequest(mockWebServer.url("").uri());
 
         assertThat(mockWebServer.getRequestCount(), equalTo(1));
     }
@@ -130,7 +130,7 @@ public abstract class OpenRosaHeadRequestTest {
                 .addHeader("WWW-Authenticate: Basic realm=\"protected area\""));
         httpsMockWebServer.enqueue(new MockResponse());
 
-        buildSubject().executeHeadRequest(httpsMockWebServer.url("").uri(), new HttpCredentials("user", "pass"));
+        buildSubject().executeHeadRequest(httpsMockWebServer.url("").uri());
 
         assertThat(httpsMockWebServer.getRequestCount(), equalTo(2));
         httpsMockWebServer.takeRequest();
@@ -141,7 +141,7 @@ public abstract class OpenRosaHeadRequestTest {
     @Test
     public void whenRequestFails_throwsExceptionWithMessage() {
         try {
-            subject.executeHeadRequest(new URI("http://localhost:8443"), null);
+            subject.executeHeadRequest(new URI("http://localhost:8443"));
             fail();
         } catch (Exception e) {
             assertThat(e.getMessage(), not(isEmptyString()));

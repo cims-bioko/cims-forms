@@ -57,7 +57,7 @@ public abstract class OpenRosaGetRequestTest {
         mockWebServer.enqueue(new MockResponse());
 
         URI uri = mockWebServer.url("/blah").uri();
-        subject.executeGetRequest(uri, null, null);
+        subject.executeGetRequest(uri, null);
 
         assertThat(mockWebServer.getRequestCount(), equalTo(1));
 
@@ -70,7 +70,7 @@ public abstract class OpenRosaGetRequestTest {
     public void sendsCollectHeaders() throws Exception {
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getHeader("User-Agent"), equalTo(String.format(
@@ -83,7 +83,7 @@ public abstract class OpenRosaGetRequestTest {
     public void sendsOpenRosaHeaders() throws Exception {
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getHeader("X-OpenRosa-Version"), equalTo("1.0"));
@@ -93,7 +93,7 @@ public abstract class OpenRosaGetRequestTest {
     public void sendsAcceptsGzipHeader() throws Exception {
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getHeader("Accept-Encoding"), equalTo("gzip"));
@@ -107,7 +107,7 @@ public abstract class OpenRosaGetRequestTest {
                 .setBody("Please authenticate."));
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         assertThat(mockWebServer.getRequestCount(), equalTo(1));
     }
@@ -122,7 +122,7 @@ public abstract class OpenRosaGetRequestTest {
                 .setBody("Please authenticate."));
         httpsMockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null);
 
         assertThat(httpsMockWebServer.getRequestCount(), equalTo(2));
         httpsMockWebServer.takeRequest();
@@ -231,8 +231,8 @@ public abstract class OpenRosaGetRequestTest {
                 .addHeader("Set-Cookie", "blah=blah"));
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         mockWebServer.takeRequest();
         RecordedRequest request = mockWebServer.takeRequest();
@@ -244,7 +244,7 @@ public abstract class OpenRosaGetRequestTest {
         mockWebServer.enqueue(new MockResponse()
                 .setBody("I AM BODY"));
 
-        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(IOUtils.toString(result.getInputStream(), Charset.defaultCharset()), equalTo("I AM BODY"));
         assertThat(result.getHash(), equalTo(""));
     }
@@ -255,7 +255,7 @@ public abstract class OpenRosaGetRequestTest {
                 .addHeader("Content-Encoding", "gzip")
                 .setBody(new Buffer().write(gzip("I AM BODY"))));
 
-        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(IOUtils.toString(result.getInputStream(), Charset.defaultCharset()), equalTo("I AM BODY"));
     }
 
@@ -265,7 +265,7 @@ public abstract class OpenRosaGetRequestTest {
                 .addHeader("Content-Type", "text/xml")
                 .setBody("I AM BODY"));
 
-        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), "text/xml", null);
+        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), "text/xml");
         assertThat(IOUtils.toString(result.getInputStream(), Charset.defaultCharset()), equalTo("I AM BODY"));
         assertThat(result.getHash(), equalTo(FileUtils.getMd5Hash(new ByteArrayInputStream("I AM BODY".getBytes()))));
     }
@@ -275,7 +275,7 @@ public abstract class OpenRosaGetRequestTest {
         mockWebServer.enqueue(new MockResponse()
                 .addHeader("Content-Type", "application/json"));
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), "text/xml", null);
+        subject.executeGetRequest(mockWebServer.url("").uri(), "text/xml");
     }
 
     @Test
@@ -284,7 +284,7 @@ public abstract class OpenRosaGetRequestTest {
                 .addHeader("Content-Type", "application/json; charset=utf-8")
                 .setBody("I AM BODY"));
 
-        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), "application/json", null);
+        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), "application/json");
         assertThat(IOUtils.toString(result.getInputStream(), Charset.defaultCharset()), equalTo("I AM BODY"));
     }
 
@@ -293,12 +293,12 @@ public abstract class OpenRosaGetRequestTest {
         mockWebServer.enqueue(new MockResponse()
                 .addHeader("X-OpenRosa-Version", "1.0"));
 
-        HttpGetResult result1 = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result1 = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(result1.isOpenRosaResponse(), equalTo(true));
 
         mockWebServer.enqueue(new MockResponse());
 
-        HttpGetResult result2 = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result2 = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(result2.isOpenRosaResponse(), equalTo(false));
     }
 
@@ -306,7 +306,7 @@ public abstract class OpenRosaGetRequestTest {
     public void whenStatusCodeIsNot200_returnsNullBodyAndStatusCode() throws Exception {
         mockWebServer.enqueue(new MockResponse().setResponseCode(500));
 
-        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(result.getInputStream(), nullValue());
         assertThat(result.getStatusCode(), equalTo(500));
     }
@@ -315,13 +315,13 @@ public abstract class OpenRosaGetRequestTest {
     public void whenResponseBodyIsNull_returnsNullBodyAndStatusCode() throws Exception {
         mockWebServer.enqueue(new MockResponse().setResponseCode(204));
 
-        HttpGetResult result1 = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result1 = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(result1.getInputStream(), nullValue());
         assertThat(result1.getStatusCode(), equalTo(204));
 
         mockWebServer.enqueue(new MockResponse().setResponseCode(304));
 
-        HttpGetResult result2 = subject.executeGetRequest(mockWebServer.url("").uri(), null, null);
+        HttpGetResult result2 = subject.executeGetRequest(mockWebServer.url("").uri(), null);
         assertThat(result2.getInputStream(), nullValue());
         assertThat(result2.getStatusCode(), equalTo(304));
     }

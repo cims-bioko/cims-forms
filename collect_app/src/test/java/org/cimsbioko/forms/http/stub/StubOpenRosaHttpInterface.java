@@ -23,7 +23,7 @@ public class StubOpenRosaHttpInterface implements OpenRosaHttpInterface {
 
     @Override
     @NonNull
-    public HttpGetResult executeGetRequest(@NonNull URI uri, @Nullable String contentType, @Nullable HttpCredentialsInterface credentials) throws Exception {
+    public HttpGetResult executeGetRequest(@NonNull URI uri, @Nullable String contentType) throws Exception {
 
         String xml =
                 "<forms>" +
@@ -44,13 +44,13 @@ public class StubOpenRosaHttpInterface implements OpenRosaHttpInterface {
 
     @NonNull
     @Override
-    public HttpHeadResult executeHeadRequest(@NonNull URI uri, @Nullable HttpCredentialsInterface credentials) throws Exception {
+    public HttpHeadResult executeHeadRequest(@NonNull URI uri) throws Exception {
         return new HttpHeadResult(0, new HashMap<String, String>());
     }
 
     @NonNull
     @Override
-    public HttpPostResult uploadSubmissionFile(@NonNull List<File> fileList, @NonNull File submissionFile, @NonNull URI uri, @Nullable HttpCredentialsInterface credentials, @NonNull long contentLength) throws IOException {
+    public HttpPostResult uploadSubmissionFile(@NonNull List<File> fileList, @NonNull File submissionFile, @NonNull URI uri, @NonNull long contentLength) throws IOException {
         return new HttpPostResult("", 0, "");
     }
 }
