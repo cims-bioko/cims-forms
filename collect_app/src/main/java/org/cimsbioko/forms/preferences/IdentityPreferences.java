@@ -15,16 +15,11 @@
 package org.cimsbioko.forms.preferences;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import androidx.annotation.Nullable;
 import android.view.View;
 
-import com.google.android.gms.analytics.GoogleAnalytics;
-
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.application.FormsApp;
 
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_ANALYTICS;
 import static org.cimsbioko.forms.preferences.PreferencesActivity.INTENT_KEY_ADMIN_MODE;
 
 public class IdentityPreferences extends BasePreferenceFragment {
@@ -51,8 +46,6 @@ public class IdentityPreferences extends BasePreferenceFragment {
                     .commit();
             return true;
         });
-
-        initAnalyticsPref();
     }
 
     @Override
@@ -66,20 +59,6 @@ public class IdentityPreferences extends BasePreferenceFragment {
         super.onDetach();
         if (toolbar != null) {
             toolbar.setTitle(R.string.general_preferences);
-        }
-    }
-
-    private void initAnalyticsPref() {
-        final CheckBoxPreference analyticsPreference = (CheckBoxPreference) findPreference(KEY_ANALYTICS);
-
-        if (analyticsPreference != null) {
-            analyticsPreference.setOnPreferenceClickListener(preference -> {
-                GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(getActivity().getApplicationContext());
-                googleAnalytics.setAppOptOut(!analyticsPreference.isChecked());
-
-                FormsApp.getInstance().setAnalyticsCollectionEnabled(analyticsPreference.isChecked());
-                return true;
-            });
         }
     }
 }

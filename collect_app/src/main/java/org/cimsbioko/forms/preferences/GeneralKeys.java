@@ -39,7 +39,6 @@ public final class GeneralKeys {
 
     // identity_preferences.xml
     static final String KEY_FORM_METADATA                   = "form_metadata";
-    public static final String KEY_ANALYTICS                = "analytics";
 
     // other_preferences.xml
     public static final String KEY_FORMLIST_URL             = "formlist_url";
@@ -116,8 +115,6 @@ public final class GeneralKeys {
         // google_preferences.xml
         hashMap.put(KEY_SELECTED_GOOGLE_ACCOUNT,    "");
         hashMap.put(KEY_GOOGLE_SHEETS_URL,          "");
-        // identity_preferences.xml
-        hashMap.put(KEY_ANALYTICS,                  true);
         // other_preferences.xml
         hashMap.put(KEY_FORMLIST_URL,               FormsApp.getInstance().getString(R.string.default_odk_formlist));
         hashMap.put(KEY_SUBMISSION_URL,             FormsApp.getInstance().getString(R.string.default_odk_submission));

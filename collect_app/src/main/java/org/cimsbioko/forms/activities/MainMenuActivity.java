@@ -507,11 +507,8 @@ public class MainMenuActivity extends CollectAbstractActivity {
 
     // This flag must be set each time the app starts up
     private void setupGoogleAnalytics() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(FormsApp
-                .getInstance());
-        boolean isAnalyticsEnabled = settings.getBoolean(GeneralKeys.KEY_ANALYTICS, true);
         GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(getApplicationContext());
-        googleAnalytics.setAppOptOut(!isAnalyticsEnabled);
+        googleAnalytics.setAppOptOut(true);
     }
 
     private void updateButtons() {

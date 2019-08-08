@@ -58,8 +58,5 @@
         <CheckBoxPreference
             android:key="change_form_metadata"
             android:title="@string/form_metadata" />
-        <CheckBoxPreference
-            android:key="analytics"
-            android:title="@string/analytics" />
     </PreferenceCategory>
 </PreferenceScreen>

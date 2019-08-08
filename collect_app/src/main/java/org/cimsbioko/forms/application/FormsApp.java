@@ -366,10 +366,6 @@ public class FormsApp extends Application {
         firebaseAnalytics.logEvent(event, bundle);
     }
 
-    public void setAnalyticsCollectionEnabled(boolean isAnalyticsEnabled) {
-        firebaseAnalytics.setAnalyticsCollectionEnabled(isAnalyticsEnabled);
-    }
-
     private static class CrashReportingTree extends Timber.Tree {
         @Override
         protected void log(int priority, String tag, String message, Throwable t) {

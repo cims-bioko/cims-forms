@@ -61,7 +61,6 @@ public final class AdminKeys {
 
     static final String KEY_MAPS                        = "maps";
 
-    private static final String KEY_ANALYTICS                   = "analytics";
     public static final String KEY_MOVING_BACKWARDS             = "moving_backwards";
     static final String ALLOW_OTHER_WAYS_OF_EDITING_FORM        = "allow_other_ways_of_editing_form";
 
@@ -94,8 +93,6 @@ public final class AdminKeys {
 
             ag(KEY_NAVIGATION,                 GeneralKeys.KEY_NAVIGATION),
             ag(KEY_CONSTRAINT_BEHAVIOR,        GeneralKeys.KEY_CONSTRAINT_BEHAVIOR),
-
-            ag(KEY_ANALYTICS,                  GeneralKeys.KEY_ANALYTICS)
     };
 
     /** Admin keys other than those in adminToGeneral above */
@@ -122,8 +119,7 @@ public final class AdminKeys {
     );
 
     static Collection<String> identityKeys = Arrays.asList(
-            KEY_CHANGE_FORM_METADATA,
-            KEY_ANALYTICS
+            KEY_CHANGE_FORM_METADATA
     );
 
     static Collection<String> formManagementKeys = Arrays.asList(
