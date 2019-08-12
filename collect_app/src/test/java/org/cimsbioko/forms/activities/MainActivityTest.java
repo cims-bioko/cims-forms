@@ -78,11 +78,6 @@ public class MainActivityTest {
         menuTitle = mainMenuActivity.getResources().getString(R.string.general_preferences);
         shadowTitle = menu.getItem(1).getTitle().toString();
         assertEquals(shadowTitle, menuTitle);
-
-        //Test for Admin Settings Menu Title
-        menuTitle = mainMenuActivity.getResources().getString(R.string.admin_preferences);
-        shadowTitle = menu.getItem(2).getTitle().toString();
-        assertEquals(shadowTitle, menuTitle);
     }
 
     /**
