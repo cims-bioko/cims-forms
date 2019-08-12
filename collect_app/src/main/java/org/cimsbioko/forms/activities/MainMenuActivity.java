@@ -405,9 +405,6 @@ public class MainMenuActivity extends CollectAbstractActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_about:
-                startActivity(new Intent(this, AboutActivity.class));
-                return true;
             case R.id.menu_general_preferences:
                 startActivity(new Intent(this, PreferencesActivity.class));
                 return true;

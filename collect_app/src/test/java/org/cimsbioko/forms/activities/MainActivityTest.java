@@ -62,17 +62,10 @@ public class MainActivityTest {
         assertNotNull(menu);
         assertNotNull(mainMenuActivity.onCreateOptionsMenu(menu));
 
-        //Test for AboutActivity
-        mainMenuActivity.onOptionsItemSelected(menu.getItem(0));
-        ShadowActivity shadowActivity = shadowOf(mainMenuActivity);
-        Intent startedIntent = shadowActivity.getNextStartedActivity();
-        ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(AboutActivity.class.getName(), shadowIntent.getIntentClass().getName());
-
-        //Test for About Menu Title
-        String menuTitle = mainMenuActivity.getResources().getString(R.string.about_preferences);
-        String shadowTitle = menu.getItem(0).getTitle().toString();
-        assertEquals(shadowTitle, menuTitle);
+        ShadowActivity shadowActivity;
+        Intent startedIntent;
+        ShadowIntent shadowIntent;
+        String menuTitle, shadowTitle;
 
         //Test for PreferencesActivity
         mainMenuActivity.onOptionsItemSelected(menu.getItem(1));
