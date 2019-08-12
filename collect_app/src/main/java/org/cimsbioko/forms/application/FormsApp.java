@@ -63,10 +63,7 @@ import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
 import org.cimsbioko.forms.preferences.PrefMigrator;
 import org.cimsbioko.forms.tasks.sms.SmsNotificationReceiver;
 import org.cimsbioko.forms.tasks.sms.SmsSentBroadcastReceiver;
-import org.cimsbioko.forms.utilities.FileUtils;
-import org.cimsbioko.forms.utilities.LocaleHelper;
-import org.cimsbioko.forms.utilities.NotificationUtils;
-import org.cimsbioko.forms.utilities.PRNGFixes;
+import org.cimsbioko.forms.utilities.*;
 
 
 import java.io.ByteArrayInputStream;
@@ -82,6 +79,7 @@ import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_FONT_SIZE;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_USERNAME;
 import static org.cimsbioko.forms.tasks.sms.SmsNotificationReceiver.SMS_NOTIFICATION_ACTION;
 import static org.cimsbioko.forms.tasks.sms.SmsSender.SMS_SEND_ACTION;
+import static org.cimsbioko.forms.utilities.CIMSUtils.getFirstAccountUsername;
 
 /**
  * The Open Data Kit FormsApp application.
@@ -386,7 +384,7 @@ public class FormsApp extends Application {
 
         // Use the server username by default if the metadata username is not defined
         if (mgr.getSingularProperty(PROPMGR_USERNAME) == null || mgr.getSingularProperty(PROPMGR_USERNAME).isEmpty()) {
-            mgr.putProperty(PROPMGR_USERNAME, SCHEME_USERNAME, (String) GeneralSharedPreferences.getInstance().get(KEY_USERNAME));
+            mgr.putProperty(PROPMGR_USERNAME, SCHEME_USERNAME, getFirstAccountUsername());
         }
 
         FormController.initializeJavaRosa(mgr);

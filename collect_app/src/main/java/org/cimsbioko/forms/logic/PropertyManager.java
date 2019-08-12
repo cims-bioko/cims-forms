@@ -39,7 +39,6 @@ import timber.log.Timber;
 
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_EMAIL;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_PHONENUMBER;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_USERNAME;
 import static org.cimsbioko.forms.utilities.PermissionUtils.isReadPhoneStatePermissionGranted;
 
 /**
@@ -103,7 +102,6 @@ public class PropertyManager implements IPropertyManager {
 
         // User-defined properties. Will replace any above with the same PROPMGR_ name.
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        initUserDefined(prefs, KEY_METADATA_USERNAME,    PROPMGR_USERNAME,      SCHEME_USERNAME);
         initUserDefined(prefs, KEY_METADATA_PHONENUMBER, PROPMGR_PHONE_NUMBER,  SCHEME_TEL);
         initUserDefined(prefs, KEY_METADATA_EMAIL,       PROPMGR_EMAIL,         SCHEME_MAILTO);
     }

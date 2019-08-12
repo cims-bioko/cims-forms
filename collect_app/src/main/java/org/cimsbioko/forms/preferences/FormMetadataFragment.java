@@ -20,10 +20,8 @@ import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_EMAIL;
 import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_PHONE_NUMBER;
 import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_SIM_SERIAL;
 import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_SUBSCRIBER_ID;
-import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_USERNAME;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_EMAIL;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_PHONENUMBER;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_USERNAME;
 
 public class FormMetadataFragment extends BasePreferenceFragment {
     @Override
@@ -51,7 +49,6 @@ public class FormMetadataFragment extends BasePreferenceFragment {
     private void initNormalPrefs() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         PropertyManager pm = new PropertyManager(getActivity());
-        initPrefFromProp(pm, prefs, PROPMGR_USERNAME, KEY_METADATA_USERNAME);
         initPrefFromProp(pm, prefs, PROPMGR_EMAIL, KEY_METADATA_EMAIL);
     }
 

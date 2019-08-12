@@ -2,10 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/user_defined">
         <EditTextPreference
-            android:inputType="textNoSuggestions"
-            android:key="metadata_username"
-            android:title="@string/username" />
-        <EditTextPreference
             android:inputType="phone"
             android:key="metadata_phonenumber"
             android:title="@string/phone_number" />
