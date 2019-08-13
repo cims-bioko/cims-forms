@@ -21,30 +21,14 @@ import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.cimsbioko.forms.preferences.AdminSharedPreferences;
-import org.cimsbioko.forms.preferences.GeneralSharedPreferences;
-import org.cimsbioko.forms.preferences.GeneralKeys;
 import org.cimsbioko.forms.utilities.SharedPreferencesUtils;
-
-import java.util.HashMap;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static org.cimsbioko.forms.preferences.AdminKeys.KEY_EDIT_SAVED;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_COMPLETED_DEFAULT;
 
 @RunWith(AndroidJUnit4.class)
 public class SharedPreferencesTest {
-
-    @Test
-    public void generalDefaultSharedPreferencesTest() {
-        GeneralSharedPreferences.getInstance().loadDefaultPreferences();
-        HashMap<String, Object> defaultValues = GeneralKeys.GENERAL_KEYS;
-
-        GeneralSharedPreferences generalSharedPreferences = GeneralSharedPreferences.getInstance();
-        for (String key : SharedPreferencesUtils.getAllGeneralKeys()) {
-            assertEquals(generalSharedPreferences.get(key), defaultValues.get(key));
-        }
-    }
 
     @Test
     public void adminDefaultSharedPreferencesTest() {
@@ -53,23 +37,6 @@ public class SharedPreferencesTest {
         AdminSharedPreferences adminSharedPreferences = AdminSharedPreferences.getInstance();
         for (String key : SharedPreferencesUtils.getAllAdminKeys()) {
             assertEquals(adminSharedPreferences.get(key), adminSharedPreferences.getDefault(key));
-        }
-    }
-
-    @Test
-    public void generalSharedPreferencesUpgradeTest() {
-        GeneralSharedPreferences.getInstance().save(KEY_COMPLETED_DEFAULT, false);
-
-        GeneralSharedPreferences.getInstance().reloadPreferences();
-        HashMap<String, Object> defaultValues = GeneralKeys.GENERAL_KEYS;
-
-        GeneralSharedPreferences generalSharedPreferences = GeneralSharedPreferences.getInstance();
-        for (String key : SharedPreferencesUtils.getAllGeneralKeys()) {
-            if (key.equals(KEY_COMPLETED_DEFAULT)) {
-                assertFalse((boolean) generalSharedPreferences.get(key));
-            } else {
-                assertEquals(generalSharedPreferences.get(key), defaultValues.get(key));
-            }
         }
     }
 

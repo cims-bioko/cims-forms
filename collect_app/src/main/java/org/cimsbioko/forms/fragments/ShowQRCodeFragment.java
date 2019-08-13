@@ -77,7 +77,6 @@ import timber.log.Timber;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static org.cimsbioko.forms.preferences.AdminKeys.KEY_ADMIN_PW;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_PASSWORD;
 import static org.cimsbioko.forms.utilities.QRCodeUtils.QR_CODE_FILEPATH;
 
 public class ShowQRCodeFragment extends Fragment {
@@ -267,7 +266,7 @@ public class ShowQRCodeFragment extends Fragment {
     }
 
     private void applySettings(String content) {
-        new PreferenceSaver(GeneralSharedPreferences.getInstance(), AdminSharedPreferences.getInstance()).fromJSON(content, new ActionListener() {
+        new PreferenceSaver(AdminSharedPreferences.getInstance()).fromJSON(content, new ActionListener() {
             @Override
             public void onSuccess() {
                 FormsApp.getInstance().initializeJavaRosa();
@@ -334,9 +333,6 @@ public class ShowQRCodeFragment extends Fragment {
             keys.add(KEY_ADMIN_PW);
         }
 
-        if (checkedItems[1]) {
-            keys.add(KEY_PASSWORD);
-        }
         return keys;
     }
 }

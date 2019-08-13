@@ -7,9 +7,7 @@ import timber.log.Timber;
 
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_EMAIL;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_MIGRATED;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_USERNAME;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_SELECTED_GOOGLE_ACCOUNT;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_USERNAME;
 
 /** Migrates existing preference values to metadata */
 public class FormMetadataMigrator {
@@ -20,7 +18,6 @@ public class FormMetadataMigrator {
 
     /** The migration flow, from source to target */
     static final String[][] SOURCE_TARGET_VALUE_PAIRS = new String[][]{
-            {KEY_USERNAME,                  KEY_METADATA_USERNAME},
             {KEY_SELECTED_GOOGLE_ACCOUNT,   KEY_METADATA_EMAIL}
     };
 

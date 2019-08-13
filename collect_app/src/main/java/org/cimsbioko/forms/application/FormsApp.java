@@ -76,7 +76,6 @@ import static org.cimsbioko.forms.logic.PropertyManager.PROPMGR_USERNAME;
 import static org.cimsbioko.forms.logic.PropertyManager.SCHEME_USERNAME;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_APP_LANGUAGE;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_FONT_SIZE;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_USERNAME;
 import static org.cimsbioko.forms.tasks.sms.SmsNotificationReceiver.SMS_NOTIFICATION_ACTION;
 import static org.cimsbioko.forms.tasks.sms.SmsSender.SMS_SEND_ACTION;
 import static org.cimsbioko.forms.utilities.CIMSUtils.getFirstAccountUsername;

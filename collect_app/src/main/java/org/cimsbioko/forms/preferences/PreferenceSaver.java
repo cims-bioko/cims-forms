@@ -29,15 +29,12 @@ import java.util.Map;
 import static org.cimsbioko.forms.preferences.AdminKeys.ALL_KEYS;
 import static org.cimsbioko.forms.preferences.AdminKeys.KEY_ADMIN_PW;
 import static org.cimsbioko.forms.preferences.GeneralKeys.GENERAL_KEYS;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_PASSWORD;
 
 public class PreferenceSaver {
 
-    private final GeneralSharedPreferences generalSharedPreferences;
     private final AdminSharedPreferences adminSharedPreferences;
 
-    public PreferenceSaver(GeneralSharedPreferences generalSharedPreferences, AdminSharedPreferences adminSharedPreferences) {
-        this.generalSharedPreferences = generalSharedPreferences;
+    public PreferenceSaver(AdminSharedPreferences adminSharedPreferences) {
         this.adminSharedPreferences = adminSharedPreferences;
     }
 
@@ -53,15 +50,6 @@ public class PreferenceSaver {
                 }
 
                 return;
-            }
-
-            for (String key : getAllGeneralKeys()) {
-                if (generalPrefs.containsKey(key)) {
-                    Object value = generalPrefs.get(key);
-                    generalSharedPreferences.save(key, value);
-                } else {
-                    generalSharedPreferences.reset(key);
-                }
             }
 
             for (String key : getAllAdminKeys()) {
@@ -96,12 +84,6 @@ public class PreferenceSaver {
         }
 
         return map;
-    }
-
-    private static Collection<String> getAllGeneralKeys() {
-        Collection<String> keys = new HashSet<>(GENERAL_KEYS.keySet());
-        keys.add(KEY_PASSWORD);
-        return keys;
     }
 
     private static Collection<String> getAllAdminKeys() {

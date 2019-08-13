@@ -34,7 +34,6 @@ import timber.log.Timber;
 import static org.cimsbioko.forms.preferences.AdminKeys.ALL_KEYS;
 import static org.cimsbioko.forms.preferences.AdminKeys.KEY_ADMIN_PW;
 import static org.cimsbioko.forms.preferences.GeneralKeys.GENERAL_KEYS;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_PASSWORD;
 
 public final class SharedPreferencesUtils {
 
@@ -107,7 +106,7 @@ public final class SharedPreferencesUtils {
                 builder.append(line);
             }
 
-            new PreferenceSaver(GeneralSharedPreferences.getInstance(), AdminSharedPreferences.getInstance()).fromJSON(builder.toString(), null);
+            new PreferenceSaver(AdminSharedPreferences.getInstance()).fromJSON(builder.toString(), null);
 
             FormsApp.getInstance().initializeJavaRosa();
             res = true;
@@ -124,12 +123,6 @@ public final class SharedPreferencesUtils {
         }
 
         return res;
-    }
-
-    public static Collection<String> getAllGeneralKeys() {
-        Collection<String> keys = new HashSet<>(GENERAL_KEYS.keySet());
-        keys.add(KEY_PASSWORD);
-        return keys;
     }
 
     public static Collection<String> getAllAdminKeys() {

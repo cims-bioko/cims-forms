@@ -30,7 +30,6 @@ import org.cimsbioko.forms.provider.InstanceProviderAPI.InstanceColumns;
 import org.cimsbioko.forms.tasks.InstanceServerUploaderTask;
 import org.cimsbioko.forms.utilities.ApplicationConstants;
 import org.cimsbioko.forms.utilities.ArrayUtils;
-import org.cimsbioko.forms.utilities.AuthDialogUtility;
 import org.cimsbioko.forms.utilities.DialogUtils;
 import org.cimsbioko.forms.utilities.InstanceUploaderUtils;
 import org.cimsbioko.forms.utilities.PermissionUtils;
@@ -48,8 +47,7 @@ import timber.log.Timber;
  *
  * @author Carl Hartung (carlhartung@gmail.com)
  */
-public class InstanceUploaderActivity extends CollectAbstractActivity implements InstanceUploaderListener,
-        AuthDialogUtility.AuthDialogUtilityResultListener {
+public class InstanceUploaderActivity extends CollectAbstractActivity implements InstanceUploaderListener {
     private static final int PROGRESS_DIALOG = 1;
     private static final int AUTH_DIALOG = 2;
 
@@ -324,17 +322,6 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
                 progressDialog.setCancelable(false);
                 progressDialog.setButton(getString(R.string.cancel), loadingButtonListener);
                 return progressDialog;
-            case AUTH_DIALOG:
-                Timber.i("onCreateDialog(AUTH_DIALOG): for upload of %d instances!",
-                        instancesToSend.length);
-
-                AuthDialogUtility authDialogUtility = new AuthDialogUtility();
-                if (username != null && password != null && url != null) {
-                    authDialogUtility.setCustomUsername(username);
-                    authDialogUtility.setCustomPassword(password);
-                }
-
-                return authDialogUtility.createDialog(this, this, this.url);
         }
 
         return null;
@@ -390,27 +377,5 @@ public class InstanceUploaderActivity extends CollectAbstractActivity implements
 
         SimpleDialog simpleDialog = SimpleDialog.newInstance(dialogTitle, 0, message, buttonTitle, true);
         simpleDialog.show(getSupportFragmentManager(), SimpleDialog.COLLECT_DIALOG_TAG);
-    }
-
-    @Override
-    public void updatedCredentials() {
-        showDialog(PROGRESS_DIALOG);
-        instanceServerUploaderTask = new InstanceServerUploaderTask();
-
-        // register this activity with the new uploader task
-        instanceServerUploaderTask.setUploaderListener(this);
-        // In the case of credentials set via intent extras, the credentials are stored in the
-        // global WebCredentialsUtils but the task also needs to know what server to set to
-        // TODO: is this really needed here? When would the task not have gotten a server set in
-        // init already?
-        if (url != null) {
-            instanceServerUploaderTask.setCompleteDestinationUrl(url + FormsApp.getInstance().getString(R.string.default_odk_submission), false);
-        }
-        instanceServerUploaderTask.execute(instancesToSend);
-    }
-
-    @Override
-    public void cancelledUpdatingCredentials() {
-        finish();
     }
 }

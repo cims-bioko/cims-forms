@@ -11,8 +11,6 @@ public final class GeneralKeys {
 
     // aggregate_preferences.xml
     public static final String KEY_SERVER_URL               = "server_url";
-    public static final String KEY_USERNAME                 = "username";
-    public static final String KEY_PASSWORD                 = "password";
 
     // form_management_preferences.xml
     public static final String KEY_AUTOSEND                 = "autosend";
@@ -92,8 +90,6 @@ public final class GeneralKeys {
         HashMap<String, Object> hashMap = new HashMap<>();
         // aggregate_preferences.xml
         hashMap.put(KEY_SERVER_URL,                 FormsApp.getInstance().getString(R.string.default_server_url));
-        hashMap.put(KEY_USERNAME,                   "");
-        hashMap.put(KEY_PASSWORD,                   "");
         // form_management_preferences.xml
         hashMap.put(KEY_AUTOSEND,                   AUTOSEND_OFF);
         hashMap.put(KEY_GUIDANCE_HINT,              GUIDANCE_HINT_OFF);

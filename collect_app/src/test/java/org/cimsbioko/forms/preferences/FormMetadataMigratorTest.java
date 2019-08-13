@@ -26,7 +26,6 @@ import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_MIGRATED;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_PHONENUMBER;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_USERNAME;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_SELECTED_GOOGLE_ACCOUNT;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_USERNAME;
 
 /** Tests the FormMetadataFragment */
 @RunWith(RobolectricTestRunner.class)
@@ -41,12 +40,10 @@ public class FormMetadataMigratorTest {
             KEY_METADATA_USERNAME,
             KEY_METADATA_PHONENUMBER,
             KEY_METADATA_EMAIL,
-            KEY_USERNAME,
             KEY_SELECTED_GOOGLE_ACCOUNT);
 
     /** The inputs to the migration */
     private final String[][] sourceKeyValuePairs = new String[][] {
-            {KEY_USERNAME,                  "a user"},
             {KEY_SELECTED_GOOGLE_ACCOUNT,   "a Google email address"}
     };
 

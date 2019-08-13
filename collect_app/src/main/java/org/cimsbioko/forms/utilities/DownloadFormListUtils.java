@@ -24,7 +24,6 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
-import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.xform.parse.XFormParser;
 import org.kxml2.kdom.Element;
 import org.cimsbioko.forms.R;

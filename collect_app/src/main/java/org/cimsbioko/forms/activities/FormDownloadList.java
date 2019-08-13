@@ -41,7 +41,6 @@ import org.cimsbioko.forms.activities.viewmodels.FormDownloadListViewModel;
 import org.cimsbioko.forms.adapters.FormDownloadListAdapter;
 import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.dao.FormsDao;
-import org.cimsbioko.forms.http.HttpCredentialsInterface;
 import org.cimsbioko.forms.injection.DaggerUtils;
 import org.cimsbioko.forms.listeners.DownloadFormsTaskListener;
 import org.cimsbioko.forms.listeners.FormListDownloaderListener;
@@ -50,14 +49,12 @@ import org.cimsbioko.forms.logic.FormDetails;
 import org.cimsbioko.forms.tasks.DownloadFormListTask;
 import org.cimsbioko.forms.tasks.DownloadFormsTask;
 import org.cimsbioko.forms.utilities.ApplicationConstants;
-import org.cimsbioko.forms.utilities.AuthDialogUtility;
 import org.cimsbioko.forms.utilities.DialogUtils;
 import org.cimsbioko.forms.utilities.DownloadFormListUtils;
 import org.cimsbioko.forms.utilities.PermissionUtils;
 import org.cimsbioko.forms.utilities.ToastUtils;
 import org.cimsbioko.forms.utilities.WebCredentialsUtils;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -88,7 +85,7 @@ import static org.cimsbioko.forms.utilities.DownloadFormListUtils.DL_ERROR_MSG;
  * @author Carl Hartung (carlhartung@gmail.com)
  */
 public class FormDownloadList extends FormListActivity implements FormListDownloaderListener,
-        DownloadFormsTaskListener, AuthDialogUtility.AuthDialogUtilityResultListener, AdapterView.OnItemClickListener {
+        DownloadFormsTaskListener, AdapterView.OnItemClickListener {
     private static final String FORM_DOWNLOAD_LIST_SORTING_ORDER = "formDownloadListSortingOrder";
 
     public static final String DISPLAY_ONLY_UPDATED_FORMS = "displayOnlyUpdatedForms";
@@ -548,10 +545,7 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
             return;
         }
 
-        if (result.containsKey(DL_AUTH_REQUIRED)) {
-            // need authorization
-            createAuthDialog();
-        } else if (result.containsKey(DL_ERROR_MSG)) {
+        if (result.containsKey(DL_ERROR_MSG)) {
             // Download failed
             String dialogMessage =
                     getString(R.string.list_failed_with_error,
@@ -712,17 +706,6 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
         DialogUtils.showDialog(progressDialog, this);
     }
 
-    private void createAuthDialog() {
-        viewModel.setAlertShowing(false);
-
-        AuthDialogUtility authDialogUtility = new AuthDialogUtility();
-        if (viewModel.getUrl() != null && viewModel.getUsername() != null && viewModel.getPassword() != null) {
-            authDialogUtility.setCustomUsername(viewModel.getUsername());
-            authDialogUtility.setCustomPassword(viewModel.getPassword());
-        }
-        DialogUtils.showDialog(authDialogUtility.createDialog(this, this, viewModel.getUrl()), this);
-    }
-
     private void createCancelDialog() {
         cancelDialog = new ProgressDialog(this);
         cancelDialog.setTitle(getString(R.string.canceling));
@@ -803,27 +786,6 @@ public class FormDownloadList extends FormListActivity implements FormListDownlo
             setReturnResult(false, "Download cancelled", null);
             finish();
         }
-    }
-
-    @Override
-    public void updatedCredentials() {
-        // If the user updated the custom credentials using the dialog, let us update our
-        // variables holding the custom credentials
-        if (viewModel.getUrl() != null) {
-            HttpCredentialsInterface httpCredentials = webCredentialsUtils.getCredentials(URI.create(viewModel.getUrl()));
-
-            if (httpCredentials != null) {
-                viewModel.setUsername(httpCredentials.getUsername());
-                viewModel.setPassword(httpCredentials.getPassword());
-            }
-        }
-
-        downloadFormList();
-    }
-
-    @Override
-    public void cancelledUpdatingCredentials() {
-        finish();
     }
 
     private void setReturnResult(boolean successful, @Nullable String message, @Nullable HashMap<String, Boolean> resultFormIds) {

@@ -47,7 +47,6 @@ public class GeneralPreferencesFragment extends BasePreferenceFragment implement
 
         addPreferencesFromResource(R.xml.general_preferences);
 
-        findPreference("protocol").setOnPreferenceClickListener(this);
         findPreference("user_interface").setOnPreferenceClickListener(this);
         findPreference("maps").setOnPreferenceClickListener(this);
         findPreference("form_management").setOnPreferenceClickListener(this);
@@ -69,9 +68,6 @@ public class GeneralPreferencesFragment extends BasePreferenceFragment implement
         BasePreferenceFragment basePreferenceFragment = null;
         boolean adminMode = getArguments().getBoolean(INTENT_KEY_ADMIN_MODE, false);
         switch (preference.getKey()) {
-            case "protocol":
-                basePreferenceFragment = ServerPreferences.newInstance(adminMode);
-                break;
             case "user_interface":
                 basePreferenceFragment = UserInterfacePreferences.newInstance(adminMode);
                 break;
@@ -97,9 +93,6 @@ public class GeneralPreferencesFragment extends BasePreferenceFragment implement
 
     private void setPreferencesVisibility() {
         PreferenceScreen preferenceScreen = getPreferenceScreen();
-        if (!hasAtleastOneSettingEnabled(AdminKeys.serverKeys)) {
-            preferenceScreen.removePreference(findPreference("protocol"));
-        }
 
         if (!hasAtleastOneSettingEnabled(AdminKeys.userInterfaceKeys)) {
             preferenceScreen.removePreference(findPreference("user_interface"));

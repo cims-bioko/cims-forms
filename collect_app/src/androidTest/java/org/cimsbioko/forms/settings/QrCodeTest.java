@@ -45,7 +45,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.cimsbioko.forms.preferences.GeneralKeys.GENERAL_KEYS;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_SELECTED_GOOGLE_ACCOUNT;
-import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_USERNAME;
 
 @RunWith(AndroidJUnit4.class)
 public class QrCodeTest {
@@ -58,12 +57,11 @@ public class QrCodeTest {
         preferences.loadDefaultPreferences();
 
         // verify that the following preferences actually have default values
-        String[] keys = {KEY_USERNAME, KEY_SELECTED_GOOGLE_ACCOUNT};
+        String[] keys = {KEY_SELECTED_GOOGLE_ACCOUNT};
         assertPreferenceHaveDefaultValue(keys, true);
 
         // updating the preferences
         preferences
-                .save(KEY_USERNAME, "test_username")
                 .save(KEY_SELECTED_GOOGLE_ACCOUNT, "test@email.com");
 
         // verify that preferences values have been modified
@@ -90,7 +88,7 @@ public class QrCodeTest {
         assertNotEquals(resultIfAllSharedPreferencesAreDefault, result);
 
         // update shared preferences using the QrCode
-        new PreferenceSaver(GeneralSharedPreferences.getInstance(), AdminSharedPreferences.getInstance()).fromJSON(result, null);
+        new PreferenceSaver(AdminSharedPreferences.getInstance()).fromJSON(result, null);
 
         // assert that values have updated properly
         assertPreferenceHaveDefaultValue(keys, false);

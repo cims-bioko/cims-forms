@@ -15,7 +15,6 @@ import org.cimsbioko.forms.fragments.DataManagerList;
 import org.cimsbioko.forms.http.CollectServerClient;
 import org.cimsbioko.forms.http.OpenRosaHttpInterface;
 import org.cimsbioko.forms.logic.PropertyManager;
-import org.cimsbioko.forms.preferences.ServerPreferencesFragment;
 import org.cimsbioko.forms.tasks.InstanceServerUploaderTask;
 import org.cimsbioko.forms.tasks.ServerPollingJob;
 import org.cimsbioko.forms.tasks.sms.SmsNotificationReceiver;
@@ -23,7 +22,6 @@ import org.cimsbioko.forms.tasks.sms.SmsSender;
 import org.cimsbioko.forms.tasks.sms.SmsSentBroadcastReceiver;
 import org.cimsbioko.forms.tasks.sms.SmsService;
 import org.cimsbioko.forms.tasks.sms.contracts.SmsSubmissionManagerContract;
-import org.cimsbioko.forms.utilities.AuthDialogUtility;
 import org.cimsbioko.forms.utilities.DownloadFormListUtils;
 import org.cimsbioko.forms.utilities.FormDownloader;
 
@@ -90,13 +88,9 @@ public interface AppDependencyComponent {
 
     void inject(CollectServerClient collectClient);
 
-    void inject(ServerPreferencesFragment serverPreferencesFragment);
-
     void inject(FormDownloader formDownloader);
 
     void inject(ServerPollingJob serverPollingJob);
-
-    void inject(AuthDialogUtility authDialogUtility);
 
     void inject(FormDownloadList formDownloadList);
 
