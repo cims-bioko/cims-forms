@@ -37,15 +37,6 @@
             android:textStyle="bold"
             android:textAlignment="center" />
 
-        <TextView
-            style="@style/TextAppearance.Collect.Subtitle1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:text="@string/main_menu_details"
-            android:textAlignment="center" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
