@@ -6,7 +6,7 @@ import org.cimsbioko.forms.application.FormsApp;
 
 public class CIMSUtils {
 
-    public static final String ACCOUNT_TYPE = "org.openhds.mobile";
+    public static final String ACCOUNT_TYPE = "org.cimsbioko";
     public static final String AUTH_TOKEN_TYPE = "Device";
 
     public static Account[] getAccounts() {
