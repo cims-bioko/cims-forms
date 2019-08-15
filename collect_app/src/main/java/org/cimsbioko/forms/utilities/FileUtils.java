@@ -626,7 +626,7 @@ public class FileUtils {
     private static void checkIfSdcardSymlinkSameAsExternalStorageDirectory() {
         try {
             // createTempFile() guarantees a randomly named file that did not previously exist.
-            File shortPathFile = File.createTempFile("odk", null, new File("/sdcard"));
+            File shortPathFile = File.createTempFile("cims", null, new File("/sdcard"));
             try {
                 String name = shortPathFile.getName();
                 File longPathFile = new File(Environment.getExternalStorageDirectory(), name);
