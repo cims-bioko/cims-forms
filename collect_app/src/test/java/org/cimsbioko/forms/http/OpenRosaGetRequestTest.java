@@ -138,7 +138,7 @@ public abstract class OpenRosaGetRequestTest {
                 .setBody("Please authenticate."));
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
 
         assertThat(mockWebServer.getRequestCount(), equalTo(2));
         mockWebServer.takeRequest();
@@ -156,7 +156,7 @@ public abstract class OpenRosaGetRequestTest {
                 .setBody("Please authenticate."));
         httpsMockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null);
 
         assertThat(httpsMockWebServer.getRequestCount(), equalTo(2));
         httpsMockWebServer.takeRequest();
@@ -175,8 +175,8 @@ public abstract class OpenRosaGetRequestTest {
         httpsMockWebServer.enqueue(new MockResponse());
         httpsMockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
-        subject.executeGetRequest(httpsMockWebServer.url("/different").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null);
+        subject.executeGetRequest(httpsMockWebServer.url("/different").uri(), null);
 
         assertThat(httpsMockWebServer.getRequestCount(), equalTo(3));
         httpsMockWebServer.takeRequest();
@@ -194,8 +194,8 @@ public abstract class OpenRosaGetRequestTest {
         mockWebServer.enqueue(new MockResponse());
         mockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(mockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
-        subject.executeGetRequest(mockWebServer.url("/different").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(mockWebServer.url("").uri(), null);
+        subject.executeGetRequest(mockWebServer.url("/different").uri(), null);
 
         assertThat(mockWebServer.getRequestCount(), equalTo(3));
         mockWebServer.takeRequest();
@@ -215,8 +215,8 @@ public abstract class OpenRosaGetRequestTest {
         httpsMockWebServer.enqueue(new MockResponse());
         httpsMockWebServer.enqueue(new MockResponse());
 
-        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null, new HttpCredentials("user", "pass"));
-        subject.executeGetRequest(httpsMockWebServer.url("/different").uri(), null, new HttpCredentials("user", "pass"));
+        subject.executeGetRequest(httpsMockWebServer.url("").uri(), null);
+        subject.executeGetRequest(httpsMockWebServer.url("/different").uri(), null);
 
         assertThat(httpsMockWebServer.getRequestCount(), equalTo(3));
         httpsMockWebServer.takeRequest();

@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.cimsbioko.forms.upload.InstanceGoogleSheetsUploader;
 import org.junit.Test;
-import org.odk.collect.android.upload.InstanceGoogleSheetsUploader;
 
 import java.util.HashMap;
 
