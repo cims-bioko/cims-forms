@@ -20,8 +20,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -86,6 +88,8 @@ import static org.cimsbioko.forms.utilities.CIMSUtils.getFirstAccountUsername;
  * @author carlhartung
  */
 public class FormsApp extends Application {
+
+    private static final Uri SERVER_SETTING_URL = Uri.parse("content://org.cimsbioko.settings/odkApiUri");
 
     // Storage paths
     public static final String ODK_ROOT = Environment.getExternalStorageDirectory()
@@ -451,5 +455,14 @@ public class FormsApp extends Application {
 
     public void logNullFormControllerEvent(String action) {
         logRemoteAnalytics("NullFormControllerEvent", action, null);
+    }
+
+    public String getServerUrl() {
+        try (Cursor c = getContentResolver().query(SERVER_SETTING_URL, null, null, null, null)) {
+            if (c != null && c.moveToFirst()) {
+                return c.getString(0);
+            }
+            return null;
+        }
     }
 }

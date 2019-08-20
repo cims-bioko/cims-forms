@@ -288,18 +288,15 @@ public class InstanceServerUploader extends InstanceUploader {
 
         FormsApp app = FormsApp.getInstance();
 
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(
-                FormsApp.getInstance());
-        String serverBase = settings.getString(GeneralKeys.KEY_SERVER_URL,
-                app.getString(R.string.default_server_url));
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(app);
+        String serverBase = app.getServerUrl();
 
         if (serverBase.endsWith(URL_PATH_SEP)) {
             serverBase = serverBase.substring(0, serverBase.length() - 1);
         }
 
         // NOTE: /submission must not be translated! It is the well-known path on the server.
-        String submissionPath = settings.getString(GeneralKeys.KEY_SUBMISSION_URL,
-                app.getString(R.string.default_odk_submission));
+        String submissionPath = settings.getString(GeneralKeys.KEY_SUBMISSION_URL, app.getString(R.string.default_odk_submission));
 
         if (!submissionPath.startsWith(URL_PATH_SEP)) {
             submissionPath = URL_PATH_SEP + submissionPath;

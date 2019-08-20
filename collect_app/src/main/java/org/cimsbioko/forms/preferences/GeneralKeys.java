@@ -9,9 +9,6 @@ import java.util.HashMap;
 
 public final class GeneralKeys {
 
-    // aggregate_preferences.xml
-    public static final String KEY_SERVER_URL               = "server_url";
-
     // form_management_preferences.xml
     public static final String KEY_AUTOSEND                 = "autosend";
     public static final String KEY_DELETE_AFTER_SEND        = "delete_send";
@@ -89,7 +86,6 @@ public final class GeneralKeys {
     private static HashMap<String, Object> getHashMap() {
         HashMap<String, Object> hashMap = new HashMap<>();
         // aggregate_preferences.xml
-        hashMap.put(KEY_SERVER_URL,                 FormsApp.getInstance().getString(R.string.default_server_url));
         // form_management_preferences.xml
         hashMap.put(KEY_AUTOSEND,                   AUTOSEND_OFF);
         hashMap.put(KEY_GUIDANCE_HINT,              GUIDANCE_HINT_OFF);

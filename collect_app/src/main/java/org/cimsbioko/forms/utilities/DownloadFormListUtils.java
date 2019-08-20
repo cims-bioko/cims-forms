@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 
+import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.xform.parse.XFormParser;
 import org.kxml2.kdom.Element;
 import org.cimsbioko.forms.R;
@@ -76,9 +77,7 @@ public class DownloadFormListUtils {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(
                 application);
 
-        String downloadListUrl = url != null ? url :
-                settings.getString(GeneralKeys.KEY_SERVER_URL,
-                        application.getString(R.string.default_server_url));
+        String downloadListUrl = url != null ? url : FormsApp.getInstance().getServerUrl();
 
         while (downloadListUrl.endsWith("/")) {
             downloadListUrl = downloadListUrl.substring(0, downloadListUrl.length() - 1);
