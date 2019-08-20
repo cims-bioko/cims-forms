@@ -83,7 +83,7 @@ public abstract class MockedServerTest {
 
     private static void configAppFor(MockWebServer server) {
         Editor prefs = PreferenceManager.getDefaultSharedPreferences(FormsApp.getInstance().getBaseContext()).edit();
-        prefs.putString(GeneralKeys.KEY_SERVER_URL, server.url("/").toString());
+//        prefs.putString(GeneralKeys.KEY_SERVER_URL, server.url("/").toString());
         if (!prefs.commit()) {
             throw new RuntimeException("Failed to set up SharedPreferences for MockWebServer");
         }
