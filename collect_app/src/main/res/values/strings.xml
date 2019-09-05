@@ -718,4 +718,8 @@
     <string name="qr_code_not_found">QR Code not found in the selected image</string>
     <string name="not_granted_permission">The activity you are trying to start requires a permission which is not granted.</string>
     <string name="basemap_source_unavailable">Sorry, %s basemaps are not available on this device.  Please choose another basemap in General Settings &gt; Maps.</string>
+    <string name="cims_app_required">CIMS Required</string>
+    <string name="cims_app_install_prompt">This application requires the CIMS app. Install it now?</string>
+    <string name="quit_label">Quit</string>
+    <string name="install_label">Install</string>
 </resources>

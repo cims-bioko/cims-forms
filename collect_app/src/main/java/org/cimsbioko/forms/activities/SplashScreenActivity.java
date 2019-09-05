@@ -15,10 +15,14 @@
 package org.cimsbioko.forms.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -33,6 +37,8 @@ import org.cimsbioko.forms.utilities.PermissionUtils;
 
 import timber.log.Timber;
 
+import java.util.List;
+
 public class SplashScreenActivity extends Activity {
 
     private static final boolean EXIT = true;
@@ -42,6 +48,11 @@ public class SplashScreenActivity extends Activity {
         super.onCreate(savedInstanceState);
         // this splash screen should be a blank slate
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        if (!isCIMSInstalled(getPackageManager())) {
+            promptCIMSInstall(this);
+            return;
+        }
 
         new PermissionUtils().requestStoragePermissions(this, new PermissionListener() {
             @Override
@@ -64,6 +75,42 @@ public class SplashScreenActivity extends Activity {
                 finish();
             }
         });
+    }
+
+    public static boolean isCIMSInstalled(PackageManager manager) {
+        Intent contentIntent = new Intent("org.cimsbioko.ENTITY_LOOKUP");
+        List<ResolveInfo> intentMatches = manager.queryIntentActivities(contentIntent, 0);
+        return !intentMatches.isEmpty();
+    }
+
+    public static void promptCIMSInstall(final Activity activity) {
+
+        DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_POSITIVE) {
+                    launchFormsAppMarketInstall();
+                }
+                activity.finish();
+            }
+
+            private void launchFormsAppMarketInstall() {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=org.cimsbioko"));
+                activity.startActivity(intent);
+            }
+        };
+
+        DialogInterface.OnCancelListener cancelListener = dialog -> activity.finish();
+
+        new AlertDialog.Builder(activity)
+                .setTitle(R.string.cims_app_required)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.cims_app_install_prompt)
+                .setNegativeButton(R.string.quit_label, clickListener)
+                .setPositiveButton(R.string.install_label, clickListener)
+                .setOnCancelListener(cancelListener)
+                .show();
     }
 
     private void init() {

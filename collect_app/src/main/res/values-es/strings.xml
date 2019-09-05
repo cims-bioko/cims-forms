@@ -700,4 +700,8 @@
   <string name="qr_code_not_found">Código QR no encontrado en la imagen seleccionada</string>
   <string name="not_granted_permission">La actividad que está intentando iniciar requiere un permiso que no se ha concedido.</string>
   <string name="basemap_source_unavailable">Lo sentimos, Los mapas base %s no están disponibles en este dispositivo. Por favor escoja otro mapa base en   Please choose another basemap in Cambiar la configuración &gt; Mapas.</string>
+  <string name="cims_app_required">CIMS Requerido</string>
+  <string name="cims_app_install_prompt">Esta aplicación requiere la aplicación CIMS. Instalarlo ahora?</string>
+  <string name="quit_label">Salir</string>
+  <string name="install_label">Instalar</string>
 </resources>
