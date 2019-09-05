@@ -66,6 +66,7 @@ the specific language governing permissions and limitations under the License.
         android:required="true" />
 
     <uses-permission android:name="org.cimsbioko.permission.READ_SETTINGS" />
+    <uses-permission android:name="org.cimsbioko.permission.AUTH" />
 
     <!--
     for Maps v2 functionality, want:
