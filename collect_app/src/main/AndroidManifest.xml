@@ -227,8 +227,8 @@ the specific language governing permissions and limitations under the License.
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.item/vnd.odk.form" />
-                <data android:mimeType="vnd.android.cursor.item/vnd.odk.instance" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.cimsforms.form" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.cimsforms.instance" />
             </intent-filter>
         </activity-alias>
 
@@ -241,7 +241,7 @@ the specific language governing permissions and limitations under the License.
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.dir/vnd.odk.instance" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.cimsforms.instance" />
             </intent-filter>
         </activity-alias>
 
@@ -255,7 +255,7 @@ the specific language governing permissions and limitations under the License.
 
                 <category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="vnd.android.cursor.dir/vnd.odk.form" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.cimsforms.form" />
             </intent-filter>
         </activity-alias>
 
@@ -265,7 +265,7 @@ the specific language governing permissions and limitations under the License.
             <intent-filter>
                 <action android:name="org.cimsbioko.forms.FORM_DOWNLOAD" />
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="vnd.android.cursor.dir/vnd.odk.form" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.cimsforms.form" />
             </intent-filter>
         </activity-alias>
 
@@ -286,7 +286,7 @@ the specific language governing permissions and limitations under the License.
             <intent-filter>
                 <action android:name="org.cimsbioko.forms.INSTANCE_UPLOAD" />
                 <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="vnd.android.cursor.dir/vnd.odk.instance" />
+                <data android:mimeType="vnd.android.cursor.dir/vnd.cimsforms.instance" />
             </intent-filter>
         </activity-alias>
 
