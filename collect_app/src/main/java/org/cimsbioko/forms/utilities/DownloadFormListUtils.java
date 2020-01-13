@@ -93,6 +93,11 @@ public class DownloadFormListUtils {
 
         downloadListUrl += downloadPath;
 
+        String campaign = FormsApp.getInstance().getCurrentCampaign();
+        if (campaign != null) {
+            downloadListUrl += "?campaign=" + campaign;
+        }
+
         // We populate this with available forms from the specified server.
         // <formname, details>
         HashMap<String, FormDetails> formList = new HashMap<String, FormDetails>();
