@@ -1,25 +1,25 @@
 {
   "project_info": {
-    "project_number": "895206029843",
-    "project_id": "opendatakit-collect-forks"
+    "project_number": "976400545462",
+    "project_id": "cims-forms-1575493730292"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:895206029843:android:5e1d7c3c296329e8",
+        "mobilesdk_app_id": "1:422392826654:android:5e1d7c3c296329e8",
         "android_client_info": {
           "package_name": "org.cimsbioko.forms"
         }
       },
       "oauth_client": [
         {
-          "client_id": "895206029843-btufcdli1qptfd4sjrq5f0vdacsg68fj.apps.googleusercontent.com",
+          "client_id": "422392826654-aj7or9nvv10cmk76tbrjhaffq2c8t1lt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAD_MRym4ELgrqCJ4IGkPAdkfPXYX1WDeI"
+          "current_key": "AIzaSyDzHk4Ux0G0bLaKHGHBBYS4wgwpvFDHwBI"
         }
       ],
       "services": {
