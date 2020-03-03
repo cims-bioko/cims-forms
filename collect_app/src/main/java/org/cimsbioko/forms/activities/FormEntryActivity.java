@@ -551,7 +551,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                         formPath.lastIndexOf('.'))
                         + "_";
                 final String fileSuffix = ".xml.save";
-                File cacheDir = new File(FormsApp.CACHE_PATH);
+                File cacheDir = new File(FormsApp.getFileSystem().getCachePath());
                 File[] files = cacheDir.listFiles(pathname -> {
                     String name = pathname.getName();
                     return name.startsWith(filePrefix)
@@ -569,8 +569,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                                     candidate.getName().length()
                                             - fileSuffix.length());
                     File instanceDir = new File(
-                            FormsApp.INSTANCES_PATH + File.separator
-                                    + instanceDirName);
+                            FormsApp.getFileSystem().getInstancesPath() + File.separator + instanceDirName);
                     File instanceFile = new File(instanceDir,
                             instanceDirName + ".xml");
                     if (instanceDir.exists()
@@ -776,8 +775,9 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                  */
                 // The intent is empty, but we know we saved the image to the temp
                 // file
-                ImageConverter.execute(FormsApp.TMPFILE_PATH, getWidgetWaitingForBinaryData(), this);
-                File fi = new File(FormsApp.TMPFILE_PATH);
+                String tempFilePath = FormsApp.getFileSystem().getTempFilePath();
+                ImageConverter.execute(tempFilePath, getWidgetWaitingForBinaryData(), this);
+                File fi = new File(tempFilePath);
 
                 String instanceFolder = formController.getInstanceFile()
                         .getParent();
@@ -2397,7 +2397,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                             Locale.ENGLISH).format(Calendar.getInstance().getTime());
                     String file = formPath.substring(formPath.lastIndexOf('/') + 1,
                             formPath.lastIndexOf('.'));
-                    String path = FormsApp.INSTANCES_PATH + File.separator + file + "_"
+                    String path = FormsApp.getFileSystem().getInstancesPath() + File.separator + file + "_"
                             + time;
                     if (FileUtils.createFolder(path)) {
                         File instanceFile = new File(path + File.separator + file + "_" + time + ".xml");

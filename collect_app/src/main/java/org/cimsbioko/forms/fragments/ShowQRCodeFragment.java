@@ -303,7 +303,7 @@ public class ShowQRCodeFragment extends Fragment {
                 }
                 return true;
             case R.id.menu_save_preferences:
-                File writeDir = new File(FormsApp.SETTINGS);
+                File writeDir = new File(FormsApp.getFileSystem().getSettings());
                 if (!writeDir.exists()) {
                     if (!writeDir.mkdirs()) {
                         ToastUtils.showShortToast("Error creating directory "

@@ -57,7 +57,7 @@ public class FormsDatabaseHelper extends SQLiteOpenHelper {
     private static final String MODEL_VERSION = "modelVersion";
 
     public FormsDatabaseHelper() {
-        super(new DatabaseContext(FormsApp.METADATA_PATH), DATABASE_NAME, null, DATABASE_VERSION);
+        super(new DatabaseContext(FormsApp.getFileSystem().getMetadataPath()), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

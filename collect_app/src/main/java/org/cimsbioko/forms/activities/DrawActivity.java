@@ -38,6 +38,7 @@ import com.rarepebble.colorpicker.ColorPickerView;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.IconMenuListAdapter;
 import org.cimsbioko.forms.adapters.model.IconMenuItem;
+import org.cimsbioko.forms.application.FileSystem;
 import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.utilities.AnimateUtils;
 import org.cimsbioko.forms.utilities.DialogUtils;
@@ -149,12 +150,14 @@ public class DrawActivity extends CollectAbstractActivity {
 
         Bundle extras = getIntent().getExtras();
 
+        FileSystem fs = FormsApp.getFileSystem();
+
         if (extras == null) {
             loadOption = OPTION_DRAW;
             refImage = null;
-            savepointImage = new File(FormsApp.TMPDRAWFILE_PATH);
+            savepointImage = new File(fs.getTempDrawFilePath());
             savepointImage.delete();
-            output = new File(FormsApp.TMPFILE_PATH);
+            output = new File(fs.getTempFilePath());
         } else {
             if (extras.getInt(SCREEN_ORIENTATION) == 1) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -176,7 +179,7 @@ public class DrawActivity extends CollectAbstractActivity {
                     FileUtils.copyFile(refImage, savepointImage);
                 }
             } else {
-                savepointImage = new File(FormsApp.TMPDRAWFILE_PATH);
+                savepointImage = new File(fs.getTempDrawFilePath());
                 savepointImage.delete();
                 if (refImage != null && refImage.exists()) {
                     FileUtils.copyFile(refImage, savepointImage);
@@ -186,7 +189,7 @@ public class DrawActivity extends CollectAbstractActivity {
             if (uri != null) {
                 output = new File(uri.getPath());
             } else {
-                output = new File(FormsApp.TMPFILE_PATH);
+                output = new File(fs.getTempFilePath());
             }
         }
 

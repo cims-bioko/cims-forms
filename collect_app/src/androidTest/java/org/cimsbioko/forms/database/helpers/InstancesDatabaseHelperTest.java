@@ -44,7 +44,7 @@ public class InstancesDatabaseHelperTest {
         });
     }
 
-    private static final String DATABASE_PATH = FormsApp.METADATA_PATH + File.separator + InstancesDatabaseHelper.DATABASE_NAME;
+    private static final String DATABASE_PATH = FormsApp.getFileSystem().getMetadataPath() + File.separator + InstancesDatabaseHelper.DATABASE_NAME;
     private static final String TEMPORARY_EXTENSION = ".real";
 
     @Before

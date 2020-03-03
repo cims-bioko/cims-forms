@@ -44,12 +44,12 @@ import static org.cimsbioko.forms.utilities.ApplicationConstants.Namespaces.XML_
 
 @RunWith(AndroidJUnit4.class)
 public class ImageConverterTest {
-    private static final String TEST_DIR = FormsApp.INSTANCES_PATH + File.separator + "testForm_2017-10-12_19-36-15" + File.separator;
+    private static final String TEST_DIR = FormsApp.getFileSystem().getInstancesPath() + File.separator + "testForm_2017-10-12_19-36-15" + File.separator;
     private static final String TEST_IMAGE_PATH = TEST_DIR + "testImage.jpg";
 
     @Before
     public void setUp() {
-        File wallpaperDirectory = new File(FormsApp.INSTANCES_PATH + File.separator + "testForm_2017-10-12_19-36-15" + File.separator);
+        File wallpaperDirectory = new File(FormsApp.getFileSystem().getInstancesPath() + File.separator + "testForm_2017-10-12_19-36-15" + File.separator);
         wallpaperDirectory.mkdirs();
     }
 

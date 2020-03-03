@@ -70,7 +70,7 @@ public class CaptureSelfieActivity extends CollectAbstractActivity {
     private final Camera.PictureCallback picture = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
-            CameraUtils.savePhoto(FormsApp.TMPFILE_PATH, data);
+            CameraUtils.savePhoto(FormsApp.getFileSystem().getTempFilePath(), data);
             setResult(RESULT_OK);
             finish();
         }

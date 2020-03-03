@@ -92,21 +92,11 @@ public class FormsApp extends Application {
     private static final Uri SERVER_SETTING_URL = Uri.parse("content://org.cimsbioko.settings/odkApiUri");
     private static final Uri CURRENT_CAMPAIGN_URL = Uri.parse("content://org.cimsbioko.settings/currentCampaign");
 
-    // Storage paths
-    public static final String ODK_ROOT = Environment.getExternalStorageDirectory()
-            + File.separator + "cims";
-    public static final String FORMS_PATH = ODK_ROOT + File.separator + "forms";
-    public static final String INSTANCES_PATH = ODK_ROOT + File.separator + "instances";
-    public static final String CACHE_PATH = ODK_ROOT + File.separator + ".cache";
-    public static final String METADATA_PATH = ODK_ROOT + File.separator + "metadata";
-    public static final String TMPFILE_PATH = CACHE_PATH + File.separator + "tmp.jpg";
-    public static final String TMPDRAWFILE_PATH = CACHE_PATH + File.separator + "tmpDraw.jpg";
-    public static final String DEFAULT_FONTSIZE = "21";
-    public static final int DEFAULT_FONTSIZE_INT = 21;
-    public static final String OFFLINE_LAYERS = ODK_ROOT + File.separator + "layers";
-    public static final String SETTINGS = ODK_ROOT + File.separator + "settings";
+    private static final FileSystem fs = new DefaultFileSystem();
 
+    public static final String DEFAULT_FONTSIZE = "21";
     public static final int CLICK_DEBOUNCE_MS = 1000;
+    public static final int DEFAULT_FONTSIZE_INT = 21;
 
     public static String defaultSysLanguage;
     private static FormsApp singleton;
@@ -122,6 +112,10 @@ public class FormsApp extends Application {
 
     public static FormsApp getInstance() {
         return singleton;
+    }
+
+    public static FileSystem getFileSystem() {
+        return fs;
     }
 
     public static int getQuestionFontsize() {
@@ -146,8 +140,10 @@ public class FormsApp extends Application {
                     FormsApp.getInstance().getString(R.string.sdcard_unmounted, cardstatus));
         }
 
-        String[] dirs = {
-                ODK_ROOT, FORMS_PATH, INSTANCES_PATH, CACHE_PATH, METADATA_PATH, OFFLINE_LAYERS
+        FileSystem fs = getFileSystem();
+
+        String[] dirs = {fs.getRoot(), fs.getFormsPath(), fs.getInstancesPath(), fs.getCachePath(),
+                fs.getMetadataPath(), fs.getOfflineLayers()
         };
 
         for (String dirName : dirs) {
@@ -177,9 +173,10 @@ public class FormsApp extends Application {
          * Special check to prevent deletion of files that
          * could be in use by ODK Tables.
          */
+        String fsRootPath = getFileSystem().getRoot();
         String dirPath = directory.getAbsolutePath();
-        if (dirPath.startsWith(FormsApp.ODK_ROOT)) {
-            dirPath = dirPath.substring(FormsApp.ODK_ROOT.length());
+        if (dirPath.startsWith(fsRootPath)) {
+            dirPath = dirPath.substring(fsRootPath.length());
             String[] parts = dirPath.split(File.separatorChar == '\\' ? "\\\\" : File.separator);
             // [appName, instances, tableId, instanceId ]
             if (parts.length == 4 && parts[1].equals("instances")) {
@@ -476,3 +473,4 @@ public class FormsApp extends Application {
         }
     }
 }
+

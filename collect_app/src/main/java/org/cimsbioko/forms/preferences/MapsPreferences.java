@@ -179,7 +179,7 @@ public class MapsPreferences extends BasePreferenceFragment {
         }
         referenceLayerPref.setItems(values, labels, captions);
 
-        File layerDir = FileUtils.simplifyPath(new File(FormsApp.OFFLINE_LAYERS));
+        File layerDir = FileUtils.simplifyPath(new File(FormsApp.getFileSystem().getOfflineLayers()));
         referenceLayerPref.setDialogCaption(context.getString(
             files.isEmpty() ? R.string.layer_data_caption_none : R.string.layer_data_caption,
             layerDir, context.getString(MapProvider.getSourceLabelId())
@@ -191,7 +191,7 @@ public class MapsPreferences extends BasePreferenceFragment {
     /** Gets the list of layer data files supported by the current MapConfigurator. */
     private static List<File> getSupportedLayerFiles(MapConfigurator cftor) {
         List<File> files = new ArrayList<>();
-        for (File file : FileUtils.walk(new File(FormsApp.OFFLINE_LAYERS))) {
+        for (File file : FileUtils.walk(new File(FormsApp.getFileSystem().getOfflineLayers()))) {
             if (cftor.supportsLayer(file)) {
                 files.add(file);
             }

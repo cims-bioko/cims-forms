@@ -138,7 +138,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
         // This should get moved to the Application Class
         if (referenceManager.getFactories().length == 0) {
             // this is /sdcard/odk
-            referenceManager.addReferenceFactory(new FileReferenceFactory(FormsApp.ODK_ROOT));
+            referenceManager.addReferenceFactory(new FileReferenceFactory(FormsApp.getFileSystem().getRoot()));
         }
 
         addSessionRootTranslators(formMediaDir.getName(), referenceManager,

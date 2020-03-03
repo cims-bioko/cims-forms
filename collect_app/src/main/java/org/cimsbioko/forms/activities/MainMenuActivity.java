@@ -233,8 +233,9 @@ public class MainMenuActivity extends CollectAbstractActivity {
                     .getVersionedAppName());
         }
 
-        File f = new File(FormsApp.ODK_ROOT + "/collect.settings");
-        File j = new File(FormsApp.ODK_ROOT + "/collect.settings.json");
+        String fsRootPath = FormsApp.getFileSystem().getRoot();
+        File f = new File(fsRootPath + "/collect.settings");
+        File j = new File(fsRootPath + "/collect.settings.json");
         // Give JSON file preference
         if (j.exists()) {
             boolean success = SharedPreferencesUtils.loadSharedPreferencesFromJSONFile(j);

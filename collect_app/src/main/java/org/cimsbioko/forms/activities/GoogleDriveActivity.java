@@ -816,7 +816,7 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
                         List<com.google.api.services.drive.model.File> mediaFileList;
                         mediaFileList = driveHelper.getFilesFromDrive(null, folderId);
 
-                        FileUtils.createFolder(FormsApp.FORMS_PATH + File.separator + mediaDirName);
+                        FileUtils.createFolder(FormsApp.getFileSystem().getFormsPath() + File.separator + mediaDirName);
 
                         for (com.google.api.services.drive.model.File mediaFile : mediaFileList) {
                             String filePath = mediaDirName + File.separator + mediaFile.getName();
@@ -834,7 +834,7 @@ public class GoogleDriveActivity extends FormListActivity implements View.OnClic
         }
 
         private void downloadFile(@NonNull String fileId, String fileName) throws IOException {
-            File file = new File(FormsApp.FORMS_PATH + File.separator + fileName);
+            File file = new File(FormsApp.getFileSystem().getFormsPath() + File.separator + fileName);
             driveHelper.downloadFile(fileId, file);
         }
 

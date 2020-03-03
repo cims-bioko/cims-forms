@@ -40,7 +40,7 @@ public class ItemsetDbAdapter {
      */
     private static class DatabaseHelper extends SQLiteOpenHelper {
         DatabaseHelper() {
-            super(new DatabaseContext(FormsApp.METADATA_PATH), DATABASE_NAME, null, DATABASE_VERSION);
+            super(new DatabaseContext(FormsApp.getFileSystem().getMetadataPath()), DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override

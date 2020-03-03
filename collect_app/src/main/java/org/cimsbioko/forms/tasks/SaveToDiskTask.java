@@ -231,7 +231,7 @@ public class SaveToDiskTask extends AsyncTask<Void, String, SaveResult> {
      * Return the savepoint file for a given instance.
      */
     static File getSavepointFile(String instanceName) {
-        File tempDir = new File(FormsApp.CACHE_PATH);
+        File tempDir = new File(FormsApp.getFileSystem().getCachePath());
         return new File(tempDir, instanceName + ".save");
     }
 
@@ -239,7 +239,7 @@ public class SaveToDiskTask extends AsyncTask<Void, String, SaveResult> {
      * Return the formIndex file for a given instance.
      */
     public static File getFormIndexFile(String instanceName) {
-        File tempDir = new File(FormsApp.CACHE_PATH);
+        File tempDir = new File(FormsApp.getFileSystem().getCachePath());
         return new File(tempDir, instanceName + ".index");
     }
 

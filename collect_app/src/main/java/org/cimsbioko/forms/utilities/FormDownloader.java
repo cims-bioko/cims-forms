@@ -136,7 +136,7 @@ public class FormDownloader {
 
             if (fd.getManifestUrl() != null) {
                 // use a temporary media path until everything is ok.
-                tempMediaPath = new File(FormsApp.CACHE_PATH,
+                tempMediaPath = new File(FormsApp.getFileSystem().getCachePath(),
                         String.valueOf(System.currentTimeMillis())).getAbsolutePath();
                 finalMediaPath = FileUtils.constructMediaPath(
                         fileResult.getFile().getAbsolutePath());
@@ -325,12 +325,13 @@ public class FormDownloader {
         rootName = rootName.replaceAll("\\p{javaWhitespace}+", " ");
         rootName = rootName.trim();
 
+        String formsPath = FormsApp.getFileSystem().getFormsPath();
         // proposed name of xml file...
-        String path = FormsApp.FORMS_PATH + File.separator + rootName + ".xml";
+        String path = formsPath + File.separator + rootName + ".xml";
         int i = 2;
         File f = new File(path);
         while (f.exists()) {
-            path = FormsApp.FORMS_PATH + File.separator + rootName + "_" + i + ".xml";
+            path = formsPath + File.separator + rootName + "_" + i + ".xml";
             f = new File(path);
             i++;
         }
@@ -382,7 +383,7 @@ public class FormDownloader {
     private void downloadFile(File file, String downloadUrl)
             throws IOException, TaskCancelledException, URISyntaxException, Exception {
         File tempFile = File.createTempFile(file.getName(), TEMP_DOWNLOAD_EXTENSION,
-                new File(FormsApp.CACHE_PATH));
+                new File(FormsApp.getFileSystem().getCachePath()));
 
         // WiFi network connections can be renegotiated during a large form download sequence.
         // This will cause intermittent download failures.  Silently retry once after each

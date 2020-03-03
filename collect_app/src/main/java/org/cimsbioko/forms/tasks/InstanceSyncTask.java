@@ -78,7 +78,7 @@ public class InstanceSyncTask extends AsyncTask<Void, String, String> {
 
         try {
             List<String> candidateInstances = new LinkedList<String>();
-            File instancesPath = new File(FormsApp.INSTANCES_PATH);
+            File instancesPath = new File(FormsApp.getFileSystem().getInstancesPath());
             if (instancesPath.exists() && instancesPath.isDirectory()) {
                 File[] instanceFolders = instancesPath.listFiles();
                 if (instanceFolders == null || instanceFolders.length == 0) {

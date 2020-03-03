@@ -4,19 +4,18 @@ import junit.framework.Assert;
 
 import java.io.File;
 
+import org.cimsbioko.forms.application.FormsApp;
 import timber.log.Timber;
-
-import static org.cimsbioko.forms.application.FormsApp.CACHE_PATH;
-import static org.cimsbioko.forms.application.FormsApp.FORMS_PATH;
-import static org.cimsbioko.forms.application.FormsApp.INSTANCES_PATH;
-import static org.cimsbioko.forms.application.FormsApp.METADATA_PATH;
-import static org.cimsbioko.forms.application.FormsApp.ODK_ROOT;
-import static org.cimsbioko.forms.application.FormsApp.OFFLINE_LAYERS;
 
 class ExportedActivitiesUtils {
 
     private static final String[] DIRS = new String[]{
-            ODK_ROOT, FORMS_PATH, INSTANCES_PATH, CACHE_PATH, METADATA_PATH, OFFLINE_LAYERS
+            FormsApp.getFileSystem().getRoot(),
+            FormsApp.getFileSystem().getFormsPath(),
+            FormsApp.getFileSystem().getInstancesPath(),
+            FormsApp.getFileSystem().getCachePath(),
+            FormsApp.getFileSystem().getMetadataPath(),
+            FormsApp.getFileSystem().getOfflineLayers()
     };
 
     private ExportedActivitiesUtils() {

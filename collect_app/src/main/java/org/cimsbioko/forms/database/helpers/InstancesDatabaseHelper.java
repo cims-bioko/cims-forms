@@ -56,7 +56,7 @@ public class InstancesDatabaseHelper extends SQLiteOpenHelper {
     static final String[] CURRENT_VERSION_COLUMN_NAMES = COLUMN_NAMES_V5;
 
     public InstancesDatabaseHelper() {
-        super(new DatabaseContext(FormsApp.METADATA_PATH), DATABASE_NAME, null, DATABASE_VERSION);
+        super(new DatabaseContext(FormsApp.getFileSystem().getMetadataPath()), DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

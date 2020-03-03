@@ -51,12 +51,12 @@ public class ResetUtility {
                     resetForms();
                     break;
                 case ResetAction.RESET_LAYERS:
-                    if (deleteFolderContents(FormsApp.OFFLINE_LAYERS)) {
+                    if (deleteFolderContents(FormsApp.getFileSystem().getOfflineLayers())) {
                         failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_LAYERS));
                     }
                     break;
                 case ResetAction.RESET_CACHE:
-                    if (deleteFolderContents(FormsApp.CACHE_PATH)) {
+                    if (deleteFolderContents(FormsApp.getFileSystem().getCachePath())) {
                         failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_CACHE));
                     }
                     break;
@@ -75,11 +75,13 @@ public class ResetUtility {
         GeneralSharedPreferences.getInstance().loadDefaultPreferences();
         AdminSharedPreferences.getInstance().loadDefaultPreferences();
 
-        boolean deletedSettingsFolderContest = !new File(FormsApp.SETTINGS).exists()
-                || deleteFolderContents(FormsApp.SETTINGS);
+        String settingsPath = FormsApp.getFileSystem().getSettings();
+        boolean deletedSettingsFolderContest = !new File(settingsPath).exists()
+                || deleteFolderContents(settingsPath);
 
-        boolean deletedSettingsFile = !new File(FormsApp.ODK_ROOT + "/collect.settings").exists()
-                || (new File(FormsApp.ODK_ROOT + "/collect.settings").delete());
+        String settingsFilePath = FormsApp.getFileSystem().getRoot() + "/collect.settings";
+        boolean deletedSettingsFile = !new File(settingsFilePath).exists()
+                || (new File(settingsFilePath).delete());
         
         new LocaleHelper().updateLocale(context);
 
@@ -93,7 +95,7 @@ public class ResetUtility {
     private void resetInstances() {
         new InstancesDao().deleteInstancesDatabase();
 
-        if (deleteFolderContents(FormsApp.INSTANCES_PATH)) {
+        if (deleteFolderContents(FormsApp.getFileSystem().getInstancesPath())) {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_INSTANCES));
         }
     }
@@ -101,9 +103,9 @@ public class ResetUtility {
     private void resetForms() {
         new FormsDao().deleteFormsDatabase();
 
-        File itemsetDbFile = new File(FormsApp.METADATA_PATH + File.separator + ItemsetDbAdapter.DATABASE_NAME);
+        File itemsetDbFile = new File(FormsApp.getFileSystem().getMetadataPath() + File.separator + ItemsetDbAdapter.DATABASE_NAME);
 
-        if (deleteFolderContents(FormsApp.FORMS_PATH) && (!itemsetDbFile.exists() || itemsetDbFile.delete())) {
+        if (deleteFolderContents(FormsApp.getFileSystem().getFormsPath()) && (!itemsetDbFile.exists() || itemsetDbFile.delete())) {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_FORMS));
         }
     }

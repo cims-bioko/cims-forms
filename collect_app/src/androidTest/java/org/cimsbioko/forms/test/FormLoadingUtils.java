@@ -91,7 +91,7 @@ public class FormLoadingUtils {
             @Override
             protected Intent getActivityIntent() {
                 Intent intent = new Intent(ApplicationProvider.getApplicationContext(), FormEntryActivity.class);
-                intent.putExtra(EXTRA_TESTING_PATH, FormsApp.FORMS_PATH + "/" + formFilename);
+                intent.putExtra(EXTRA_TESTING_PATH, FormsApp.getFileSystem().getFormsPath() + "/" + formFilename);
 
                 return intent;
             }
@@ -105,7 +105,7 @@ public class FormLoadingUtils {
     }
 
     private static void copyForm(String formFilename) throws IOException {
-        String pathname = FormsApp.FORMS_PATH + "/" + formFilename;
+        String pathname = FormsApp.getFileSystem().getFormsPath() + "/" + formFilename;
 
         AssetManager assetManager = InstrumentationRegistry.getInstrumentation().getContext().getAssets();
         InputStream inputStream = assetManager.open("forms/" + formFilename);
@@ -119,7 +119,7 @@ public class FormLoadingUtils {
     }
 
     private static void copyFormMediaFiles(String formFilename, List<String> mediaFilenames) throws IOException {
-        String mediaPathName = FormsApp.FORMS_PATH + "/" + formFilename.replace(".xml", "") + FileUtils.MEDIA_SUFFIX + "/";
+        String mediaPathName = FormsApp.getFileSystem().getFormsPath() + "/" + formFilename.replace(".xml", "") + FileUtils.MEDIA_SUFFIX + "/";
         FileUtils.checkMediaPath(new File(mediaPathName));
 
         AssetManager assetManager = InstrumentationRegistry.getInstrumentation().getContext().getAssets();
