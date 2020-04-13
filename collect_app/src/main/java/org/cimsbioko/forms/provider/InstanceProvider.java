@@ -24,10 +24,12 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.database.helpers.InstancesDatabaseHelper;
@@ -35,6 +37,7 @@ import org.cimsbioko.forms.provider.InstanceProviderAPI.InstanceColumns;
 import org.cimsbioko.forms.utilities.MediaUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -230,6 +233,42 @@ public class InstanceProvider extends ContentProvider {
             }
             directory.delete();
         }
+    }
+
+    @Nullable
+    @Override
+    public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
+        if (URI_MATCHER.match(uri) != INSTANCE_ID) {
+            throw new IllegalArgumentException("URI is invalid. Use an id-based URI only.");
+        }
+
+        Cursor c = query(uri, new String[]{InstanceColumns.INSTANCE_FILE_PATH}, null, null, null);
+        int count = (c != null) ? c.getCount() : 0;
+        if (count != 1) {
+            // If there is not exactly one result, throw an appropriate exception.
+            if (c != null) {
+                c.close();
+            }
+            if (count == 0) {
+                throw new FileNotFoundException("No entry for " + uri);
+            }
+            throw new FileNotFoundException("Multiple items at " + uri);
+        }
+
+        // process the one-and-only result
+        c.moveToFirst();
+        int i = c.getColumnIndex(InstanceColumns.INSTANCE_FILE_PATH);
+        String path = (i >= 0 ? c.getString(i) : null);
+        c.close();
+        if (path == null) {
+            throw new FileNotFoundException("Column " + InstanceColumns.INSTANCE_FILE_PATH + " not found.");
+        }
+
+        int modeBits = ParcelFileDescriptor.MODE_READ_ONLY; // FIXME: Support write on Jellybean
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            modeBits = ParcelFileDescriptor.parseMode(mode);
+        }
+        return ParcelFileDescriptor.open(new File(path), modeBits);
     }
 
     /**
