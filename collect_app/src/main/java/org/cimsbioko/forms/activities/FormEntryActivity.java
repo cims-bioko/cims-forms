@@ -16,12 +16,7 @@ package org.cimsbioko.forms.activities;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.BroadcastReceiver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -74,6 +69,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.apache.commons.io.IOUtils;
+import org.cimsbioko.forms.application.FileSystem;
 import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
@@ -82,6 +78,7 @@ import org.javarosa.core.model.instance.TreeElement;
 import org.javarosa.form.api.FormEntryCaption;
 import org.javarosa.form.api.FormEntryController;
 import org.javarosa.form.api.FormEntryPrompt;
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.LocalDateTime;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.adapters.IconMenuListAdapter;
@@ -149,11 +146,7 @@ import org.cimsbioko.forms.widgets.QuestionWidget;
 import org.cimsbioko.forms.widgets.RangeWidget;
 import org.cimsbioko.forms.widgets.StringWidget;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -540,45 +533,74 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                 createErrorDialog(getString(R.string.bad_uri, uri), EXIT);
                 return;
             } else {
-                /**
-                 * This is the fill-blank-form code path.See if there is a savepoint for this form
-                 * that has never been explicitly saved by the user. If there is, open this savepoint(resume this filled-in form).
-                 * Savepoints for forms that were explicitly saved will be recovered when that
-                 * explicitly saved instance is edited via edit-saved-form.
-                 */
-                final String filePrefix = formPath.substring(
-                        formPath.lastIndexOf('/') + 1,
-                        formPath.lastIndexOf('.'))
-                        + "_";
-                final String fileSuffix = ".xml.save";
-                File cacheDir = new File(FormsApp.getFileSystem().getCachePath());
-                File[] files = cacheDir.listFiles(pathname -> {
-                    String name = pathname.getName();
-                    return name.startsWith(filePrefix)
-                            && name.endsWith(fileSuffix);
-                });
+                // This is the fill-blank-form code path.
 
-                /**
-                 * See if any of these savepoints are for a filled-in form that has never
-                 * been explicitly saved by the user.
+                /*
+                 * If a starter form instance was provided via clipdata, use it. This automatically will be cleaned
+                 * up if the user decides to cancel the form and ignore the contents rather than save.
                  */
-                for (File candidate : files) {
-                    String instanceDirName = candidate.getName()
-                            .substring(
-                                    0,
-                                    candidate.getName().length()
-                                            - fileSuffix.length());
-                    File instanceDir = new File(
-                            FormsApp.getFileSystem().getInstancesPath() + File.separator + instanceDirName);
-                    File instanceFile = new File(instanceDir,
-                            instanceDirName + ".xml");
-                    if (instanceDir.exists()
-                            && instanceDir.isDirectory()
-                            && !instanceFile.exists()) {
-                        // yes! -- use this savepoint file
-                        instancePath = instanceFile
-                                .getAbsolutePath();
-                        break;
+                ClipData clipData = intent.getClipData();
+                if (clipData != null && clipData.getItemCount() > 0 && clipData.getItemAt(0).getUri() != null
+                        && "text/xml".equals(getContentResolver().getType(clipData.getItemAt(0).getUri()))) {
+                    Uri starterUri = clipData.getItemAt(0).getUri();
+                    File starterFile = genInstanceFilename();
+                    if (FileUtils.createFolder(starterFile.getParent())) {
+                        try (FileOutputStream out = new FileOutputStream(starterFile);
+                             InputStream starter = getContentResolver().openInputStream(starterUri)) {
+                            if (starter != null) {
+                                IOUtils.copy(starter, out);
+                                instancePath = starterFile.getAbsolutePath();
+                            } else {
+                                createErrorDialog(getString(R.string.bad_uri, uri), EXIT);
+                                return;
+                            }
+                        } catch (IOException e) {
+                            Timber.e(e);
+                            createErrorDialog(getString(R.string.bad_uri, uri), EXIT);
+                            return;
+                        }
+                    }
+                } else {
+                    /*
+                     * If no starter was sent via clipdata, see if there is a savepoint for this form that has never
+                     * been explicitly saved by the user. If there is, open this savepoint(resume this filled-in form).
+                     * Savepoints for forms that were explicitly saved will be recovered when that explicitly saved
+                     * instance is edited via edit-saved-form.
+                     */
+                    final String filePrefix = formPath.substring(
+                            formPath.lastIndexOf('/') + 1,
+                            formPath.lastIndexOf('.'))
+                            + "_";
+                    final String fileSuffix = ".xml.save";
+                    File cacheDir = new File(FormsApp.getFileSystem().getCachePath());
+                    File[] files = cacheDir.listFiles(pathname -> {
+                        String name = pathname.getName();
+                        return name.startsWith(filePrefix)
+                                && name.endsWith(fileSuffix);
+                    });
+
+                    /*
+                     * See if any of these savepoints are for a filled-in form that has never
+                     * been explicitly saved by the user.
+                     */
+                    for (File candidate : files) {
+                        String instanceDirName = candidate.getName()
+                                .substring(
+                                        0,
+                                        candidate.getName().length()
+                                                - fileSuffix.length());
+                        File instanceDir = new File(
+                                FormsApp.getFileSystem().getInstancesPath() + File.separator + instanceDirName);
+                        File instanceFile = new File(instanceDir,
+                                instanceDirName + ".xml");
+                        if (instanceDir.exists()
+                                && instanceDir.isDirectory()
+                                && !instanceFile.exists()) {
+                            // yes! -- use this savepoint file
+                            instancePath = instanceFile
+                                    .getAbsolutePath();
+                            break;
+                        }
                     }
                 }
             }
@@ -2393,14 +2415,8 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                 if (formController.getInstanceFile() == null) {
 
                     // Create new answer folder.
-                    String time = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss",
-                            Locale.ENGLISH).format(Calendar.getInstance().getTime());
-                    String file = formPath.substring(formPath.lastIndexOf('/') + 1,
-                            formPath.lastIndexOf('.'));
-                    String path = FormsApp.getFileSystem().getInstancesPath() + File.separator + file + "_"
-                            + time;
-                    if (FileUtils.createFolder(path)) {
-                        File instanceFile = new File(path + File.separator + file + "_" + time + ".xml");
+                    File instanceFile = genInstanceFilename();
+                    if (FileUtils.createFolder(instanceFile.getParent())) {
                         formController.setInstanceFile(instanceFile);
                     }
 
@@ -2457,6 +2473,15 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
             ToastUtils.showLongToast(R.string.loading_form_failed);
             finish();
         }
+    }
+
+    @NotNull
+    private File genInstanceFilename() {
+        String time = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.ENGLISH)
+                .format(Calendar.getInstance().getTime());
+        String file = formPath.substring(formPath.lastIndexOf('/') + 1, formPath.lastIndexOf('.'));
+        String path = FormsApp.getFileSystem().getInstancesPath() + File.separator + file + "_" + time;
+        return new File(path, file + "_" + time + ".xml");
     }
 
     /**
