@@ -6,9 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-
+import androidx.core.content.ContextCompat;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.DexterBuilder;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -17,22 +16,13 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
 import org.cimsbioko.forms.R;
-import org.cimsbioko.forms.activities.CollectAbstractActivity;
-import org.cimsbioko.forms.activities.FormChooserList;
-import org.cimsbioko.forms.activities.FormDownloadList;
-import org.cimsbioko.forms.activities.FormEntryActivity;
-import org.cimsbioko.forms.activities.InstanceChooserList;
-import org.cimsbioko.forms.activities.InstanceUploaderActivity;
-import org.cimsbioko.forms.activities.InstanceUploaderListActivity;
-import org.cimsbioko.forms.activities.SplashScreenActivity;
+import org.cimsbioko.forms.activities.*;
 import org.cimsbioko.forms.listeners.PermissionListener;
+import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import timber.log.Timber;
 
 /**
  * PermissionUtils allows all permission related messages and checks to be encapsulated in one
@@ -43,7 +33,7 @@ import timber.log.Timber;
 public class PermissionUtils {
 
     public static boolean areStoragePermissionsGranted(Context context) {
-        return isPermissionGranted(context,
+        return Build.VERSION.SDK_INT >= 19 || isPermissionGranted(context,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
@@ -127,18 +117,22 @@ public class PermissionUtils {
      * @param action is a listener that provides the calling component with the permission result.
      */
     public void requestStoragePermissions(Activity activity, @NonNull PermissionListener action) {
-        requestPermissions(activity, new PermissionListener() {
-            @Override
-            public void granted() {
-                action.granted();
-            }
+        if (Build.VERSION.SDK_INT >= 19) {
+            action.granted();
+        } else {
+            requestPermissions(activity, new PermissionListener() {
+                @Override
+                public void granted() {
+                    action.granted();
+                }
 
-            @Override
-            public void denied() {
-                showAdditionalExplanation(activity, R.string.storage_runtime_permission_denied_title,
-                        R.string.storage_runtime_permission_denied_desc, R.drawable.sd, action);
-            }
-        }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                @Override
+                public void denied() {
+                    showAdditionalExplanation(activity, R.string.storage_runtime_permission_denied_title,
+                            R.string.storage_runtime_permission_denied_desc, R.drawable.sd, action);
+                }
+            }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
     }
 
     public void requestCameraPermission(Activity activity, @NonNull PermissionListener action) {
