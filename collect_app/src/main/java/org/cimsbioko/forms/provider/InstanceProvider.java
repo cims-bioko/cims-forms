@@ -14,27 +14,23 @@
 
 package org.cimsbioko.forms.provider;
 
-import android.content.ContentProvider;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.UriMatcher;
+import android.content.*;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
-
 import androidx.annotation.NonNull;
-
 import androidx.annotation.Nullable;
 import org.cimsbioko.forms.R;
 import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.database.helpers.InstancesDatabaseHelper;
 import org.cimsbioko.forms.provider.InstanceProviderAPI.InstanceColumns;
 import org.cimsbioko.forms.utilities.MediaUtils;
+import timber.log.Timber;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,8 +38,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import timber.log.Timber;
 
 import static org.cimsbioko.forms.database.helpers.InstancesDatabaseHelper.INSTANCES_TABLE_NAME;
 import static org.cimsbioko.forms.utilities.PermissionUtils.areStoragePermissionsGranted;
@@ -264,11 +258,36 @@ public class InstanceProvider extends ContentProvider {
             throw new FileNotFoundException("Column " + InstanceColumns.INSTANCE_FILE_PATH + " not found.");
         }
 
-        int modeBits = ParcelFileDescriptor.MODE_READ_ONLY; // FIXME: Support write on Jellybean
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            modeBits = ParcelFileDescriptor.parseMode(mode);
+        return ParcelFileDescriptor.open(new File(path), parseMode(mode));
+    }
+
+    private int parseMode(String mode) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return ParcelFileDescriptor.parseMode(mode);
+        } else {
+            final int modeBits;
+            if ("r".equals(mode)) {
+                modeBits = ParcelFileDescriptor.MODE_READ_ONLY;
+            } else if ("w".equals(mode) || "wt".equals(mode)) {
+                modeBits = ParcelFileDescriptor.MODE_WRITE_ONLY
+                        | ParcelFileDescriptor.MODE_CREATE
+                        | ParcelFileDescriptor.MODE_TRUNCATE;
+            } else if ("wa".equals(mode)) {
+                modeBits = ParcelFileDescriptor.MODE_WRITE_ONLY
+                        | ParcelFileDescriptor.MODE_CREATE
+                        | ParcelFileDescriptor.MODE_APPEND;
+            } else if ("rw".equals(mode)) {
+                modeBits = ParcelFileDescriptor.MODE_READ_WRITE
+                        | ParcelFileDescriptor.MODE_CREATE;
+            } else if ("rwt".equals(mode)) {
+                modeBits = ParcelFileDescriptor.MODE_READ_WRITE
+                        | ParcelFileDescriptor.MODE_CREATE
+                        | ParcelFileDescriptor.MODE_TRUNCATE;
+            } else {
+                throw new IllegalArgumentException("Bad mode '" + mode + "'");
+            }
+            return modeBits;
         }
-        return ParcelFileDescriptor.open(new File(path), modeBits);
     }
 
     /**
