@@ -1,8 +1,5 @@
 package org.cimsbioko.forms.regression.formfilling;
 
-import android.Manifest;
-
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
@@ -23,11 +20,7 @@ public class ExternalSecondaryInstancesTest extends BaseRegressionTest {
 
     @Rule
     public RuleChain copyFormChain = RuleChain
-            .outerRule(GrantPermissionRule.grant(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            )
-            .around(new ResetStateRule())
+            .outerRule(new ResetStateRule())
             .around(new CopyFormRule("internal_select_10.xml"))
             .around(new CopyFormRule("external_select_10.xml", Collections.singletonList("external_data_10.xml")));
 

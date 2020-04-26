@@ -1,8 +1,5 @@
 package org.cimsbioko.forms.regression.formfilling;
 
-import android.Manifest;
-
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.Rule;
@@ -23,11 +20,7 @@ public class CascadingSelectWithNumberInHeaderTest extends BaseRegressionTest {
 
     @Rule
     public RuleChain copyFormChain = RuleChain
-            .outerRule(GrantPermissionRule.grant(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            )
-            .around(new ResetStateRule())
+            .outerRule(new ResetStateRule())
             .around(new CopyFormRule("numberInCSV.xml", Collections.singletonList("itemSets.csv")));
 
     @Test

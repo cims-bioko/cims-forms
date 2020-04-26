@@ -18,14 +18,12 @@ package org.cimsbioko.forms.tasks;
 
 import android.os.Environment;
 
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.apache.commons.io.FileUtils;
 import org.javarosa.core.model.FormIndex;
 import org.javarosa.core.model.instance.TreeReference;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.cimsbioko.forms.logic.AuditEvent;
@@ -54,9 +52,6 @@ import static org.cimsbioko.forms.logic.AuditEvent.AuditEventType.QUESTION;
 public class AuditEventSaveTaskTest {
 
     private File testFile;
-
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
     @Before
     public void prepareTestFile() {

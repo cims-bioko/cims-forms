@@ -16,15 +16,12 @@
 
 package org.cimsbioko.forms.dao;
 
-import android.Manifest;
 import android.database.Cursor;
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.cimsbioko.forms.application.FormsApp;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.cimsbioko.forms.dto.Instance;
@@ -49,12 +46,6 @@ public class InstancesDaoTest {
     private Instance widgetsInstance;
     private Instance sampleInstance;
     private Instance biggestNOfSet2Instance;
-
-    @Rule
-    public GrantPermissionRule permissionRule = GrantPermissionRule.grant(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    );
 
     @Before
     public void setUp() {

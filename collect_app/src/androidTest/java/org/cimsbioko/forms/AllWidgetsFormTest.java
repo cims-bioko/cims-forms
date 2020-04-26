@@ -1,6 +1,5 @@
 package org.cimsbioko.forms;
 
-import android.Manifest;
 import android.app.Instrumentation.ActivityResult;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,7 +12,6 @@ import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -92,11 +90,7 @@ public class AllWidgetsFormTest {
 
     @Rule
     public RuleChain copyFormChain = RuleChain
-            .outerRule(GrantPermissionRule.grant(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            )
-            .around(new ResetStateRule())
+            .outerRule(new ResetStateRule())
             .around(new CopyFormRule(ALL_WIDGETS_FORM));
 
     @Mock

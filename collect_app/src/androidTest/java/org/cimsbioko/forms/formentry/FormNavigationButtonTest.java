@@ -16,10 +16,7 @@
 
 package org.cimsbioko.forms.formentry;
 
-import android.Manifest;
-
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
 
 import org.javarosa.core.model.FormIndex;
 import org.junit.AfterClass;
@@ -69,11 +66,7 @@ public class FormNavigationButtonTest {
 
     @Rule
     public RuleChain copyFormChain = RuleChain
-            .outerRule(GrantPermissionRule.grant(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            )
-            .around(new ResetStateRule())
+            .outerRule(new ResetStateRule())
             .around(new CopyFormRule(ALL_WIDGETS_FORM));
 
     @Before
