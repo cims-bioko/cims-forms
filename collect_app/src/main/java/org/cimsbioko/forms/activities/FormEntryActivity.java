@@ -226,6 +226,8 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
     public static final String EXTRA_TESTING_PATH = "testingPath";
     public static final String KEY_READ_PHONE_STATE_PERMISSION_REQUEST_NEEDED = "readPhoneStatePermissionRequestNeeded";
 
+    private static final String KEY_STARTER_URI = "starterUri";
+
     private static final int SAVING_DIALOG = 2;
 
     private boolean autoSaved;
@@ -271,6 +273,8 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
     private boolean newForm = true;
     private boolean onResumeWasCalledWithoutPermissions;
     private boolean readPhoneStatePermissionRequestNeeded;
+
+    private Uri starterUri;
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -422,6 +426,9 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
             if (savedInstanceState.containsKey(KEY_LOCATION_PERMISSIONS_GRANTED)) {
                 locationPermissionsPreviouslyGranted = savedInstanceState.getBoolean(KEY_LOCATION_PERMISSIONS_GRANTED);
             }
+            if (savedInstanceState.containsKey(KEY_STARTER_URI)) {
+                starterUri = savedInstanceState.getParcelable(KEY_STARTER_URI);
+            }
         }
     }
 
@@ -550,6 +557,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
                             if (starter != null) {
                                 IOUtils.copy(starter, out);
                                 instancePath = starterFile.getAbsolutePath();
+                                this.starterUri = starterUri;
                             } else {
                                 createErrorDialog(getString(R.string.bad_uri, uri), EXIT);
                                 return;
@@ -687,6 +695,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
         outState.putBoolean(KEY_AUTO_SAVED, autoSaved);
         outState.putBoolean(KEY_READ_PHONE_STATE_PERMISSION_REQUEST_NEEDED, readPhoneStatePermissionRequestNeeded);
         outState.putBoolean(KEY_LOCATION_PERMISSIONS_GRANTED, locationPermissionsPreviouslyGranted);
+        outState.putParcelable(KEY_STARTER_URI, starterUri);
 
         if (currentView instanceof ODKView) {
             outState.putAll(((ODKView) currentView).getState());
@@ -2200,6 +2209,23 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
 
         if (saveToDiskTask != null) {
             saveToDiskTask.setFormSavedListener(this);
+        }
+    }
+
+    @Override
+    public void finish() {
+        deleteStarterContent();
+        super.finish();
+    }
+
+    private void deleteStarterContent() {
+        if (starterUri != null) {
+            int result = getContentResolver().delete(starterUri, null, null);
+            if (result > 0) {
+                Timber.d("deleted starter file %s", starterUri);
+            } else {
+                Timber.d("failed to delete starter file %s", starterUri);
+            }
         }
     }
 
