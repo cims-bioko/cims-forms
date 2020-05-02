@@ -69,7 +69,6 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.apache.commons.io.IOUtils;
-import org.cimsbioko.forms.application.FileSystem;
 import org.cimsbioko.forms.application.FormsApp;
 import org.javarosa.core.model.FormDef;
 import org.javarosa.core.model.FormIndex;
