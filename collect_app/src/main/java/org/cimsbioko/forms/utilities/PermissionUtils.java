@@ -58,10 +58,6 @@ public class PermissionUtils {
         return isPermissionGranted(context, Manifest.permission.GET_ACCOUNTS);
     }
 
-    public static boolean isReadPhoneStatePermissionGranted(Context context) {
-        return isPermissionGranted(context, Manifest.permission.READ_PHONE_STATE);
-    }
-
     /**
      * Returns true only if all of the requested permissions are granted to FormsApp, otherwise false
      */

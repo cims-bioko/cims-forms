@@ -16,30 +16,23 @@ package org.cimsbioko.forms.logic;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
-
-import org.javarosa.core.services.IPropertyManager;
-import org.javarosa.core.services.properties.IPropertyRules;
 import org.cimsbioko.forms.application.FormsApp;
 import org.cimsbioko.forms.events.ReadPhoneStatePermissionRxEvent;
 import org.cimsbioko.forms.events.RxEventBus;
+import org.javarosa.core.services.IPropertyManager;
+import org.javarosa.core.services.properties.IPropertyRules;
+import timber.log.Timber;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import timber.log.Timber;
-
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_EMAIL;
 import static org.cimsbioko.forms.preferences.GeneralKeys.KEY_METADATA_PHONENUMBER;
-import static org.cimsbioko.forms.utilities.PermissionUtils.isReadPhoneStatePermissionGranted;
 
 /**
  * Returns device properties and metadata to JavaRosa
@@ -55,15 +48,11 @@ public class PropertyManager implements IPropertyManager {
     public static final String PROPMGR_USERNAME         = "username";
     public static final String PROPMGR_EMAIL            = "email";
 
-    private static final String ANDROID6_FAKE_MAC = "02:00:00:00:00:00";
-
     public static final String SCHEME_USERNAME     = "username";
     private static final String SCHEME_TEL          = "tel";
     private static final String SCHEME_MAILTO       = "mailto";
     private static final String SCHEME_IMSI         = "imsi";
     private static final String SCHEME_SIMSERIAL    = "simserial";
-    private static final String SCHEME_IMEI         = "imei";
-    private static final String SCHEME_MAC          = "mac";
 
     private final Map<String, String> properties = new HashMap<>();
 
@@ -90,12 +79,12 @@ public class PropertyManager implements IPropertyManager {
         FormsApp.getInstance().getComponent().inject(this);
         try {
             // Device-defined properties
-            TelephonyManager telMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-            IdAndPrefix idp = findDeviceId(context, telMgr);
+            IdAndPrefix idp = findDeviceId(context);
+            final String blank = "";
             putProperty(PROPMGR_DEVICE_ID,     idp.prefix,          idp.id);
-            putProperty(PROPMGR_PHONE_NUMBER,  SCHEME_TEL,          telMgr.getLine1Number());
-            putProperty(PROPMGR_SUBSCRIBER_ID, SCHEME_IMSI,         telMgr.getSubscriberId());
-            putProperty(PROPMGR_SIM_SERIAL,    SCHEME_SIMSERIAL,    telMgr.getSimSerialNumber());
+            putProperty(PROPMGR_PHONE_NUMBER,  SCHEME_TEL,          blank);
+            putProperty(PROPMGR_SUBSCRIBER_ID, SCHEME_IMSI,         blank);
+            putProperty(PROPMGR_SIM_SERIAL,    SCHEME_SIMSERIAL,    blank);
         } catch (SecurityException e) {
             Timber.e(e);
         }
@@ -106,41 +95,10 @@ public class PropertyManager implements IPropertyManager {
         initUserDefined(prefs, KEY_METADATA_EMAIL,       PROPMGR_EMAIL,         SCHEME_MAILTO);
     }
 
-    // telephonyManager.getDeviceId() requires permission READ_PHONE_STATE (ISSUE #2506). Permission should be handled or exception caught.
-    private IdAndPrefix findDeviceId(Context context, TelephonyManager telephonyManager) throws SecurityException {
+    private IdAndPrefix findDeviceId(Context context) throws SecurityException {
         final String androidIdName = Settings.Secure.ANDROID_ID;
-        String deviceId = telephonyManager.getDeviceId();
-        String scheme = null;
-
-        if (deviceId != null) {
-            if (deviceId.contains("*") || deviceId.contains("000000000000000")) {
-                deviceId = Settings.Secure.getString(context.getContentResolver(), androidIdName);
-                scheme = androidIdName;
-            } else {
-                scheme = SCHEME_IMEI;
-            }
-        }
-
-        if (deviceId == null) {
-            // no SIM -- WiFi only
-            // Retrieve WiFiManager
-            WifiManager wifi = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-
-            // Get WiFi status
-            WifiInfo info = wifi.getConnectionInfo();
-            if (info != null && !ANDROID6_FAKE_MAC.equals(info.getMacAddress())) {
-                deviceId = info.getMacAddress();
-                scheme = SCHEME_MAC;
-            }
-        }
-
-        // if it is still null, use ANDROID_ID
-        if (deviceId == null) {
-            deviceId = Settings.Secure.getString(context.getContentResolver(), androidIdName);
-            scheme = androidIdName;
-        }
-
-        return new IdAndPrefix(deviceId, scheme);
+        String deviceId = Settings.Secure.getString(context.getContentResolver(), androidIdName);
+        return new IdAndPrefix(deviceId, androidIdName);
     }
 
     /**
@@ -169,26 +127,7 @@ public class PropertyManager implements IPropertyManager {
 
     @Override
     public String getSingularProperty(String propertyName) {
-        if (!isReadPhoneStatePermissionGranted(FormsApp.getInstance()) && isPropertyDangerous(propertyName)) {
-            eventBus.post(new ReadPhoneStatePermissionRxEvent());
-        }
-
-        // for now, all property names are in english...
         return properties.get(propertyName.toLowerCase(Locale.ENGLISH));
-    }
-
-    /**
-     * Dangerous properties are those which require reading phone state:
-     * https://developer.android.com/reference/android/Manifest.permission#READ_PHONE_STATE
-     * @param propertyName The name of the property
-     * @return True if the given property is dangerous, false otherwise.
-     */
-    private boolean isPropertyDangerous(String propertyName) {
-        return propertyName != null
-                && (propertyName.equalsIgnoreCase(PROPMGR_DEVICE_ID)
-                || propertyName.equalsIgnoreCase(PROPMGR_SUBSCRIBER_ID)
-                || propertyName.equalsIgnoreCase(PROPMGR_SIM_SERIAL)
-                || propertyName.equalsIgnoreCase(PROPMGR_PHONE_NUMBER));
     }
 
     @Override
