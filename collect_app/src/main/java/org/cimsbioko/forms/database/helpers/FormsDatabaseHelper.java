@@ -305,7 +305,7 @@ public class FormsDatabaseHelper extends SQLiteOpenHelper {
 
     private void createFormsTableV7(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + FORMS_TABLE_NAME + " ("
-                + _ID + " integer primary key, "
+                + _ID + " integer primary key autoincrement, "
                 + DISPLAY_NAME + " text not null, "
                 + DESCRIPTION + " text, "
                 + JR_FORM_ID + " text not null, "

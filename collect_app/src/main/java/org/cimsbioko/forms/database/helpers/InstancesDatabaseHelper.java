@@ -181,7 +181,7 @@ public class InstancesDatabaseHelper extends SQLiteOpenHelper {
 
     private void createInstancesTableV5(SQLiteDatabase db, String name) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + name + " ("
-                + _ID + " integer primary key, "
+                + _ID + " integer primary key autoincrement, "
                 + DISPLAY_NAME + " text not null, "
                 + SUBMISSION_URI + " text, "
                 + CAN_EDIT_WHEN_COMPLETE + " text, "
