@@ -73,8 +73,8 @@ android {
         applicationId('org.cimsbioko.forms')
         minSdkVersion(16)
         targetSdkVersion(29)
-        versionCode LEGACY_BUILD_NUMBER_OFFSET + 3
-        versionName '1.1'
+        versionCode LEGACY_BUILD_NUMBER_OFFSET + 4
+        versionName '1.1.1'
         testInstrumentationRunner('androidx.test.runner.AndroidJUnitRunner')
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
