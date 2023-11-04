@@ -81,6 +81,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
     private Intent intent;
     private ExternalDataManager externalDataManager;
     private FormDef formDef;
+    private boolean newInstance;
 
     protected static class FECWrapper {
         FormController controller;
@@ -107,9 +108,14 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
     FECWrapper data;
 
     public FormLoaderTask(String instancePath, String xpath, String waitingXPath) {
+        this(instancePath, xpath, waitingXPath, false);
+    }
+
+    public FormLoaderTask(String instancePath, String xpath, String waitingXPath, boolean newInstance) {
         this.instancePath = instancePath;
         this.xpath = xpath;
         this.waitingXPath = waitingXPath;
+        this.newInstance = newInstance;
     }
 
     /**
@@ -329,7 +335,7 @@ public class FormLoaderTask extends AsyncTask<String, String, FormLoaderTask.FEC
                     Timber.i("Importing data");
                     publishProgress(FormsApp.getInstance().getString(R.string.survey_loading_reading_data_message));
                     importData(instanceXml, fec);
-                    formDef.initialize(false, instanceInit);
+                    formDef.initialize(newInstance, instanceInit);
                 } catch (IOException | RuntimeException e) {
                     Timber.e(e);
 

@@ -617,7 +617,7 @@ public class FormEntryActivity extends CollectAbstractActivity implements Animat
             return;
         }
 
-        formLoaderTask = new FormLoaderTask(instancePath, null, null);
+        formLoaderTask = new FormLoaderTask(instancePath, null, null, starterUri != null);
         showFormLoadingDialogFragment();
         formLoaderTask.execute(formPath);
     }
